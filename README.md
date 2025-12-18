@@ -1,0 +1,1 @@
+Simple E-Commerce app with user and admin facing views
