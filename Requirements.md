@@ -10,7 +10,7 @@ Non-registered user can:
 - filter products by category, price range
 - add/remove products to a cart
 - view product details, customer reviews
-- create an account
+- create an account (using email)
 
 ### 2. Registered User
 
@@ -39,3 +39,15 @@ System should:
 - manage login/registration via JWT
 - manage separate role access for different users -> non-registered, registered and admin
 - Support multiple payment gateways
+- automatically verify a review -> if a user has bought the product even once, their review is valid
+
+## Seller Functionality (optional)
+
+Admin can:
+
+- approve products
+- manage sellers
+
+Seller can:
+
+- manage products
