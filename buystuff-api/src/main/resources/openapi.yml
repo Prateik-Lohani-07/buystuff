@@ -1,0 +1,330 @@
+openapi: 3.0.0
+info:
+  title: E-Commerce Backend API
+  version: 1.0.0
+  description: ""
+servers:
+  - url: "{{base_url}}"
+paths:
+  /auth/login:
+    post:
+      summary: login
+      responses: {}
+      tags:
+        - auth
+  /auth/signup:
+    post:
+      summary: signup
+      responses: {}
+      tags:
+        - auth
+  /me:
+    get:
+      summary: view current user
+      responses: {}
+      tags:
+        - auth
+  /products/{product_id}/reviews:
+    post:
+      summary: add review
+      responses: {}
+      tags:
+        - products
+        - reviews
+    parameters:
+      - name: product_id
+        in: path
+        required: true
+        deprecated: false
+        schema: {}
+    patch:
+      summary: edit review
+      responses: {}
+      tags:
+        - products
+        - reviews
+    delete:
+      summary: remove review
+      responses: {}
+      tags:
+        - products
+        - reviews
+  /products/{product_id}:
+    get:
+      summary: view product details
+      responses: {}
+      tags:
+        - products
+    parameters:
+      - name: product_id
+        in: path
+        required: true
+        deprecated: false
+        schema: {}
+    delete:
+      summary: remove product
+      responses: {}
+      tags:
+        - admin
+        - products
+  /products:
+    get:
+      summary: view all products
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: string
+        - name: skip
+          in: query
+          schema:
+            type: string
+        - name: categories
+          in: query
+          schema:
+            type: string
+        - name: price_start
+          in: query
+          schema:
+            type: string
+        - name: price_end
+          in: query
+          schema:
+            type: string
+      responses: {}
+      tags:
+        - products
+  /orders:
+    post:
+      summary: place order
+      responses: {}
+      tags:
+        - orders
+    get:
+      summary: view order history
+      responses: {}
+      tags:
+        - orders
+  /orders/{order_id}:
+    get:
+      summary: view order
+      responses: {}
+      tags:
+        - orders
+    parameters:
+      - name: order_id
+        in: path
+        required: true
+        deprecated: false
+        schema: {}
+    delete:
+      summary: cancel order
+      responses: {}
+      tags:
+        - orders
+  /cart:
+    get:
+      summary: view cart
+      responses: {}
+      tags:
+        - cart
+    delete:
+      summary: clear cart
+      responses: {}
+      tags:
+        - cart
+  /cart/items:
+    post:
+      summary: add to cart
+      responses: {}
+      tags:
+        - cart
+  /cart/items/{item_id}:
+    delete:
+      summary: remove from cart
+      responses: {}
+      tags:
+        - cart
+    parameters:
+      - name: item_id
+        in: path
+        required: true
+        deprecated: false
+        schema: {}
+  /cart/coupon:
+    post:
+      summary: apply coupon
+      responses: {}
+      tags:
+        - cart
+  /admin/reports/sales:
+    get:
+      summary: sales reports
+      parameters:
+        - name: from
+          in: query
+          schema:
+            type: string
+        - name: to
+          in: query
+          schema:
+            type: string
+        - name: product_id
+          in: query
+          schema:
+            type: string
+      responses: {}
+      tags:
+        - admin
+        - reports
+  /admin/reports/top_products:
+    get:
+      summary: top products
+      responses: {}
+      tags:
+        - admin
+        - reports
+  /admin/products:
+    post:
+      summary: add product
+      responses: {}
+      tags:
+        - admin
+        - products
+  /admin/products/{product_id}:
+    patch:
+      summary: edit product
+      responses: {}
+      tags:
+        - admin
+        - products
+    parameters:
+      - name: product_id
+        in: path
+        required: true
+        deprecated: false
+        schema: {}
+  /admin/coupons:
+    post:
+      summary: add coupon
+      responses: {}
+      tags:
+        - admin
+        - coupons
+    get:
+      summary: view all coupons
+      responses: {}
+      tags:
+        - admin
+        - coupons
+  /admin/coupons/{coupon_id}:
+    patch:
+      summary: edit coupon
+      responses: {}
+      tags:
+        - admin
+        - coupons
+    parameters:
+      - name: coupon_id
+        in: path
+        required: true
+        schema:
+          type: string
+    delete:
+      summary: remove coupon
+      responses: {}
+      tags:
+        - admin
+        - coupons
+  /me/addresses:
+    post:
+      summary: add address
+      responses: {}
+      tags:
+        - users
+        - address
+    get:
+      summary: view all addresses
+      responses: {}
+      tags:
+        - users
+        - address
+  /me/address/{address_id}:
+    patch:
+      summary: edit address
+      responses: {}
+      tags:
+        - users
+        - address
+    parameters:
+      - name: address_id
+        in: path
+        required: true
+        deprecated: false
+        schema: {}
+  /me/payment_info:
+    get:
+      summary: view all payment info
+      responses: {}
+      tags:
+        - users
+        - payment info
+    post:
+      summary: add payment info
+      responses: {}
+      tags:
+        - users
+        - payment info
+  /me/payment_info/{payment_info_id}:
+    get:
+      summary: view payment info
+      responses: {}
+      tags:
+        - users
+        - payment info
+    parameters:
+      - name: payment_info_id
+        in: path
+        required: true
+        deprecated: false
+        schema: {}
+    patch:
+      summary: edit payment info
+      responses: {}
+      tags:
+        - users
+        - payment info
+  /me/account/password:
+    patch:
+      summary: change password
+      responses: {}
+      tags:
+        - users
+        - account info
+  /me/account:
+    delete:
+      summary: delete account
+      responses: {}
+      tags:
+        - users
+        - account info
+  /me/account/email:
+    patch:
+      summary: change email
+      responses: {}
+      tags:
+        - users
+        - account info
+  /me/personal:
+    get:
+      summary: view personal info
+      responses: {}
+      tags:
+        - users
+        - personal info
+    patch:
+      summary: edit personal info
+      responses: {}
+      tags:
+        - users
+        - personal info

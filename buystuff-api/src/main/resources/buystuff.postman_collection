@@ -1,0 +1,939 @@
+{
+	"info": {
+		"_postman_id": "a5f82550-992c-465e-8bbe-2e6ad15f480b",
+		"name": "E-Commerce Backend API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "33335950",
+		"_collection_link": "https://api-testing-team-0403.postman.co/workspace/Spring-Boot-Dev~c8d94539-3113-488f-97ed-844df240884a/collection/33335950-a5f82550-992c-465e-8bbe-2e6ad15f480b?action=share&source=collection_link&creator=33335950"
+	},
+	"item": [
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/auth/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "signup",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/auth/signup",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"signup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "view current user",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/me",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"me"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "products",
+			"item": [
+				{
+					"name": "reviews",
+					"item": [
+						{
+							"name": "add review",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/products/:product_id/reviews",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"products",
+										":product_id",
+										"reviews"
+									],
+									"variable": [
+										{
+											"key": "product_id",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "edit review",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/products/:product_id/reviews",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"products",
+										":product_id",
+										"reviews"
+									],
+									"variable": [
+										{
+											"key": "product_id",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "remove review",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/products/:product_id/reviews",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"products",
+										":product_id",
+										"reviews"
+									],
+									"variable": [
+										{
+											"key": "product_id",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "view product details",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/products/:product_id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"products",
+								":product_id"
+							],
+							"variable": [
+								{
+									"key": "product_id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "view all products",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/products",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"products"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "skip",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "categories",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "price_start",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "price_end",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "orders",
+			"item": [
+				{
+					"name": "place order",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/orders",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "view order history",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/orders",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "view order",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/orders/:order_id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"orders",
+								":order_id"
+							],
+							"variable": [
+								{
+									"key": "order_id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "cancel order",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/orders/:order_id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"orders",
+								":order_id"
+							],
+							"variable": [
+								{
+									"key": "order_id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "cart",
+			"item": [
+				{
+					"name": "view cart",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/cart",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"cart"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add to cart",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/cart/items",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"cart",
+								"items"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "remove from cart",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/cart/items/:item_id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"cart",
+								"items",
+								":item_id"
+							],
+							"variable": [
+								{
+									"key": "item_id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "apply coupon",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/cart/coupon",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"cart",
+								"coupon"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "clear cart",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/cart",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"cart"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "admin",
+			"item": [
+				{
+					"name": "reports",
+					"item": [
+						{
+							"name": "sales reports",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/admin/reports/sales",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"admin",
+										"reports",
+										"sales"
+									],
+									"query": [
+										{
+											"key": "from",
+											"value": null,
+											"disabled": true
+										},
+										{
+											"key": "to",
+											"value": null,
+											"disabled": true
+										},
+										{
+											"key": "product_id",
+											"value": null,
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "top products",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/admin/reports/top_products",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"admin",
+										"reports",
+										"top_products"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "products",
+					"item": [
+						{
+							"name": "add product",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/admin/products",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"admin",
+										"products"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "edit product details",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/admin/products/:product_id",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"admin",
+										"products",
+										":product_id"
+									],
+									"variable": [
+										{
+											"key": "product_id",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "edit product status",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/admin/products/:product_id/status",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"admin",
+										"products",
+										":product_id",
+										"status"
+									],
+									"variable": [
+										{
+											"key": "product_id",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "remove product",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/products/:product_id",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"products",
+										":product_id"
+									],
+									"variable": [
+										{
+											"key": "product_id",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "coupons",
+					"item": [
+						{
+							"name": "add coupon",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/admin/coupons",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"admin",
+										"coupons"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "edit coupon",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/admin/coupons/:coupon_id",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"admin",
+										"coupons",
+										":coupon_id"
+									],
+									"variable": [
+										{
+											"key": "coupon_id",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "remove coupon",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/admin/coupons/:coupon_id",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"admin",
+										"coupons",
+										":coupon_id"
+									],
+									"variable": [
+										{
+											"key": "coupon_id",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "view all coupons",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/admin/coupons",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"admin",
+										"coupons"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "users",
+			"item": [
+				{
+					"name": "address",
+					"item": [
+						{
+							"name": "add address",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/me/addresses",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"me",
+										"addresses"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "view all addresses",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/me/addresses",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"me",
+										"addresses"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "edit address",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/me/address/:address_id",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"me",
+										"address",
+										":address_id"
+									],
+									"variable": [
+										{
+											"key": "address_id",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "payment info",
+					"item": [
+						{
+							"name": "view all payment info",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/me/payment_info",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"me",
+										"payment_info"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "view payment info",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/me/payment_info/:payment_info_id",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"me",
+										"payment_info",
+										":payment_info_id"
+									],
+									"variable": [
+										{
+											"key": "payment_info_id",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "edit payment info",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/me/payment_info/:payment_info_id",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"me",
+										"payment_info",
+										":payment_info_id"
+									],
+									"variable": [
+										{
+											"key": "payment_info_id",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "add payment info",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/me/payment_info",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"me",
+										"payment_info"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "account info",
+					"item": [
+						{
+							"name": "change password",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/me/account/password",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"me",
+										"account",
+										"password"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete account",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/me/account",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"me",
+										"account"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "change email",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/me/account/email",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"me",
+										"account",
+										"email"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "personal info",
+					"item": [
+						{
+							"name": "view personal info",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/me/personal",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"me",
+										"personal"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "edit personal info",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/me/personal",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"me",
+										"personal"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "baseURL",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "base_url",
+			"value": "",
+			"type": "default"
+		}
+	]
+}
