@@ -1,14 +1,9 @@
 package com.buystuff.buystuff_api.entities;
 
-import java.time.Instant;
-import java.util.UUID;
-
 import com.buystuff.buystuff_api.abstract_classes.BaseEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
@@ -23,26 +18,21 @@ import lombok.Setter;
 @Table(name = "sales_info")
 public class SalesInfo extends BaseEntity {
 	@Id
-	@GeneratedValue(strategy = GenerationType.UUID)
-	@Column(name = "info_id", columnDefinition = "uuid")
-	private UUID infoId;
-	
-	@Column(name = "product_code", columnDefinition = "varchar", unique = true)
+	@Column(name = "product_code", columnDefinition = "uuid")
 	private String productCode;
-	
-	@Column(name = "product_name", columnDefinition = "varchar")
-	private String productName;
-
-	@Column(name = "quantity", columnDefinition = "integer")
-	private Integer quantity;
-	
-	@Column(name = "price", columnDefinition = "numeric")
-	private Integer price;
-
-	@Column(name = "updated_at", nullable = false)
-	private Instant updatedAt;
 
 	@OneToOne
-	@JoinColumn(name = "product_id")
+	@JoinColumn(
+		name = "product_code", 
+		referencedColumnName = "product_code",
+		insertable = false,
+		updatable = false
+	)
 	private Product product;
+	
+	@Column(name = "quantity_sold", columnDefinition = "integer")
+	private Integer quantitySold;
+	
+	@Column(name = "revenue", columnDefinition = "numeric")
+	private Integer revenue;
 }
