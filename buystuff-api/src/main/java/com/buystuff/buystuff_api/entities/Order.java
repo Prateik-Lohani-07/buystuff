@@ -39,11 +39,11 @@ public class Order extends BaseEntity {
 	@Column(name = "order_id", columnDefinition = "uuid")
 	private UUID orderId;
 
-	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<OrderItem> items = new ArrayList<>();
-
 	@Column(name = "discount", columnDefinition = "numeric")
 	private Double discount;
+	
+	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<OrderItem> items = new ArrayList<>();
 
 	@JdbcTypeCode(SqlTypes.JSON)
 	@Column(name = "shipping_address_snapshot", columnDefinition = "jsonb")

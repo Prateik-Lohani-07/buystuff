@@ -39,12 +39,9 @@ public class Product extends BaseEntity {
 	@Column(name = "product_code", columnDefinition = "varchar", unique = true)
 	private String productCode;
 
-	@Column(name = "description", columnDefinition = "varchar")
-	private String description;
-
 	@Column(name = "price", columnDefinition = "numeric")
 	private Double price;
-
+	
 	@ColumnDefault("0")
 	@Column(name = "discount", columnDefinition = "numeric")
 	private Double discount;
@@ -53,15 +50,18 @@ public class Product extends BaseEntity {
 	@Column(name = "stock", columnDefinition = "integer", nullable = false)
 	private Integer stock;
 	
+	@Column(name = "description", columnDefinition = "varchar")
+	private String description;
+	
+	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Review> reviews = new ArrayList<>();
+	
 	@Column(name = "avg_rating", columnDefinition = "numeric")
 	private Double avgRating;
-
+	
 	@ColumnDefault("'true'")
 	@Column(name = "is_active", columnDefinition = "boolean")
 	private Boolean isActive;
-
-	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Review> reviews = new ArrayList<>();
 
 	@ManyToMany(cascade = CascadeType.PERSIST)
 	private List<Category> categories = new ArrayList<>();
