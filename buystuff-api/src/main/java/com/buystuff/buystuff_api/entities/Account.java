@@ -4,8 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.beans.BeanUtils;
+
 import com.buystuff.buystuff_api.abstract_classes.BaseEntity;
 import com.buystuff.buystuff_api.enums.Role;
+import com.buystuff.buystuff_api.exceptions.NotFoundException;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -76,9 +79,11 @@ public class Account extends BaseEntity {
 	}
 
 	public void updateAddress(UUID addressId, Address updatedAddress) {
-		addresses.replaceAll(
-			(address) -> (address.getAddressId().equals(addressId)) ? updatedAddress : address
-		);
-	}
+		Address existingAddress = addresses.stream()
+			.filter(a -> a.getAddressId().equals(addressId))
+			.findFirst()
+			.orElseThrow(() -> new NotFoundException("Address not found."));
 
+		BeanUtils.copyProperties(updatedAddress, existingAddress, "addressId", "account");
+	}
 }
