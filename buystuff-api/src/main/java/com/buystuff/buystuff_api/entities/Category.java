@@ -3,7 +3,6 @@ package com.buystuff.buystuff_api.entities;
 import java.util.ArrayList;
 import java.util.List;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -31,6 +30,6 @@ public class Category {
 	@Column(name = "name", columnDefinition = "varchar")
 	private String name;
 
-	@ManyToMany(cascade = CascadeType.PERSIST)
+	@ManyToMany
 	private List<Product> products = new ArrayList<>();
 }
