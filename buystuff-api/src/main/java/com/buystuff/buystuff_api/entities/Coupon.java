@@ -27,6 +27,9 @@ public class Coupon extends BaseEntity {
 	@Column(name = "coupon_id", columnDefinition = "uuid")
 	private UUID couponId;
 
+	@Column(name = "coupon_code", columnDefinition = "varchar", unique = true)
+	private String couponCode;
+
 	@Column(name = "name", columnDefinition = "varchar")
 	private String name;
 
