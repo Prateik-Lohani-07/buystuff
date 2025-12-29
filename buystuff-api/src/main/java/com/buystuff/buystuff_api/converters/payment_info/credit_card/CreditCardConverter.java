@@ -6,7 +6,7 @@ import com.buystuff.buystuff_api.entities.Account;
 import com.buystuff.buystuff_api.entities.CreditCardPaymentInfo;
 
 public abstract class CreditCardConverter {
-	public static CreditCardPaymentInfo convertTo(CreateCreditCardDto dto, Account account) {
+	public static CreditCardPaymentInfo toEntity(CreateCreditCardDto dto, Account account) {
 		CreditCardPaymentInfo entity = new CreditCardPaymentInfo();
 		
 		entity.setAccount(account);
@@ -17,7 +17,7 @@ public abstract class CreditCardConverter {
 		return entity;
 	}
 
-	public static CreditCardDto convertFrom(CreditCardPaymentInfo entity) {
+	public static CreditCardDto toDTO(CreditCardPaymentInfo entity) {
 		CreditCardDto dto = new CreditCardDto();
 
 		dto.setPaymentInfoId(entity.getPaymentInfoId());

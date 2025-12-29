@@ -6,7 +6,7 @@ import com.buystuff.buystuff_api.entities.Account;
 import com.buystuff.buystuff_api.entities.UPIPaymentInfo;
 
 public abstract class UPIConverter {
-	public static UPIPaymentInfo convertTo(CreateUPIDto dto, Account account) {
+	public static UPIPaymentInfo toEntity(CreateUPIDto dto, Account account) {
 		UPIPaymentInfo entity = new UPIPaymentInfo();
 		
 		entity.setAccount(account);
@@ -15,7 +15,7 @@ public abstract class UPIConverter {
 		return entity;
 	}
 
-	public static UPIDto convertFrom(UPIPaymentInfo entity) {
+	public static UPIDto toDTO(UPIPaymentInfo entity) {
 		UPIDto dto = new UPIDto();
 
 		dto.setPaymentInfoId(entity.getPaymentInfoId());
