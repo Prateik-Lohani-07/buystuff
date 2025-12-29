@@ -25,7 +25,7 @@ public class Category {
 	@Column(name = "category_id", columnDefinition = "serial")
 	private Integer categoryId;
 
-	@Column(name = "code", columnDefinition = "varchar")
+	@Column(name = "code", columnDefinition = "varchar", unique = true)
 	private String code;
 
 	@Column(name = "name", columnDefinition = "varchar")
@@ -33,5 +33,4 @@ public class Category {
 
 	@ManyToMany(cascade = CascadeType.PERSIST)
 	private List<Product> products = new ArrayList<>();
-
 }
