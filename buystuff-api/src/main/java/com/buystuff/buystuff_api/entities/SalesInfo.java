@@ -1,5 +1,7 @@
 package com.buystuff.buystuff_api.entities;
 
+import java.util.UUID;
+
 import com.buystuff.buystuff_api.abstract_classes.BaseEntity;
 
 import jakarta.persistence.Column;
@@ -18,13 +20,13 @@ import lombok.Setter;
 @Table(name = "sales_info")
 public class SalesInfo extends BaseEntity {
 	@Id
-	@Column(name = "product_code", columnDefinition = "uuid")
-	private String productCode;
+	@Column(name = "product_id", columnDefinition = "uuid")
+	private UUID productId;
 
 	@OneToOne
 	@JoinColumn(
-		name = "product_code", 
-		referencedColumnName = "product_code",
+		name = "product_id", 
+		referencedColumnName = "product_id",
 		insertable = false,
 		updatable = false
 	)
@@ -34,5 +36,5 @@ public class SalesInfo extends BaseEntity {
 	private Integer quantitySold;
 	
 	@Column(name = "revenue", columnDefinition = "numeric")
-	private Integer revenue;
+	private Double revenue;
 }

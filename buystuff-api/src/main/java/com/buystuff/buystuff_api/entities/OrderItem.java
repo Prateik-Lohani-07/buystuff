@@ -18,6 +18,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,7 +26,10 @@ import lombok.Setter;
 
 @Entity
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor
-@Table(name="order_items")
+@Table(
+	name="order_items",
+	uniqueConstraints = { @UniqueConstraint(columnNames = { "order_id", "product_id" }) }
+)
 public class OrderItem extends BaseEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
