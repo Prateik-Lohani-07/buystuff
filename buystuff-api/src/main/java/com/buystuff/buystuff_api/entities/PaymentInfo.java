@@ -42,6 +42,7 @@ public abstract class PaymentInfo extends BaseEntity {
 	@JoinColumn(name = "account_id", nullable = false)
 	private Account account;
 
+	@ColumnDefault("'true'")
 	@Column(name = "is_active", nullable = false)
 	private boolean isActive;
 

@@ -2,6 +2,8 @@ package com.buystuff.buystuff_api.entities;
 
 import java.util.UUID;
 
+import org.hibernate.annotations.NaturalId;
+
 import com.buystuff.buystuff_api.abstract_classes.BaseEntity;
 import com.buystuff.buystuff_api.enums.DiscountType;
 
@@ -27,6 +29,7 @@ public class Coupon extends BaseEntity {
 	@Column(name = "coupon_id", columnDefinition = "uuid")
 	private UUID couponId;
 
+	@NaturalId
 	@Column(name = "coupon_code", columnDefinition = "varchar", unique = true)
 	private String couponCode;
 

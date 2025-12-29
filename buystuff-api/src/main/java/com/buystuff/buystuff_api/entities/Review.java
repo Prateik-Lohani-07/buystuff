@@ -2,6 +2,7 @@ package com.buystuff.buystuff_api.entities;
 
 import java.util.UUID;
 
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -37,6 +38,10 @@ public class Review extends BaseEntity {
 	
 	@Column(name = "content", columnDefinition = "varchar")
 	private String content;
+
+	@ColumnDefault("'false'")
+	@Column(name = "verified", columnDefinition = "boolean")
+	private Boolean verified;
 	
 	@ManyToOne
 	@OnDelete(action = OnDeleteAction.SET_NULL)
