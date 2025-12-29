@@ -1,5 +1,7 @@
 package com.buystuff.buystuff_api.converters.address;
 
+import org.springframework.beans.BeanUtils;
+
 import com.buystuff.buystuff_api.dto.address.AddressDto;
 import com.buystuff.buystuff_api.dto.address.CreateAddressDto;
 import com.buystuff.buystuff_api.dto.address.UpdateAddressDto;
@@ -24,6 +26,8 @@ public abstract class AddressConverter {
 
 	public static Address toEntity(UpdateAddressDto dto, Account account) {
 		Address entity = new Address();
+
+		entity.setAddressId(dto.getAddressId());
 
 		if (dto.getFlatOrBlock() != null)
 			entity.setFlatOrBlock(dto.getFlatOrBlock());
