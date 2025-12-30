@@ -31,19 +31,27 @@ public class User extends BaseEntity {
 	private UUID accountId;
 
 	@OneToOne(optional = false)
-	@JoinColumn(name = "account_id")
+	@JoinColumn(
+		name = "account_id",
+		referencedColumnName = "account_id",
+		insertable = false,
+		updatable = false
+	)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Account account;
 
-	@Column(name = "name", columnDefinition = "varchar")
-	private String name;
+	@Column(name = "first_name", columnDefinition = "varchar", nullable = false)
+	private String firstName;
+
+	@Column(name = "last_name", columnDefinition = "varchar", nullable = false)
+	private String lastName;
 	
-	@Column(name = "date_of_birth")
+	@Column(name = "date_of_birth", nullable = false)
 	private LocalDate dob;
 	
-	@Column(name = "phone", columnDefinition = "varchar")
+	@Column(name = "phone", columnDefinition = "varchar", nullable = false)
 	private String phone;
 	
-	@Column(name = "country_code", columnDefinition = "varchar")
+	@Column(name = "country_code", columnDefinition = "varchar", nullable = false)
 	private String countryCode;
 }
