@@ -1,6 +1,7 @@
 package com.buystuff.buystuff_api.dto.product;
 
 import java.util.List;
+import java.util.UUID;
 
 import com.buystuff.buystuff_api.abstract_classes.BaseResponseDto;
 import com.buystuff.buystuff_api.dto.review.ReviewDto;
@@ -17,8 +18,8 @@ import lombok.Setter;
 
 @Getter @Setter
 public class ProductDto extends BaseResponseDto {
-	@NotBlank
-	private String productId;
+	@NotNull
+	private UUID productId;
 	
 	@NotBlank
 	private String name;

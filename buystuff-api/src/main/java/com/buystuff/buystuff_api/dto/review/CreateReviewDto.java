@@ -19,10 +19,4 @@ public class CreateReviewDto {
 
 	@NotBlank 
 	private String content;
-
-	@NotBlank
-	private String productId;
-
-	@NotBlank
-	private String accountId;
 }

@@ -27,10 +27,4 @@ public class ReviewDto extends BaseResponseDto {
 	
 	@NotNull
 	private Boolean verified;
-
-	@NotBlank
-	private String productId;
-
-	@NotBlank
-	private String accountId;
 }

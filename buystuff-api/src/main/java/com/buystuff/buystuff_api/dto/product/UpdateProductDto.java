@@ -1,9 +1,11 @@
 package com.buystuff.buystuff_api.dto.product;
 
 import java.util.List;
+import java.util.UUID;
 
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
@@ -11,8 +13,8 @@ import lombok.Setter;
 
 @Getter @Setter
 public class UpdateProductDto {
-	@NotBlank
-	private String productId;
+	@NotNull
+	private UUID productId;
 	
 	@PositiveOrZero
 	private Double price;
