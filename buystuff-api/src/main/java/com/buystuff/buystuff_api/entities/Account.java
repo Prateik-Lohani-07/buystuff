@@ -35,7 +35,7 @@ public class Account extends BaseEntity {
 	@Column(name = "account_id", columnDefinition = "uuid")
 	private UUID accountId;
 
-	@Column(name = "email", columnDefinition = "varchar", unique = true)
+	@Column(name = "email", columnDefinition = "varchar")
 	private String email;
 
 	@Column(name = "password_hash", columnDefinition = "varchar")
