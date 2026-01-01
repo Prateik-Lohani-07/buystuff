@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.UUID;
 
 import com.buystuff.buystuff_api.abstract_classes.BaseResponseDto;
-import com.buystuff.buystuff_api.dto.order_items.CreateOrderItemDto;
+import com.buystuff.buystuff_api.dto.order_item.CreateOrderItemDto;
 import com.buystuff.buystuff_api.enums.OrderStatus;
 import com.buystuff.buystuff_api.snapshots.AddressSnapshot;
 import com.buystuff.buystuff_api.snapshots.PaymentInfoSnapshot;
