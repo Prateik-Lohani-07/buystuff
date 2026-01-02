@@ -11,8 +11,15 @@ import lombok.Setter;
 
 @Getter @Setter
 public class UserDto extends BaseResponseDto {
-	@NotBlank private String name;
-	@NotNull private LocalDate dob;
-	@NotBlank private String phone;
-	@NotBlank private String countryCode;
+	@NotBlank
+	private String name;
+	
+	@NotNull
+	private LocalDate dob;
+	
+	@NotBlank
+	private String phone;
+	
+	@NotBlank
+	private String countryCode;
 }
