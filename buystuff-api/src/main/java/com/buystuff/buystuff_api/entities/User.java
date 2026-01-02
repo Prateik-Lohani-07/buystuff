@@ -47,7 +47,7 @@ public class User extends BaseEntity {
 	private String lastName;
 	
 	@Column(name = "date_of_birth", nullable = false)
-	private LocalDate dob;
+	private LocalDate dateOfBirth;
 	
 	@Column(name = "phone", columnDefinition = "varchar", nullable = false)
 	private String phone;

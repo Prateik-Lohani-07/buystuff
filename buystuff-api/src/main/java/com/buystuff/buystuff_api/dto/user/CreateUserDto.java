@@ -10,10 +10,13 @@ import lombok.Setter;
 @Getter @Setter
 public class CreateUserDto {
 	@NotBlank
-	private String name;
+	private String firstName;
+
+	@NotBlank
+	private String lastName;
 	
 	@NotNull
-	private LocalDate dob;
+	private LocalDate dateOfBirth;
 	
 	@NotBlank
 	private String phone;
