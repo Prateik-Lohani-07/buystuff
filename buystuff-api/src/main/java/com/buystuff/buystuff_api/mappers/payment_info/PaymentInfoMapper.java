@@ -1,7 +1,7 @@
-package com.buystuff.buystuff_api.converters.payment_info;
+package com.buystuff.buystuff_api.mappers.payment_info;
 
-import com.buystuff.buystuff_api.converters.payment_info.credit_card.CreditCardConverter;
-import com.buystuff.buystuff_api.converters.payment_info.upi.UPIConverter;
+import com.buystuff.buystuff_api.mappers.payment_info.credit_card.CreditCardMapper;
+import com.buystuff.buystuff_api.mappers.payment_info.upi.UPIMapper;
 import com.buystuff.buystuff_api.dto.payment_info.CreatePaymentInfoDto;
 import com.buystuff.buystuff_api.dto.payment_info.PaymentInfoDto;
 import com.buystuff.buystuff_api.dto.payment_info.credit_card.CreateCreditCardDto;
@@ -11,15 +11,15 @@ import com.buystuff.buystuff_api.entities.CreditCardPaymentInfo;
 import com.buystuff.buystuff_api.entities.PaymentInfo;
 import com.buystuff.buystuff_api.entities.UPIPaymentInfo;
 
-public abstract class PaymentInfoConverter {
+public abstract class PaymentInfoMapper {
 
 	public static PaymentInfo toEntity(CreatePaymentInfoDto dto, Account account) {
 		switch (dto.getPaymentType()) {
 			case CREDIT_CARD -> {
-				return CreditCardConverter.toEntity((CreateCreditCardDto) dto, account);
+				return CreditCardMapper.toEntity((CreateCreditCardDto) dto, account);
 			}
 			case UPI -> {
-				return UPIConverter.toEntity((CreateUPIDto) dto, account);
+				return UPIMapper.toEntity((CreateUPIDto) dto, account);
 			}
 			default -> throw new IllegalArgumentException(
 				"Unsupported payment type: " + dto.getPaymentType()
@@ -29,10 +29,10 @@ public abstract class PaymentInfoConverter {
 
 	public static PaymentInfoDto toDTO(PaymentInfo entity) {
 		if (entity instanceof CreditCardPaymentInfo ccEntity)
-			return CreditCardConverter.toDTO(ccEntity);
+			return CreditCardMapper.toDTO(ccEntity);
 		
 		else if (entity instanceof UPIPaymentInfo upiEntity)
-			return UPIConverter.toDTO(upiEntity);
+			return UPIMapper.toDTO(upiEntity);
 
 		else throw new IllegalArgumentException("Unsupported payment type in entity");
 	}

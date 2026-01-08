@@ -1,4 +1,4 @@
-package com.buystuff.buystuff_api.converters.address;
+package com.buystuff.buystuff_api.mappers.address;
 
 import com.buystuff.buystuff_api.dto.address.AddressDto;
 import com.buystuff.buystuff_api.dto.address.CreateAddressDto;
@@ -6,7 +6,7 @@ import com.buystuff.buystuff_api.dto.address.UpdateAddressDto;
 import com.buystuff.buystuff_api.entities.Account;
 import com.buystuff.buystuff_api.entities.Address;
 
-public abstract class AddressConverter {
+public abstract class AddressMapper {
 	public static Address toEntity(CreateAddressDto dto, Account account) {
 		Address entity = new Address();
 
@@ -22,11 +22,7 @@ public abstract class AddressConverter {
 		return entity;
 	}
 
-	public static Address toEntity(UpdateAddressDto dto, Account account) {
-		Address entity = new Address();
-
-		entity.setAddressId(dto.getAddressId());
-
+	public static void updateEntity(UpdateAddressDto dto, Address entity) {
 		if (dto.getFlatOrBlock() != null)
 			entity.setFlatOrBlock(dto.getFlatOrBlock());
 		
@@ -47,10 +43,6 @@ public abstract class AddressConverter {
 		
 		if (dto.getPincode() != null)
 			entity.setPincode(dto.getPincode());
-
-		entity.setAccount(account);
-
-		return entity;
 	}
 
 	public static AddressDto toDto(Address entity) {

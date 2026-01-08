@@ -1,10 +1,10 @@
-package com.buystuff.buystuff_api.converters.order;
+package com.buystuff.buystuff_api.mappers.order;
 
-import com.buystuff.buystuff_api.converters.order.order_item.OrderItemConverter;
+import com.buystuff.buystuff_api.mappers.order.order_item.OrderItemMapper;
 import com.buystuff.buystuff_api.dto.order.OrderDto;
 import com.buystuff.buystuff_api.entities.Order;
 
-public abstract class OrderConverter {
+public abstract class OrderMapper {
 	public static OrderDto toDTO(Order entity) {
 		OrderDto dto = new OrderDto();
 
@@ -13,7 +13,7 @@ public abstract class OrderConverter {
 		dto.setItems(
 			entity.getItems()
 				.stream()
-				.map(OrderItemConverter::toDTO)
+				.map(OrderItemMapper::toDTO)
 				.toList()
 		);
 		

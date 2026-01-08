@@ -1,10 +1,10 @@
-package com.buystuff.buystuff_api.converters.order.order_item;
+package com.buystuff.buystuff_api.mappers.order.order_item;
 
 import com.buystuff.buystuff_api.dto.order_item.OrderItemDto;
 import com.buystuff.buystuff_api.entities.OrderItem;
 
 
-public abstract class OrderItemConverter {
+public abstract class OrderItemMapper {
 	public static OrderItemDto toDTO(OrderItem entity) {
 		OrderItemDto dto = new OrderItemDto();
 

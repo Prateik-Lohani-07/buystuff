@@ -1,11 +1,11 @@
-package com.buystuff.buystuff_api.converters.payment_info.credit_card;
+package com.buystuff.buystuff_api.mappers.payment_info.credit_card;
 
 import com.buystuff.buystuff_api.dto.payment_info.credit_card.CreateCreditCardDto;
 import com.buystuff.buystuff_api.dto.payment_info.credit_card.CreditCardDto;
 import com.buystuff.buystuff_api.entities.Account;
 import com.buystuff.buystuff_api.entities.CreditCardPaymentInfo;
 
-public abstract class CreditCardConverter {
+public abstract class CreditCardMapper {
 	public static CreditCardPaymentInfo toEntity(CreateCreditCardDto dto, Account account) {
 		CreditCardPaymentInfo entity = new CreditCardPaymentInfo();
 		
