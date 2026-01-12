@@ -32,6 +32,7 @@ Admin can:
 - manage order status for each order
 - add discounts for products
 
+
 ## System
 
 System should:
@@ -39,15 +40,15 @@ System should:
 - manage login/registration via JWT
 - manage separate role access for different users -> non-registered, registered and admin
 - Support multiple payment gateways
-- automatically verify a review -> if a user has bought the product even once, their review is valid
+
 
 ## Seller Functionality (optional)
 
 Admin can:
-
-- approve products
+- approve products 
 - manage sellers
+- 
 
 Seller can:
-
 - manage products
+- offer discounts on their products
