@@ -10,6 +10,8 @@ import com.buystuff.buystuff_api.dto.authentication.LoginDto;
 import com.buystuff.buystuff_api.dto.authentication.SignupDto;
 import com.buystuff.buystuff_api.services.auth.AuthService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/api/v1/auth")
 public class AuthController {
@@ -22,7 +24,10 @@ public class AuthController {
 
 
     @PostMapping("/login")
-    public ApiResponse<String> login(@RequestBody LoginDto loginDto) {
+    public ApiResponse<String> login(
+		@Valid @RequestBody 
+		LoginDto loginDto
+	) {
         try {
             return authService.authenticate(loginDto);
         } catch (RuntimeException e) {
@@ -31,7 +36,22 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public ApiResponse<String> signup(@RequestBody SignupDto signupDto) {
+    public ApiResponse<String> signup(
+		@Valid @RequestBody 
+		SignupDto signupDto
+	) {
+        try {
+            return authService.registerUser(signupDto);
+        } catch (RuntimeException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @GetMapping("/me")
+    public ApiResponse<String> getCurrentUser(
+		@Valid @RequestBody 
+		SignupDto signupDto
+	) {
         try {
             return authService.registerUser(signupDto);
         } catch (RuntimeException e) {
