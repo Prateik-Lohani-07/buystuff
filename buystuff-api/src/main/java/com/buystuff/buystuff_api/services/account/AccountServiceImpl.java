@@ -3,10 +3,9 @@ package com.buystuff.buystuff_api.services.account;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.buystuff.buystuff_api.converters.address.AddressConverter;
-import com.buystuff.buystuff_api.converters.payment_info.PaymentInfoConverter;
 import com.buystuff.buystuff_api.dto.address.CreateAddressDto;
 import com.buystuff.buystuff_api.dto.address.UpdateAddressDto;
 import com.buystuff.buystuff_api.dto.payment_info.CreatePaymentInfoDto;
@@ -15,6 +14,8 @@ import com.buystuff.buystuff_api.entities.Address;
 import com.buystuff.buystuff_api.entities.PaymentInfo;
 import com.buystuff.buystuff_api.entities.Product;
 import com.buystuff.buystuff_api.exceptions.NotFoundException;
+import com.buystuff.buystuff_api.mappers.address.AddressMapper;
+import com.buystuff.buystuff_api.mappers.payment_info.PaymentInfoMapper;
 import com.buystuff.buystuff_api.repositories.AccountRepository;
 import com.buystuff.buystuff_api.repositories.ProductRepository;
 
@@ -29,6 +30,9 @@ public class AccountServiceImpl implements AccountService {
 
 	@Autowired
 	ProductRepository productRepository;
+
+	@Autowired
+	PasswordEncoder passwordEncoder;
 
 	@Override
 	public void addToCart(UUID accountId, UUID productId) {
@@ -45,7 +49,7 @@ public class AccountServiceImpl implements AccountService {
 	public void addPaymentInfo(UUID accountId, CreatePaymentInfoDto createPaymentInfoDto) {
 		Account account = getAccount(accountId);
 
-		PaymentInfo paymentInfo = PaymentInfoConverter.toEntity(createPaymentInfoDto, account);
+		PaymentInfo paymentInfo = PaymentInfoMapper.toEntity(createPaymentInfoDto, account);
 		account.addPaymentInfo(paymentInfo);
 	}
 
@@ -53,23 +57,42 @@ public class AccountServiceImpl implements AccountService {
 	public void addAddress(UUID accountId, CreateAddressDto createAddressDto) {
 		Account account = getAccount(accountId);
 	
-		Address address = AddressConverter.toEntity(createAddressDto, account);
+		Address address = AddressMapper.toEntity(createAddressDto, account);
 		account.addAddress(address);
 	}
 
 	@Override
 	public void updateAddress(UUID accountId, UpdateAddressDto updateAddressDto) {
 		Account account = getAccount(accountId);
+		Address address = account.getAddresses()
+			.stream()
+			.filter(a -> a.getAddressId().equals(updateAddressDto.getAddressId()))
+			.findFirst()
+			.orElseThrow(() -> new NotFoundException("Address not found"));
 	
-		Address address = AddressConverter.toEntity(updateAddressDto, account);
-		account.updateAddress(accountId, address);
+		AddressMapper.updateEntity(updateAddressDto, address);
 	}
 
-	private Account getAccount(UUID accountId) {
+	@Override
+	public Account getAccount(UUID accountId) {
 		Account account = accountRepository
 			.findById(accountId)
 			.orElseThrow(() -> new NotFoundException("Account not found."));
 
 		return account;
 	}
+
+	@Override
+	public Account getAccountByEmail(String email) {
+		Account account = accountRepository
+                .findByEmail(email)
+                .orElseThrow(() -> new NotFoundException("Account not found."));
+
+        return account;
+	}
+
+    @Override
+    public Account saveAccount(Account account) {
+        return accountRepository.save(account);
+    }
 }
