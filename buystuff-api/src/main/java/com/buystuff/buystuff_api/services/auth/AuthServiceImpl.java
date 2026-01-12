@@ -2,25 +2,25 @@ package com.buystuff.buystuff_api.services.auth;
 
 import java.util.UUID;
 
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
 import com.buystuff.buystuff_api.dto.ApiResponse;
 import com.buystuff.buystuff_api.dto.authentication.LoginDto;
 import com.buystuff.buystuff_api.dto.authentication.SignupDto;
-
 import com.buystuff.buystuff_api.dto.user.CreateUserDto;
 import com.buystuff.buystuff_api.entities.Account;
 import com.buystuff.buystuff_api.entities.User;
 import com.buystuff.buystuff_api.enums.Role;
 import com.buystuff.buystuff_api.mappers.user.UserMapper;
 import com.buystuff.buystuff_api.services.account.AccountService;
+
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
@@ -36,7 +36,9 @@ public class AuthServiceImpl implements AuthService {
 	public ApiResponse<String> authenticate(LoginDto loginDto) {
         var token = new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword());
         Authentication authentication = authenticationManager.authenticate(token);
-        String jwtToken = jwtTokenService.generateToken(authentication);
+		Account account = (Account) authentication.getPrincipal();
+		
+        String jwtToken = jwtTokenService.generateToken(account);
 
         return ApiResponse.success("Login successful", jwtToken);
 	}

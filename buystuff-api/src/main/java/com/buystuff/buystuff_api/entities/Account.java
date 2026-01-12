@@ -1,10 +1,13 @@
 package com.buystuff.buystuff_api.entities;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.BeanUtils;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import com.buystuff.buystuff_api.abstract_classes.BaseEntity;
 import com.buystuff.buystuff_api.enums.Role;
@@ -29,7 +32,7 @@ import lombok.Setter;
 @Entity
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor
 @Table(name = "accounts")
-public class Account extends BaseEntity {
+public class Account extends BaseEntity implements UserDetails {
 	@Id 
 	@GeneratedValue(strategy=GenerationType.UUID)
 	@Column(name = "account_id", columnDefinition = "uuid")
@@ -85,5 +88,46 @@ public class Account extends BaseEntity {
 			.orElseThrow(() -> new NotFoundException("Address not found."));
 
 		BeanUtils.copyProperties(updatedAddress, existingAddress, "addressId", "account");
+	}
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return List.of();
+	}
+
+	@Override
+	public String getPassword() {
+		return passwordHash;
+	}
+
+	@Override
+	public String getUsername() {
+		return email;
+	}
+
+	@Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
+	@Override
+	public String toString() {
+		String s = String.format("Account={id=%s, email=%s, password_hash=%s}", accountId, email, passwordHash);
+		return s;
 	}
 }
