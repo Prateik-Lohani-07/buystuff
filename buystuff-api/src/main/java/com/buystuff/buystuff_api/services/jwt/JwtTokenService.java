@@ -1,4 +1,4 @@
-package com.buystuff.buystuff_api.services.auth;
+package com.buystuff.buystuff_api.services.jwt;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
