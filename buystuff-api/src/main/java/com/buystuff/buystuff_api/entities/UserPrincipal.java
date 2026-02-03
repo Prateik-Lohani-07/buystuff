@@ -50,11 +50,4 @@ public class UserPrincipal implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
-
-	@Override
-	public String toString() {
-		String accountId = account.getAccountId().toString(), email = account.getEmail(), passwordHash = account.getPasswordHash();
-		String s = String.format("Account={id=%s, email=%s, password_hash=%s}", accountId, email, passwordHash);
-		return s;
-	}
 }
