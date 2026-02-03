@@ -17,6 +17,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import com.buystuff.buystuff_api.entities.Account;
+import com.buystuff.buystuff_api.entities.UserPrincipal;
 import com.buystuff.buystuff_api.repositories.AccountRepository;
 
 @Configuration
@@ -39,11 +41,13 @@ public class SecurityConfig {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers(
-                            "/api/v1/auth/login",
-                            "/api/v1/auth/signup"
-                    ).permitAll();
-                    auth.anyRequest().authenticated();
+                    auth
+						.requestMatchers(
+							"/api/v1/auth/login",
+							"/api/v1/auth/signup",
+							"/api/v1/products/*"
+						).permitAll()
+						.anyRequest().authenticated();
                 })
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .oauth2ResourceServer(oauth2 -> {
@@ -54,8 +58,12 @@ public class SecurityConfig {
 
 	@Bean
 	UserDetailsService userDetailsService() {
-		return username -> accountRepository.findByEmail(username)
-			.orElseThrow(() -> new UsernameNotFoundException("Account not found."));
+		return username -> {
+			Account account = accountRepository.findByEmail(username)
+				.orElseThrow(() -> new UsernameNotFoundException("Account not found."));
+		
+			return new UserPrincipal(account);
+		};
 	}
 
 	@Bean

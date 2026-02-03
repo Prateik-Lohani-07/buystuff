@@ -14,6 +14,7 @@ import com.buystuff.buystuff_api.dto.authentication.SignupDto;
 import com.buystuff.buystuff_api.dto.user.CreateUserDto;
 import com.buystuff.buystuff_api.entities.Account;
 import com.buystuff.buystuff_api.entities.User;
+import com.buystuff.buystuff_api.entities.UserPrincipal;
 import com.buystuff.buystuff_api.enums.Role;
 import com.buystuff.buystuff_api.mappers.user.UserMapper;
 import com.buystuff.buystuff_api.services.account.AccountService;
@@ -22,6 +23,13 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * Implementation of the <code>AuthService</code> interface.
+ * The <code>AuthServiceImpl</code> class provides 3 core functionalities for users:
+ * - login
+ * - registration
+ * - password change
+ */
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -34,11 +42,11 @@ public class AuthServiceImpl implements AuthService {
 
 	@Override
 	public ApiResponse<String> authenticate(LoginDto loginDto) {
-        var token = new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword());
-        Authentication authentication = authenticationManager.authenticate(token);
-		Account account = (Account) authentication.getPrincipal();
+        var unAuthenticatedObj = new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword());
+        Authentication authentication = authenticationManager.authenticate(unAuthenticatedObj);
+		UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
 		
-        String jwtToken = jwtTokenService.generateToken(account);
+        String jwtToken = jwtTokenService.generateToken(userPrincipal.getAccount());
 
         return ApiResponse.success("Login successful", jwtToken);
 	}
@@ -95,6 +103,6 @@ public class AuthServiceImpl implements AuthService {
 	}
 
 	private boolean comparePasswords(String input, String actual) {
-		 return passwordEncoder.matches(input, actual);
+		return passwordEncoder.matches(input, actual);
 	}
 }

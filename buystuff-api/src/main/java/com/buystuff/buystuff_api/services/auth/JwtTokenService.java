@@ -2,6 +2,7 @@ package com.buystuff.buystuff_api.services.auth;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.UUID;
 
 import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
 import org.springframework.security.oauth2.jwt.JwsHeader;
@@ -25,7 +26,7 @@ public class JwtTokenService {
     private final JwtDecoder decoder;
 
     public String generateToken(Account account) {
-        Instant now = Instant.now();
+        Instant now = Instant.now(); 
         Instant expiresAt = now.plus(1, ChronoUnit.DAYS);
 
         JwtClaimsSet claims = JwtClaimsSet.builder()
@@ -34,11 +35,12 @@ public class JwtTokenService {
                 .expiresAt(expiresAt)
                 .subject(account.getAccountId().toString())
 				.claim("email", account.getEmail())
+				.claim("role", account.getRole().toString())
                 .build();
 
         var encoderParameters = JwtEncoderParameters.from(
-                JwsHeader.with(MacAlgorithm.HS256).build(),
-                claims
+			JwsHeader.with(MacAlgorithm.HS256).build(),
+			claims
         );
 
         return encoder.encode(encoderParameters).getTokenValue();
@@ -55,12 +57,12 @@ public class JwtTokenService {
         return (Role) jwt.getClaim("role");
     }
 
-    public Role getAccountId(String token) {
+    public UUID getAccountId(String token) {
         Jwt jwt = decoder.decode(token);
-        return jwt.getClaim("sub");
+        return UUID.fromString(jwt.getClaim("sub"));
     }
 
-    public Role getEmail(String token) {
+    public String getEmail(String token) {
         Jwt jwt = decoder.decode(token);
         return jwt.getClaim("email");
     }
