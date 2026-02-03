@@ -40,17 +40,16 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
 				.csrf(AbstractHttpConfigurer::disable)
-				.securityMatcher("/api/v1/**")
                 .authorizeHttpRequests(auth -> {
                     auth
 						.requestMatchers(
-							"/auth/login",
-							"/auth/signup",
-							"/products/*",
-							"/products/*/reviews"
+							"/api/v1/auth/login",
+							"/api/v1/auth/signup",
+							"/api/v1/products/*",
+							"/api/v1/products/*/reviews"
 						).permitAll()
 						.requestMatchers(
-							"/products/*/reviews/*"
+							"/api/v1/products/*/reviews/*"
 						).authenticated()
 						.anyRequest().authenticated();
                 })
