@@ -4,11 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import org.springframework.beans.BeanUtils;
-
 import com.buystuff.buystuff_api.abstract_classes.BaseEntity;
 import com.buystuff.buystuff_api.enums.Role;
-import com.buystuff.buystuff_api.exceptions.NotFoundException;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -63,29 +60,6 @@ public class Account extends BaseEntity {
 
 	@OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Review> reviews = new ArrayList<>();
-
-	public void addToCart(Product product) {
-		cart.addToCart(product);
-	}
-
-	public void addPaymentInfo(PaymentInfo paymentInfo) {
-		paymentInfo.setAccount(this);
-		paymentInfoList.add(paymentInfo);
-	}
-	
-	public void addAddress(Address address) {
-		address.setAccount(this);
-		addresses.add(address);
-	}
-
-	public void updateAddress(UUID addressId, Address updatedAddress) {
-		Address existingAddress = addresses.stream()
-			.filter(a -> a.getAddressId().equals(addressId))
-			.findFirst()
-			.orElseThrow(() -> new NotFoundException("Address not found."));
-
-		BeanUtils.copyProperties(updatedAddress, existingAddress, "addressId", "account");
-	}
 
 	@Override
 	public String toString() {
