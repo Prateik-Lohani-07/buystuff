@@ -39,14 +39,19 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
-                .csrf(AbstractHttpConfigurer::disable)
+				.csrf(AbstractHttpConfigurer::disable)
+				.securityMatcher("/api/v1/**")
                 .authorizeHttpRequests(auth -> {
                     auth
 						.requestMatchers(
-							"/api/v1/auth/login",
-							"/api/v1/auth/signup",
-							"/api/v1/products/*"
+							"/auth/login",
+							"/auth/signup",
+							"/products/*",
+							"/products/*/reviews"
 						).permitAll()
+						.requestMatchers(
+							"/products/*/reviews/*"
+						).authenticated()
 						.anyRequest().authenticated();
                 })
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
