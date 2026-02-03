@@ -22,7 +22,7 @@ public class GlobalExceptionHandler {
 			.map(FieldError::getDefaultMessage)
 			.toList();
 
-		String errorMap = getErrorMessages(errors);
+		String errorMap = joinErrorMessages(errors);
 		HttpStatus status = HttpStatus.BAD_REQUEST;
 
 		return new ResponseEntity<>(
@@ -32,7 +32,7 @@ public class GlobalExceptionHandler {
 		);
 	}
 
-	private String getErrorMessages(List<String> errors) {
+	private String joinErrorMessages(List<String> errors) {
 		return String.join(", ", errors);
 	}
 
