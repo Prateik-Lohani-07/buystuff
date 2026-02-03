@@ -8,7 +8,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.buystuff.buystuff_api.dto.ApiResponse;
 import com.buystuff.buystuff_api.dto.authentication.LoginDto;
 import com.buystuff.buystuff_api.dto.authentication.SignupDto;
 import com.buystuff.buystuff_api.dto.user.CreateUserDto;
@@ -18,6 +17,7 @@ import com.buystuff.buystuff_api.entities.UserPrincipal;
 import com.buystuff.buystuff_api.enums.Role;
 import com.buystuff.buystuff_api.mappers.user.UserMapper;
 import com.buystuff.buystuff_api.services.account.AccountService;
+import com.buystuff.buystuff_api.services.jwt.JwtTokenService;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -41,19 +41,19 @@ public class AuthServiceImpl implements AuthService {
     private final AccountService accountService;
 
 	@Override
-	public ApiResponse<String> authenticate(LoginDto loginDto) {
+	public String authenticate(LoginDto loginDto) {
         var unAuthenticatedObj = new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword());
         Authentication authentication = authenticationManager.authenticate(unAuthenticatedObj);
 		UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
 		
         String jwtToken = jwtTokenService.generateToken(userPrincipal.getAccount());
 
-        return ApiResponse.success("Login successful", jwtToken);
+        return jwtToken;
 	}
 
     @Override
     @Transactional
-    public ApiResponse<String> registerUser(SignupDto signupDto) {
+    public String registerUser(SignupDto signupDto) {
         log.info("START: registerUser service");
 
         Account account = new Account();
@@ -76,10 +76,10 @@ public class AuthServiceImpl implements AuthService {
         loginDto.setEmail(email);
         loginDto.setPassword(rawPassword);
 
-        ApiResponse<String> response = authenticate(loginDto);
+        String jwtToken = authenticate(loginDto);
 
         log.info("END: registerUser service");
-        return response;
+        return jwtToken;
     }
 
 	@Override
