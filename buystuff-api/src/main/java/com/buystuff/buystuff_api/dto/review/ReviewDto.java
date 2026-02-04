@@ -1,5 +1,7 @@
 package com.buystuff.buystuff_api.dto.review;
 
+import java.util.UUID;
+
 import com.buystuff.buystuff_api.abstract_classes.BaseResponseDto;
 
 import jakarta.validation.constraints.Max;
@@ -11,8 +13,8 @@ import lombok.Setter;
 
 @Getter @Setter
 public class ReviewDto extends BaseResponseDto {
-	@NotBlank 
-	private String reviewId;
+	@NotNull
+	private UUID reviewId;
 	
 	@NotNull
 	@Min(1)

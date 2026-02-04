@@ -69,12 +69,4 @@ public class Product extends BaseEntity {
 	public Double getNetPrice() {
 		return price - discount;
 	}
-
-	public void addReview(Review review) {
-		review.setProduct(this);
-		reviews.add(review);
-	}
-
-
-
 }

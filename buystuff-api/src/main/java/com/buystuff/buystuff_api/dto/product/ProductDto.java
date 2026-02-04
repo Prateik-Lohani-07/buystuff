@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 import com.buystuff.buystuff_api.abstract_classes.BaseResponseDto;
+import com.buystuff.buystuff_api.dto.category.CategoryDto;
 import com.buystuff.buystuff_api.dto.review.ReviewDto;
 
 import jakarta.validation.Valid;
@@ -52,6 +53,6 @@ public class ProductDto extends BaseResponseDto {
 	
 	@NotNull
 	@Size(min = 1)
-	private List<String> categories;
+	private List<CategoryDto> categories;
 }
 

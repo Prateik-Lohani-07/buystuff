@@ -8,13 +8,12 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor
+@Getter @Setter @NoArgsConstructor
 @Table(name = "categories")
 public class Category {	
 	@Id
@@ -23,6 +22,11 @@ public class Category {
 
 	@Column(name = "name", columnDefinition = "varchar")
 	private String name;
+
+	public Category(String categoryCode, String name) {
+		this.categoryCode = categoryCode;
+		this.name = name;
+	}
 
 	@ManyToMany
 	private List<Product> products = new ArrayList<>();

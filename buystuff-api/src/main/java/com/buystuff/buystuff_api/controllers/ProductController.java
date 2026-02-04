@@ -3,6 +3,7 @@ package com.buystuff.buystuff_api.controllers;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,7 +16,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.buystuff.buystuff_api.dto.ApiResponse;
+import com.buystuff.buystuff_api.dto.product.CreateProductDto;
 import com.buystuff.buystuff_api.dto.product.ProductFilterDto;
+import com.buystuff.buystuff_api.dto.product.UpdateProductDto;
 import com.buystuff.buystuff_api.dto.review.CreateReviewDto;
 import com.buystuff.buystuff_api.dto.review.UpdateReviewDto;
 import com.buystuff.buystuff_api.entities.Product;
@@ -51,12 +54,52 @@ public class ProductController {
 	}
 
 	@GetMapping("/{product_id}")
-	public ApiResponse<Product> getProductDetails(
+	public ApiResponse<Product> getProduct(
 		@PathVariable UUID productId
-		) {
-			try {
-				Product product = productService.getProductDetails(productId);
+	) {
+		try {
+			Product product = productService.getProductDetails(productId);
 			return ApiResponse.success("Successfully fetched product", product);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	@PreAuthorize("hasRole('ADMIN')")
+	@PostMapping
+	public ApiResponse<Product> addProduct(
+		@RequestBody CreateProductDto createProductDto
+	) {
+		try {
+			Product product = productService.addProduct(createProductDto);
+			return ApiResponse.success("Successfully added product", product);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	@PreAuthorize("hasRole('ADMIN')")
+	@PatchMapping
+	public ApiResponse<Void> editProduct(
+		@PathVariable UUID productId,
+		@RequestBody UpdateProductDto updateProductDto
+	) {
+		try {
+			productService.editProduct(productId, updateProductDto);
+			return ApiResponse.success("Successfully edited product", null);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	@PreAuthorize("hasRole('ADMIN')")
+	@DeleteMapping
+	public ApiResponse<Void> deleteProduct(
+		@PathVariable UUID productId
+	) {
+		try {
+			productService.deleteProduct(productId);
+			return ApiResponse.success("Successfully delete product", null);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}

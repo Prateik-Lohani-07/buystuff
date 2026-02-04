@@ -2,7 +2,9 @@ package com.buystuff.buystuff_api.mappers.product.review;
 
 import com.buystuff.buystuff_api.dto.review.CreateReviewDto;
 import com.buystuff.buystuff_api.dto.review.ReviewDto;
+import com.buystuff.buystuff_api.dto.review.UpdateReviewDto;
 import com.buystuff.buystuff_api.entities.Account;
+import com.buystuff.buystuff_api.entities.Product;
 import com.buystuff.buystuff_api.entities.Review;
 
 public abstract class ReviewMapper {
@@ -20,14 +22,29 @@ public abstract class ReviewMapper {
 		return dto;
 	}
 
-	public static Review toEntity(Account account, CreateReviewDto dto) {
+	public static Review toEntity(CreateReviewDto dto, Account account, Product product) {
 		Review entity = new Review();
 
 		entity.setAccount(account);
+		entity.setProduct(product);
 		entity.setRating(dto.getRating());
 		entity.setTitle(dto.getTitle());
 		entity.setContent(dto.getContent());
 
 		return entity;
+	}
+
+	public static void updateEntity(UpdateReviewDto dto, Review entity) {
+		if (dto.getContent() != null) {
+			entity.setContent(dto.getContent());
+		}
+		
+		if (dto.getRating() != null) {
+			entity.setRating(dto.getRating());
+		}
+
+		if (dto.getTitle() != null) {
+			entity.setTitle(dto.getTitle());
+		}
 	}
 }

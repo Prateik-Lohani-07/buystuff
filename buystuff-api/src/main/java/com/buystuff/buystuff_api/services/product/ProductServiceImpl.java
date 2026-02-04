@@ -7,16 +7,21 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import com.buystuff.buystuff_api.dto.product.CreateProductDto;
 import com.buystuff.buystuff_api.dto.product.ProductFilterDto;
+import com.buystuff.buystuff_api.dto.product.UpdateProductDto;
 import com.buystuff.buystuff_api.dto.review.CreateReviewDto;
 import com.buystuff.buystuff_api.dto.review.UpdateReviewDto;
 import com.buystuff.buystuff_api.entities.Account;
+import com.buystuff.buystuff_api.entities.Category;
 import com.buystuff.buystuff_api.entities.Product;
 import com.buystuff.buystuff_api.entities.Review;
 import com.buystuff.buystuff_api.exceptions.NotFoundException;
+import com.buystuff.buystuff_api.mappers.product.ProductMapper;
 import com.buystuff.buystuff_api.mappers.product.review.ReviewMapper;
 import com.buystuff.buystuff_api.repositories.ProductRepository;
 import com.buystuff.buystuff_api.repositories.ReviewRepository;
+import com.buystuff.buystuff_api.services.category.CategoryService;
 
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
@@ -28,13 +33,16 @@ public class ProductServiceImpl implements ProductService {
 
 	private final ProductRepository productRepository;
 	private final ReviewRepository reviewRepository;
+	private final CategoryService categoryService;
 
 	public ProductServiceImpl(
 		ProductRepository productRepository,
-		ReviewRepository reviewRepository
+		ReviewRepository reviewRepository,
+		CategoryService categoryService
 	) {
 		this.productRepository = productRepository;
 		this.reviewRepository = reviewRepository;
+		this.categoryService = categoryService;
 	}
 
 	@Override
@@ -114,5 +122,44 @@ public class ProductServiceImpl implements ProductService {
 			.orElseThrow(() -> new NotFoundException("Product not found: " + productId.toString()));
 
 		return product;		
+	}
+
+	@Override
+	public Product addProduct(CreateProductDto createProductDto) {
+		log.info("START: addProduct service");
+		
+		List<String> categoryCodes = createProductDto.getCategories();
+		List<Category> categories = categoryService.addCategories(categoryCodes);
+		
+		Product product = ProductMapper.toEntity(createProductDto, categories);
+		productRepository.save(product);
+		
+		log.info("END: addProduct service");
+		return product;
+	}
+
+	@Override
+	public void editProduct(UUID productId, UpdateProductDto updateProductDto) {
+		log.info("START: editProduct service");
+		log.debug(productId.toString(), updateProductDto);
+		
+		List<String> categoryCodes = updateProductDto.getCategories();
+		List<Category> categories = categoryService.addCategories(categoryCodes);
+
+		Product product = getProduct(productId);
+		ProductMapper.updateEntity(updateProductDto, product, categories);
+		productRepository.save(product);
+
+		log.info("END: editProduct service");
+	}
+
+	@Override
+	public void deleteProduct(UUID productId) {
+		log.info("START: deleteProduct service");
+		log.debug(productId.toString());
+
+		productRepository.deleteById(productId);
+
+		log.info("END: deleteProduct service");
 	}
 }
