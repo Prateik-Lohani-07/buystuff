@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import org.hibernate.annotations.NaturalId;
+
 import com.buystuff.buystuff_api.abstract_classes.BaseEntity;
 import com.buystuff.buystuff_api.enums.Role;
 
@@ -32,6 +34,7 @@ public class Account extends BaseEntity {
 	@Column(name = "account_id", columnDefinition = "uuid")
 	private UUID accountId;
 
+	@NaturalId
 	@Column(name = "email", columnDefinition = "varchar")
 	private String email;
 

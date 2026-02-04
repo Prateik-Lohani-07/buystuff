@@ -36,7 +36,7 @@ public class Product extends BaseEntity {
 	private String name;
 
 	@NaturalId
-	@Column(name = "product_code", columnDefinition = "varchar", unique = true)
+	@Column(name = "product_code", columnDefinition = "varchar")
 	private String productCode;
 
 	@Column(name = "price", columnDefinition = "numeric")
