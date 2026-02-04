@@ -37,3 +37,4 @@ build/
 
 rename.go
 rename.sh
+application-*.properties
