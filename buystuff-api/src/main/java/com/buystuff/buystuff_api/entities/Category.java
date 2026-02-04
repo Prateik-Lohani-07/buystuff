@@ -3,6 +3,7 @@ package com.buystuff.buystuff_api.entities;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -28,6 +29,6 @@ public class Category {
 		this.name = name;
 	}
 
-	@ManyToMany
+	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
 	private List<Product> products = new ArrayList<>();
 }

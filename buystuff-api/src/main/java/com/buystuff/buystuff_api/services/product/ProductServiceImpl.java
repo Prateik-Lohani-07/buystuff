@@ -27,7 +27,6 @@ import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
-@Transactional
 @Slf4j
 public class ProductServiceImpl implements ProductService {
 
@@ -125,12 +124,13 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public Product addProduct(CreateProductDto createProductDto) {
+	@Transactional
+	public Product addProduct(CreateProductDto createProductDto) throws Exception {
 		log.info("START: addProduct service");
 		
 		List<String> categoryCodes = createProductDto.getCategories();
 		List<Category> categories = categoryService.addCategories(categoryCodes);
-		
+
 		Product product = ProductMapper.toEntity(createProductDto, categories);
 		productRepository.save(product);
 		
@@ -139,12 +139,16 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
+	@Transactional
 	public void editProduct(UUID productId, UpdateProductDto updateProductDto) {
 		log.info("START: editProduct service");
-		log.debug(productId.toString(), updateProductDto);
 		
+		List<Category> categories = null;
 		List<String> categoryCodes = updateProductDto.getCategories();
-		List<Category> categories = categoryService.addCategories(categoryCodes);
+
+		if (categoryCodes != null) {
+			categories = categoryService.addCategories(updateProductDto.getCategories());
+		}
 
 		Product product = getProduct(productId);
 		ProductMapper.updateEntity(updateProductDto, product, categories);

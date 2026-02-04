@@ -21,6 +21,7 @@ public abstract class ProductMapper {
 		dto.setStock(entity.getStock());
 		dto.setDescription(entity.getDescription());
 		dto.setIsActive(entity.getIsActive());
+		dto.setAvgRating(entity.getAvgRating());
 		dto.setCategories(
 			entity.getCategories().stream()
 				.map(c -> 
@@ -33,7 +34,34 @@ public abstract class ProductMapper {
 	}
 
 	public static void updateEntity(UpdateProductDto dto, Product entity, List<Category> categories) {
+		if (dto.getName() != null) {
+			entity.setName(dto.getName());
+		}
+
+		if (dto.getPrice() != null) {
+			entity.setPrice(dto.getPrice());
+		}
 		
+		if (dto.getDiscount() != null) {
+			entity.setDiscount(dto.getDiscount());
+		}
+
+		if (dto.getStock() != null) {
+			entity.setStock(dto.getStock());
+		}
+
+		if (dto.getDescription() != null) {
+			entity.setDescription(dto.getDescription());
+		}
+
+		if (dto.getIsActive() != null) {
+			entity.setIsActive(dto.getIsActive());
+		}
+
+		if (categories != null) {
+			entity.setCategories(categories);
+		}
+
 	}
 
 	public static Product toEntity(CreateProductDto dto, List<Category> categories) {
@@ -45,7 +73,8 @@ public abstract class ProductMapper {
 		entity.setDiscount(dto.getDiscount());
 		entity.setStock(dto.getStock());
 		entity.setDescription(dto.getDescription());
-		entity.setIsActive(entity.getIsActive());
+		entity.setAvgRating(0.0);
+		entity.setIsActive(true);
 		entity.setCategories(categories);
 
 		return entity;

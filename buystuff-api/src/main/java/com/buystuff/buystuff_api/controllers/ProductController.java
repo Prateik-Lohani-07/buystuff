@@ -79,9 +79,9 @@ public class ProductController {
 	}
 
 	@PreAuthorize("hasRole('ADMIN')")
-	@PatchMapping
+	@PatchMapping("/{product_id}")
 	public ApiResponse<Void> editProduct(
-		@PathVariable UUID productId,
+		@PathVariable(name = "product_id") UUID productId,
 		@RequestBody UpdateProductDto updateProductDto
 	) {
 		try {
@@ -93,13 +93,13 @@ public class ProductController {
 	}
 
 	@PreAuthorize("hasRole('ADMIN')")
-	@DeleteMapping
+	@DeleteMapping("/{product_id}")
 	public ApiResponse<Void> deleteProduct(
-		@PathVariable UUID productId
+		@PathVariable(name = "product_id") UUID productId
 	) {
 		try {
 			productService.deleteProduct(productId);
-			return ApiResponse.success("Successfully delete product", null);
+			return ApiResponse.success("Successfully deleted product", null);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
@@ -107,7 +107,7 @@ public class ProductController {
 	
 	@PostMapping("/{product_id}/reviews")
 	public ApiResponse<Review> addReview(
-		@PathVariable UUID productId,
+		@PathVariable(name = "product_id") UUID productId,
 		@RequestBody CreateReviewDto createReviewDto,
 		@AuthenticationPrincipal UserPrincipal userPrincipal
 	) {

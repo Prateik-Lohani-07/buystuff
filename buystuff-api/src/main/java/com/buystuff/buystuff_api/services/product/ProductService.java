@@ -15,7 +15,7 @@ import com.buystuff.buystuff_api.entities.Review;
 public interface ProductService {
 	List<Product> getAllProducts(ProductFilterDto filters);
 	Product getProductDetails(UUID productId);
-	Product addProduct(CreateProductDto createProductDto);
+	Product addProduct(CreateProductDto createProductDto) throws Exception;
 	void editProduct(UUID productId, UpdateProductDto updateProductDto);
 	void deleteProduct(UUID productId);
 	Review addReview(UUID productId, Account account, CreateReviewDto createReviewDto);

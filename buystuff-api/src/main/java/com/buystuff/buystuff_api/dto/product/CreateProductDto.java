@@ -2,11 +2,9 @@ package com.buystuff.buystuff_api.dto.product;
 
 import java.util.List;
 
-import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
@@ -32,14 +30,7 @@ public class CreateProductDto {
 	@NotBlank
 	@Size(min = 100, max = 800)
 	private String description;
-	
-	@DecimalMin(value = "0.0", inclusive = true)
-	@DecimalMax(value = "5.0", inclusive = true)
-	private Double avgRating;
-	
-	@NotNull
-	private Boolean isActive;
-
+		
 	@NotBlank
 	@NotEmpty
 	private List<String> categories;

@@ -4,8 +4,6 @@ import java.util.List;
 import java.util.UUID;
 
 import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
@@ -17,6 +15,9 @@ public class UpdateProductDto {
 	@NotNull
 	private UUID productId;
 	
+	@Size(min = 1)
+	private String name;
+
 	@PositiveOrZero
 	private Double price;
 	
@@ -26,11 +27,10 @@ public class UpdateProductDto {
 	@PositiveOrZero
 	private Integer stock;
 	
-	@NotBlank
 	@Size(min = 100, max = 800)
 	private String description;
+
+	private Boolean isActive;
 		
-	@NotBlank
-	@NotEmpty
 	private List<String> categories;
 }

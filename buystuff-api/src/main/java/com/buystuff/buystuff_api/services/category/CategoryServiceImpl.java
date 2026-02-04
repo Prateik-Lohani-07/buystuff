@@ -42,7 +42,7 @@ public class CategoryServiceImpl implements CategoryService {
 				.toList();
 
 		if (!toInsert.isEmpty()) {
-			categoryRepository.saveAll(toInsert);
+			toInsert = categoryRepository.saveAll(toInsert);
 			categories.addAll(toInsert);
 		}
 
