@@ -17,13 +17,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.buystuff.buystuff_api.dto.ApiResponse;
 import com.buystuff.buystuff_api.dto.product.CreateProductDto;
+import com.buystuff.buystuff_api.dto.product.ProductDto;
 import com.buystuff.buystuff_api.dto.product.ProductFilterDto;
 import com.buystuff.buystuff_api.dto.product.UpdateProductDto;
 import com.buystuff.buystuff_api.dto.review.CreateReviewDto;
 import com.buystuff.buystuff_api.dto.review.ReviewDto;
 import com.buystuff.buystuff_api.dto.review.UpdateReviewDto;
-import com.buystuff.buystuff_api.entities.Product;
-import com.buystuff.buystuff_api.entities.Review;
 import com.buystuff.buystuff_api.entities.UserPrincipal;
 import com.buystuff.buystuff_api.services.product.ProductService;
 
@@ -37,7 +36,7 @@ public class ProductController {
 	}
 
 	@GetMapping("/")
-	public ApiResponse<List<Product>> getAllProducts(
+	public ApiResponse<List<ProductDto>> getAllProducts(
 		@RequestParam(defaultValue = "10") int limit,
 		@RequestParam(defaultValue = "0") int skip,
 		@RequestParam(required = false) List<String> categories,
@@ -45,36 +44,36 @@ public class ProductController {
 		@RequestParam(name = "price_end", required = false) Double priceEnd
 	) {
 		ProductFilterDto filters = new ProductFilterDto(limit, skip, categories, priceStart, priceEnd);
-		List<Product> products = productService.getAllProducts(filters);
+		List<ProductDto> products = productService.getAllProducts(filters);
 
 		return ApiResponse.success("Successfully fetched products", products);
 	}
 
 	@GetMapping("/{product_id}")
-	public ApiResponse<Product> getProduct(
+	public ApiResponse<ProductDto> getProduct(
 		@PathVariable UUID productId
 	) {
-		Product product = productService.getProductDetails(productId);
+		ProductDto product = productService.getProductDetails(productId);
 		return ApiResponse.success("Successfully fetched product", product);
 	}
 	
 	@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping
-	public ApiResponse<Product> addProduct(
+	public ApiResponse<ProductDto> addProduct(
 		@RequestBody CreateProductDto createProductDto
 	) {
-		Product product = productService.addProduct(createProductDto);
+		ProductDto product = productService.addProduct(createProductDto);
 		return ApiResponse.success("Successfully added product", product);
 	}
 
 	@PreAuthorize("hasRole('ADMIN')")
 	@PatchMapping("/{product_id}")
-	public ApiResponse<Void> editProduct(
+	public ApiResponse<ProductDto> editProduct(
 		@PathVariable(name = "product_id") UUID productId,
 		@RequestBody UpdateProductDto updateProductDto
 	) {
-		productService.editProduct(productId, updateProductDto);
-		return ApiResponse.success("Successfully edited product", null);
+		ProductDto product = productService.editProduct(productId, updateProductDto);
+		return ApiResponse.success("Successfully edited product", product);
 	}
 
 	@PreAuthorize("hasRole('ADMIN')")

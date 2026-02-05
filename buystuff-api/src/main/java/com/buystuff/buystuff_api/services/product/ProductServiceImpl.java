@@ -8,6 +8,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.buystuff.buystuff_api.dto.product.CreateProductDto;
+import com.buystuff.buystuff_api.dto.product.ProductDto;
 import com.buystuff.buystuff_api.dto.product.ProductFilterDto;
 import com.buystuff.buystuff_api.dto.product.UpdateProductDto;
 import com.buystuff.buystuff_api.dto.review.CreateReviewDto;
@@ -25,28 +26,20 @@ import com.buystuff.buystuff_api.repositories.ReviewRepository;
 import com.buystuff.buystuff_api.services.category.CategoryService;
 
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
 
 	private final ProductRepository productRepository;
 	private final ReviewRepository reviewRepository;
 	private final CategoryService categoryService;
 
-	public ProductServiceImpl(
-		ProductRepository productRepository,
-		ReviewRepository reviewRepository,
-		CategoryService categoryService
-	) {
-		this.productRepository = productRepository;
-		this.reviewRepository = reviewRepository;
-		this.categoryService = categoryService;
-	}
-
 	@Override
-	public List<Product> getAllProducts(ProductFilterDto filters) {
+	public List<ProductDto> getAllProducts(ProductFilterDto filters) {
 		log.info("START: getAllProducts service");
 		
 		int pageSize = filters.getSkip() / filters.getLimit();
@@ -59,18 +52,26 @@ public class ProductServiceImpl implements ProductService {
 			pageRequest
 		);
 			
+		List<Product> products = page.getContent();
+		List<ProductDto> productDto = 
+			products
+				.stream()
+				.map(ProductMapper::toDto)
+				.toList();
+
 		log.info("END: getAllProducts service");
-		return page.getContent();
+		return productDto;
 	}
 
 	@Override
-	public Product getProductDetails(UUID productId) {
+	public ProductDto getProductDetails(UUID productId) {
 		log.info("START: getProductDetails service");
 		
 		Product product = getProduct(productId);
+		ProductDto productDto = ProductMapper.toDto(product);
 
 		log.info("END: getProductDetails service");
-		return product;
+		return productDto;
 	}
 
 	@Override
@@ -82,6 +83,7 @@ public class ProductServiceImpl implements ProductService {
 		reviewRepository.save(review);
 		
 		ReviewDto response = ReviewMapper.toDto(review);
+		
 		log.info("END: addReview service");
 		return response;
 	}
@@ -119,22 +121,24 @@ public class ProductServiceImpl implements ProductService {
 
 	@Override
 	@Transactional
-	public Product addProduct(CreateProductDto createProductDto) {
+	public ProductDto addProduct(CreateProductDto createProductDto) {
 		log.info("START: addProduct service");
 		
 		List<String> categoryCodes = createProductDto.getCategories();
 		List<Category> categories = categoryService.addCategories(categoryCodes);
 
 		Product product = ProductMapper.toEntity(createProductDto, categories);
-		productRepository.save(product);
+		product = productRepository.save(product);
+
+		ProductDto productDto = ProductMapper.toDto(product);
 		
 		log.info("END: addProduct service");
-		return product;
+		return productDto;
 	}
 
 	@Override
 	@Transactional
-	public void editProduct(UUID productId, UpdateProductDto updateProductDto) {
+	public ProductDto editProduct(UUID productId, UpdateProductDto updateProductDto) {
 		log.info("START: editProduct service");
 		
 		List<Category> categories = null;
@@ -146,9 +150,12 @@ public class ProductServiceImpl implements ProductService {
 
 		Product product = getProduct(productId);
 		ProductMapper.updateEntity(updateProductDto, product, categories);
-		productRepository.save(product);
+		product = productRepository.save(product);
+
+		ProductDto productDto = ProductMapper.toDto(product);
 
 		log.info("END: editProduct service");
+		return productDto;
 	}
 
 	@Override
