@@ -1,9 +1,16 @@
 package com.buystuff.buystuff_api.configuration;
 
+import java.util.Collection;
+import java.util.List;
+import java.util.UUID;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.convert.converter.Converter;
+import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -11,27 +18,40 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.buystuff.buystuff_api.entities.Account;
 import com.buystuff.buystuff_api.entities.UserPrincipal;
-import com.buystuff.buystuff_api.repositories.AccountRepository;
+import com.buystuff.buystuff_api.services.account.AccountService;
 
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig {
 
-	private final AccountRepository accountRepository;
+	private final AuthEntryPointJwt authEntryPointJwt;
+	private final CustomAccessDeniedHandler customAccessDeniedHandler;
+	private final UserDetailsService userDetailsService;
+	private final AccountService accountService;
 
-	public SecurityConfig(AccountRepository accountRepository) {
-		this.accountRepository = accountRepository;
+	public SecurityConfig(
+			AuthEntryPointJwt authEntryPointJwt,
+			CustomAccessDeniedHandler customAccessDeniedHandler,
+			UserDetailsService userDetailsService,
+			AccountService accountService) {
+		this.authEntryPointJwt = authEntryPointJwt;
+		this.userDetailsService = userDetailsService;
+		this.customAccessDeniedHandler = customAccessDeniedHandler;
+		this.accountService = accountService;
 	}
 
 	@Bean
@@ -40,51 +60,47 @@ public class SecurityConfig {
 	}
 
 	@Bean
-	JwtAuthenticationConverter jwtAuthenticationConverter() {
-		JwtGrantedAuthoritiesConverter gac = new JwtGrantedAuthoritiesConverter();
-		gac.setAuthoritiesClaimName("role");
-		gac.setAuthorityPrefix("ROLE_");
+	public Converter<Jwt, ? extends AbstractAuthenticationToken> jwtToUserPrincipalConverter(AccountService accountService) {
+		return jwt -> {
+			Collection<GrantedAuthority> authorities = List.of(
+				new SimpleGrantedAuthority("ROLE_" + jwt.getClaimAsString("role").toUpperCase())
+			);
 
-		JwtAuthenticationConverter converter = new JwtAuthenticationConverter();
-		converter.setJwtGrantedAuthoritiesConverter(gac);
+			UUID accountId = UUID.fromString(jwt.getSubject());
+			Account account = accountService.getAccount(accountId);
+			UserPrincipal principal = new UserPrincipal(account);
 
-		return converter;
+			return new UsernamePasswordAuthenticationToken(principal, jwt.getTokenValue(), authorities);
+		};
 	}
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http
-				.csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(auth -> {
-                    auth
-						.requestMatchers(
-							"/api/v1/auth/login",
-							"/api/v1/auth/signup",
-							"/api/v1/products/*",
-							"/api/v1/products/*/reviews"
-						).permitAll()
-						.requestMatchers(
-							"/api/v1/products/*/reviews/*"
-						).authenticated()
-						.anyRequest().authenticated();
-                })
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .oauth2ResourceServer(oauth2 -> 
-                    oauth2.jwt(jwt ->
-						jwt.jwtAuthenticationConverter(jwtAuthenticationConverter())
-					)
-                )
-                .build();
-    }
-
 	@Bean
-	UserDetailsService userDetailsService() {
-		return username -> {
-			Account account = accountRepository.findByEmail(username)
-				.orElseThrow(() -> new UsernameNotFoundException("Account not found."));
-		
-			return new UserPrincipal(account);
-		};
+	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+		return http
+				.csrf(AbstractHttpConfigurer::disable)
+				.authorizeHttpRequests(auth -> {
+					auth
+							.requestMatchers(
+									"/api/v1/auth/login",
+									"/api/v1/auth/signup",
+									"/api/v1/products/*",
+									"/api/v1/products/*/reviews")
+							.permitAll()
+							.requestMatchers(
+									"/api/v1/products/*/reviews/*")
+							.authenticated()
+							.anyRequest().authenticated();
+				})
+				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+				.oauth2ResourceServer(oauth2 -> oauth2
+						.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtToUserPrincipalConverter(accountService)))
+						.authenticationEntryPoint(authEntryPointJwt)
+						.accessDeniedHandler(customAccessDeniedHandler))
+				.exceptionHandling(ex -> ex
+						.authenticationEntryPoint(authEntryPointJwt)
+						.accessDeniedHandler(customAccessDeniedHandler))
+				.authenticationProvider(authenticationProvider())
+				.build();
 	}
 
 	@Bean
@@ -92,9 +108,9 @@ public class SecurityConfig {
 		return config.getAuthenticationManager();
 	}
 
-    @Bean
-    public AuthenticationProvider authenticationProvider() {
-		DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider(userDetailsService());
+	@Bean
+	public AuthenticationProvider authenticationProvider() {
+		DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider(userDetailsService);
 		authProvider.setPasswordEncoder(passwordEncoder());
 
 		return authProvider;

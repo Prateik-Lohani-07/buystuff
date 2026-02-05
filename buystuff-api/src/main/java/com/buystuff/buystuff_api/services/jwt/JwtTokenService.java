@@ -4,6 +4,7 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.UUID;
 
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
 import org.springframework.security.oauth2.jwt.JwsHeader;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -46,24 +47,35 @@ public class JwtTokenService {
         return encoder.encode(encoderParameters).getTokenValue();
     }
 
+	public boolean validateToken(String token, UserDetails userDetails) {
+		final String username = getUsername(token);
+		return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+	}
+
     public Long getExpirationTime(String token) {
         Jwt jwt = decoder.decode(token);
-        var exp = (Instant) jwt.getClaim("exp");
+        var exp = jwt.getClaimAsInstant("exp");
         return exp.toEpochMilli();
     }
 
+	public boolean isTokenExpired(String token) {
+        Jwt jwt = decoder.decode(token);
+        var exp = jwt.getClaimAsInstant("exp");
+		return exp.isBefore(Instant.now());
+	}
+
     public Role getRole(String token) {
         Jwt jwt = decoder.decode(token);
-        return (Role) jwt.getClaim("role");
+        return Role.valueOf(jwt.getClaimAsString("role"));
     }
 
     public UUID getAccountId(String token) {
         Jwt jwt = decoder.decode(token);
-        return UUID.fromString(jwt.getClaim("sub"));
+        return UUID.fromString(jwt.getClaimAsString("sub"));
     }
 
-    public String getEmail(String token) {
+    public String getUsername(String token) {
         Jwt jwt = decoder.decode(token);
-        return jwt.getClaim("email");
+        return jwt.getClaimAsString("email");
     }
 }

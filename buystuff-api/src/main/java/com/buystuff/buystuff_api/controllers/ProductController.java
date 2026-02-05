@@ -20,6 +20,7 @@ import com.buystuff.buystuff_api.dto.product.CreateProductDto;
 import com.buystuff.buystuff_api.dto.product.ProductFilterDto;
 import com.buystuff.buystuff_api.dto.product.UpdateProductDto;
 import com.buystuff.buystuff_api.dto.review.CreateReviewDto;
+import com.buystuff.buystuff_api.dto.review.ReviewDto;
 import com.buystuff.buystuff_api.dto.review.UpdateReviewDto;
 import com.buystuff.buystuff_api.entities.Product;
 import com.buystuff.buystuff_api.entities.Review;
@@ -43,26 +44,18 @@ public class ProductController {
 		@RequestParam(name = "price_start", required = false) Double priceStart,
 		@RequestParam(name = "price_end", required = false) Double priceEnd
 	) {
-		try {
-			ProductFilterDto filters = new ProductFilterDto(limit, skip, categories, priceStart, priceEnd);
-			List<Product> products = productService.getAllProducts(filters);
+		ProductFilterDto filters = new ProductFilterDto(limit, skip, categories, priceStart, priceEnd);
+		List<Product> products = productService.getAllProducts(filters);
 
-			return ApiResponse.success("Successfully fetched products", products);
-		} catch (Exception e) {
-            throw new RuntimeException(e);
-		}
+		return ApiResponse.success("Successfully fetched products", products);
 	}
 
 	@GetMapping("/{product_id}")
 	public ApiResponse<Product> getProduct(
 		@PathVariable UUID productId
 	) {
-		try {
-			Product product = productService.getProductDetails(productId);
-			return ApiResponse.success("Successfully fetched product", product);
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
+		Product product = productService.getProductDetails(productId);
+		return ApiResponse.success("Successfully fetched product", product);
 	}
 	
 	@PreAuthorize("hasRole('ADMIN')")
@@ -70,12 +63,8 @@ public class ProductController {
 	public ApiResponse<Product> addProduct(
 		@RequestBody CreateProductDto createProductDto
 	) {
-		try {
-			Product product = productService.addProduct(createProductDto);
-			return ApiResponse.success("Successfully added product", product);
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
+		Product product = productService.addProduct(createProductDto);
+		return ApiResponse.success("Successfully added product", product);
 	}
 
 	@PreAuthorize("hasRole('ADMIN')")
@@ -84,12 +73,8 @@ public class ProductController {
 		@PathVariable(name = "product_id") UUID productId,
 		@RequestBody UpdateProductDto updateProductDto
 	) {
-		try {
-			productService.editProduct(productId, updateProductDto);
-			return ApiResponse.success("Successfully edited product", null);
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
+		productService.editProduct(productId, updateProductDto);
+		return ApiResponse.success("Successfully edited product", null);
 	}
 
 	@PreAuthorize("hasRole('ADMIN')")
@@ -97,28 +82,22 @@ public class ProductController {
 	public ApiResponse<Void> deleteProduct(
 		@PathVariable(name = "product_id") UUID productId
 	) {
-		try {
-			productService.deleteProduct(productId);
-			return ApiResponse.success("Successfully deleted product", null);
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
+		productService.deleteProduct(productId);
+		return ApiResponse.success("Successfully deleted product", null);
 	}
 	
+	@PreAuthorize("hasRole('CUSTOMER')")
 	@PostMapping("/{product_id}/reviews")
-	public ApiResponse<Review> addReview(
+	public ApiResponse<ReviewDto> addReview(
 		@PathVariable(name = "product_id") UUID productId,
 		@RequestBody CreateReviewDto createReviewDto,
 		@AuthenticationPrincipal UserPrincipal userPrincipal
 	) {
-		try {
-			Review review = productService.addReview(productId, userPrincipal.getAccount(), createReviewDto);
-			return ApiResponse.success("Successfully added review", review);
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
+		ReviewDto review = productService.addReview(productId, userPrincipal.getAccount(), createReviewDto);
+		return ApiResponse.success("Successfully added review", review);
 	}
 
+	@PreAuthorize("hasRole('CUSTOMER')")
 	@PatchMapping("/{product_id}/reviews/{review_id}")
 	public ApiResponse<Void> editReview(
 		@PathVariable(name = "product_id") UUID productId,
@@ -126,25 +105,18 @@ public class ProductController {
 		@RequestBody UpdateReviewDto updateReviewDto,
 		@AuthenticationPrincipal UserPrincipal userPrincipal
 	) {
-		try {
-			productService.editReview(productId, userPrincipal.getAccount(), reviewId, updateReviewDto);
-			return ApiResponse.success("Successfully edited review", null);
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
+		productService.editReview(productId, userPrincipal.getAccount(), reviewId, updateReviewDto);
+		return ApiResponse.success("Successfully edited review", null);
 	}
 
+	@PreAuthorize("hasRole('CUSTOMER')")
 	@DeleteMapping("/{product_id}/reviews/{review_id}")
 	public ApiResponse<Void> deleteReview(
 		@PathVariable(name = "product_id") UUID productId,
 		@PathVariable(name = "review_id") UUID reviewId,
 		@AuthenticationPrincipal UserPrincipal userPrincipal
 	) {
-		try {
-			productService.deleteReview(productId, userPrincipal.getAccount(), reviewId);
-			return ApiResponse.success("Successfully deleted review", null);
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
+		productService.deleteReview(productId, userPrincipal.getAccount(), reviewId);
+		return ApiResponse.success("Successfully deleted review", null);
 	}
 }

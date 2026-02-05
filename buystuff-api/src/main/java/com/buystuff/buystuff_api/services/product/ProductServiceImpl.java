@@ -11,6 +11,7 @@ import com.buystuff.buystuff_api.dto.product.CreateProductDto;
 import com.buystuff.buystuff_api.dto.product.ProductFilterDto;
 import com.buystuff.buystuff_api.dto.product.UpdateProductDto;
 import com.buystuff.buystuff_api.dto.review.CreateReviewDto;
+import com.buystuff.buystuff_api.dto.review.ReviewDto;
 import com.buystuff.buystuff_api.dto.review.UpdateReviewDto;
 import com.buystuff.buystuff_api.entities.Account;
 import com.buystuff.buystuff_api.entities.Category;
@@ -73,15 +74,16 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public Review addReview(UUID productId, Account account, CreateReviewDto createReviewDto) {
+	public ReviewDto addReview(UUID productId, Account account, CreateReviewDto createReviewDto) {
 		log.info("START: addReview service");
 		
 		Product product = getProduct(productId);		
 		Review review = ReviewMapper.toEntity(createReviewDto, account, product);
 		reviewRepository.save(review);
 		
+		ReviewDto response = ReviewMapper.toDto(review);
 		log.info("END: addReview service");
-		return review;
+		return response;
 	}
 
 	@Override
@@ -115,17 +117,9 @@ public class ProductServiceImpl implements ProductService {
 		log.info("END: deleteReview service");
 	}
 
-	private Product getProduct(UUID productId) {
-		Product product = productRepository
-			.findById(productId)
-			.orElseThrow(() -> new NotFoundException("Product not found: " + productId.toString()));
-
-		return product;		
-	}
-
 	@Override
 	@Transactional
-	public Product addProduct(CreateProductDto createProductDto) throws Exception {
+	public Product addProduct(CreateProductDto createProductDto) {
 		log.info("START: addProduct service");
 		
 		List<String> categoryCodes = createProductDto.getCategories();
@@ -165,5 +159,13 @@ public class ProductServiceImpl implements ProductService {
 		productRepository.deleteById(productId);
 
 		log.info("END: deleteProduct service");
+	}
+
+	private Product getProduct(UUID productId) {
+		Product product = productRepository
+			.findById(productId)
+			.orElseThrow(() -> new NotFoundException("Product not found: " + productId.toString()));
+
+		return product;		
 	}
 }

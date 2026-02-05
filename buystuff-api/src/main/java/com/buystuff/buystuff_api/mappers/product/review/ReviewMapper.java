@@ -30,6 +30,7 @@ public abstract class ReviewMapper {
 		entity.setRating(dto.getRating());
 		entity.setTitle(dto.getTitle());
 		entity.setContent(dto.getContent());
+		entity.setVerified(false);
 
 		return entity;
 	}

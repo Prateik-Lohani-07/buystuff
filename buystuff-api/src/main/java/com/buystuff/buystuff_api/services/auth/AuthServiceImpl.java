@@ -3,6 +3,7 @@ package com.buystuff.buystuff_api.services.auth;
 import java.util.UUID;
 
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,6 +16,7 @@ import com.buystuff.buystuff_api.entities.Account;
 import com.buystuff.buystuff_api.entities.User;
 import com.buystuff.buystuff_api.entities.UserPrincipal;
 import com.buystuff.buystuff_api.enums.Role;
+import com.buystuff.buystuff_api.exceptions.BadRequestException;
 import com.buystuff.buystuff_api.mappers.user.UserMapper;
 import com.buystuff.buystuff_api.services.account.AccountService;
 import com.buystuff.buystuff_api.services.jwt.JwtTokenService;
@@ -90,12 +92,12 @@ public class AuthServiceImpl implements AuthService {
 
         // don't allow if incorrect existing password entered
         if (!comparePasswords(oldPassword, passwordHash)) {
-            throw new Exception("Incorrect password");
+            throw new BadCredentialsException("Incorrect password");
         }
 
         // don't allow if new password and existing password are the same -> must be a different password
         if (comparePasswords(newPassword, passwordHash)) {
-            throw new Exception("New password must be different from the old password");
+            throw new BadRequestException("New password must be different from the old password");
         }
 
         String newPasswordHash = passwordEncoder.encode(newPassword);

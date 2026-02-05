@@ -28,12 +28,8 @@ public class AuthController {
 		@Valid @RequestBody 
 		LoginDto loginDto
 	) {
-        try {
-            String jwtToken = authService.authenticate(loginDto);
-        	return ApiResponse.success("Login successful", jwtToken);
-        } catch (RuntimeException e) {
-            throw new RuntimeException(e);
-        }
+		String jwtToken = authService.authenticate(loginDto);
+		return ApiResponse.success("Login successful", jwtToken);
     }
 
     @PostMapping("/signup")
@@ -41,12 +37,8 @@ public class AuthController {
 		@Valid @RequestBody 
 		SignupDto signupDto
 	) {
-        try {
-            String jwtToken = authService.registerUser(signupDto);
-        	return ApiResponse.success("Signup successful", jwtToken);
-        } catch (RuntimeException e) {
-            throw new RuntimeException(e);
-        }
+		String jwtToken = authService.registerUser(signupDto);
+		return ApiResponse.success("Signup successful", jwtToken);
     }
 
     // @GetMapping("/me")
