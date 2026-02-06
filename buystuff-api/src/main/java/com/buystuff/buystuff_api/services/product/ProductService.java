@@ -7,10 +7,7 @@ import com.buystuff.buystuff_api.dto.product.CreateProductDto;
 import com.buystuff.buystuff_api.dto.product.ProductDto;
 import com.buystuff.buystuff_api.dto.product.ProductFilterDto;
 import com.buystuff.buystuff_api.dto.product.UpdateProductDto;
-import com.buystuff.buystuff_api.dto.review.CreateReviewDto;
-import com.buystuff.buystuff_api.dto.review.ReviewDto;
-import com.buystuff.buystuff_api.dto.review.UpdateReviewDto;
-import com.buystuff.buystuff_api.entities.Account;
+import com.buystuff.buystuff_api.entities.Product;
 
 public interface ProductService {
 	List<ProductDto> getAllProducts(ProductFilterDto filters);
@@ -18,7 +15,5 @@ public interface ProductService {
 	ProductDto addProduct(CreateProductDto createProductDto);
 	ProductDto editProduct(UUID productId, UpdateProductDto updateProductDto);
 	void deleteProduct(UUID productId);
-	ReviewDto addReview(UUID productId, Account account, CreateReviewDto createReviewDto);
-	void editReview(UUID productId, Account account, UUID reviewId, UpdateReviewDto updateReviewDto);
-	void deleteReview(UUID productId, Account account, UUID reviewId);
+	Product getProduct(UUID productId);
 }

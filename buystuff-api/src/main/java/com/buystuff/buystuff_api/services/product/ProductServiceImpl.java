@@ -11,18 +11,11 @@ import com.buystuff.buystuff_api.dto.product.CreateProductDto;
 import com.buystuff.buystuff_api.dto.product.ProductDto;
 import com.buystuff.buystuff_api.dto.product.ProductFilterDto;
 import com.buystuff.buystuff_api.dto.product.UpdateProductDto;
-import com.buystuff.buystuff_api.dto.review.CreateReviewDto;
-import com.buystuff.buystuff_api.dto.review.ReviewDto;
-import com.buystuff.buystuff_api.dto.review.UpdateReviewDto;
-import com.buystuff.buystuff_api.entities.Account;
 import com.buystuff.buystuff_api.entities.Category;
 import com.buystuff.buystuff_api.entities.Product;
-import com.buystuff.buystuff_api.entities.Review;
 import com.buystuff.buystuff_api.exceptions.NotFoundException;
 import com.buystuff.buystuff_api.mappers.product.ProductMapper;
-import com.buystuff.buystuff_api.mappers.product.review.ReviewMapper;
 import com.buystuff.buystuff_api.repositories.ProductRepository;
-import com.buystuff.buystuff_api.repositories.ReviewRepository;
 import com.buystuff.buystuff_api.services.category.CategoryService;
 
 import jakarta.transaction.Transactional;
@@ -35,7 +28,6 @@ import lombok.extern.slf4j.Slf4j;
 public class ProductServiceImpl implements ProductService {
 
 	private final ProductRepository productRepository;
-	private final ReviewRepository reviewRepository;
 	private final CategoryService categoryService;
 
 	@Override
@@ -72,51 +64,6 @@ public class ProductServiceImpl implements ProductService {
 
 		log.info("END: getProductDetails service");
 		return productDto;
-	}
-
-	@Override
-	public ReviewDto addReview(UUID productId, Account account, CreateReviewDto createReviewDto) {
-		log.info("START: addReview service");
-		
-		Product product = getProduct(productId);		
-		Review review = ReviewMapper.toEntity(createReviewDto, account, product);
-		reviewRepository.save(review);
-		
-		ReviewDto response = ReviewMapper.toDto(review);
-		
-		log.info("END: addReview service");
-		return response;
-	}
-
-	@Override
-	public void editReview(UUID productId, Account account, UUID reviewId, UpdateReviewDto updateReviewDto) {
-		log.info("START: editReview service");
-		
-		// check for product existence
-		getProduct(productId);
-		
-		Review review = reviewRepository.findById(reviewId)
-			.orElseThrow(() -> new NotFoundException("Review not found."));
-		
-		ReviewMapper.updateEntity(updateReviewDto, review);
-		reviewRepository.save(review);
-
-		log.info("END: editReview service");
-	}
-
-	@Override
-	public void deleteReview(UUID productId, Account account, UUID reviewId) {
-		log.info("START: deleteReview service");
-		
-		// check for product existence
-		getProduct(productId);
-
-		Review review = reviewRepository.findById(reviewId)
-			.orElseThrow(() -> new NotFoundException("Review not found."));
-			
-		reviewRepository.delete(review);
-		
-		log.info("END: deleteReview service");
 	}
 
 	@Override
@@ -168,11 +115,15 @@ public class ProductServiceImpl implements ProductService {
 		log.info("END: deleteProduct service");
 	}
 
-	private Product getProduct(UUID productId) {
+	@Override
+	public Product getProduct(UUID productId) {
+		log.info("START: getProduct service");
+		
 		Product product = productRepository
-			.findById(productId)
-			.orElseThrow(() -> new NotFoundException("Product not found: " + productId.toString()));
-
+		.findById(productId)
+		.orElseThrow(() -> new NotFoundException("Product not found: " + productId.toString()));
+		
+		log.info("START: getProduct service");
 		return product;		
 	}
 }
