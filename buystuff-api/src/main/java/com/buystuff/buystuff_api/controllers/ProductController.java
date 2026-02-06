@@ -32,7 +32,7 @@ import lombok.extern.slf4j.Slf4j;
 public class ProductController {
 	private final ProductService productService;
 
-	@GetMapping("/")
+	@GetMapping
 	public ApiResponse<List<ProductDto>> getAllProducts(
 		@RequestParam(defaultValue = "10") int limit,
 		@RequestParam(defaultValue = "0") int skip,

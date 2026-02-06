@@ -28,9 +28,12 @@ public interface ProductRepository extends JpaRepository<Product, UUID> {
 			AND (:categories IS NULL OR c.categoryCode IN :categories)
 			AND (:price_start IS NULL OR (p.price - p.discount) >= :price_start)
 			AND (:price_end IS NULL OR (p.price - p.discount) <= :price_end)
+		GROUP BY p
+		HAVING (:categories IS NULL OR COUNT(DISTINCT c.categoryCode) = :category_count)
 	""")
 	Page<Product> findAll(
 		@Param("categories") List<String> categories,
+		@Param("category_count") Integer categoryCount,
 		@Param("price_start") Double priceStart,
 		@Param("price_end") Double priceEnd,
 		Pageable pageable

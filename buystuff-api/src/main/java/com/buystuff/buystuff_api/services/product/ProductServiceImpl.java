@@ -39,7 +39,8 @@ public class ProductServiceImpl implements ProductService {
 
 		Page<Product> page = productRepository.findAll(
 			filters.getCategories(),
-			filters.getPriceStart(), 
+			filters.getCategories().size(),
+			filters.getPriceStart(),
 			filters.getPriceEnd(),
 			pageRequest
 		);
