@@ -33,7 +33,7 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
 			new ObjectMapper().writeValueAsString(
 				ApiResponse.error(
 					HttpStatus.FORBIDDEN.value(), 
-					accessDeniedException.getMessage() + " ahoy"
+					accessDeniedException.getMessage()
 				)
 			)
 		);
