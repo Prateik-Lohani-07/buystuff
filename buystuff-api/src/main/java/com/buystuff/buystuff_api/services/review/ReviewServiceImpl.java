@@ -40,7 +40,7 @@ public class ReviewServiceImpl implements ReviewService {
 	}
 
 	@Override
-	public void editReview(UUID productId, Account account, UUID reviewId, UpdateReviewDto updateReviewDto) {
+	public ReviewDto editReview(UUID productId, Account account, UUID reviewId, UpdateReviewDto updateReviewDto) {
 		log.info("START: editReview service");
 		
 		// check for product existence
@@ -50,9 +50,11 @@ public class ReviewServiceImpl implements ReviewService {
 			.orElseThrow(() -> new NotFoundException("Review not found."));
 		
 		ReviewMapper.updateEntity(updateReviewDto, review);
-		reviewRepository.save(review);
+		review = reviewRepository.save(review);
+		ReviewDto reviewDto = ReviewMapper.toDto(review);
 
 		log.info("END: editReview service");
+		return reviewDto;
 	}
 
 	@Override

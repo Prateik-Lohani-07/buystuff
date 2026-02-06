@@ -9,6 +9,6 @@ import com.buystuff.buystuff_api.entities.Account;
 
 public interface ReviewService {
 	ReviewDto addReview(UUID productId, Account account, CreateReviewDto createReviewDto);
-	void editReview(UUID productId, Account account, UUID reviewId, UpdateReviewDto updateReviewDto);
+	ReviewDto editReview(UUID productId, Account account, UUID reviewId, UpdateReviewDto updateReviewDto);
 	void deleteReview(UUID productId, Account account, UUID reviewId);
 }
