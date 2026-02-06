@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import com.buystuff.buystuff_api.dto.category.CategoryDto;
 import com.buystuff.buystuff_api.entities.Category;
 import com.buystuff.buystuff_api.mappers.category.CategoryMapper;
 import com.buystuff.buystuff_api.repositories.CategoryRepository;
@@ -48,6 +49,22 @@ public class CategoryServiceImpl implements CategoryService {
 
 		log.info("END: addCategories service");
 		return categories;
+	}
+
+	@Override
+	public List<CategoryDto> getCategories() {
+		log.info("START: getCategories service");
+		
+		List<Category> categories = categoryRepository.findAll();
+		
+		List<CategoryDto> dtos = 
+			categories
+				.stream()
+				.map(CategoryMapper::toDto)
+				.toList();
+		
+		log.info("END: getCategories service");
+		return dtos;
 	}
 	
 }
