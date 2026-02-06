@@ -4,9 +4,11 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
+import com.buystuff.buystuff_api.dto.address.AddressDto;
 import com.buystuff.buystuff_api.dto.address.CreateAddressDto;
 import com.buystuff.buystuff_api.dto.address.UpdateAddressDto;
 import com.buystuff.buystuff_api.dto.payment_info.CreatePaymentInfoDto;
+import com.buystuff.buystuff_api.dto.payment_info.PaymentInfoDto;
 import com.buystuff.buystuff_api.entities.Account;
 import com.buystuff.buystuff_api.entities.Address;
 import com.buystuff.buystuff_api.entities.PaymentInfo;
@@ -17,46 +19,60 @@ import com.buystuff.buystuff_api.repositories.AccountRepository;
 import com.buystuff.buystuff_api.repositories.AddressRepository;
 import com.buystuff.buystuff_api.repositories.PaymentInfoRepository;
 
-import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
-@Transactional
+@Slf4j
+@RequiredArgsConstructor
 public class AccountServiceImpl implements AccountService {
-
 	private final AccountRepository accountRepository;
 	private final AddressRepository addressRepository;
 	private final PaymentInfoRepository paymentInfoRepository;
-
-	public AccountServiceImpl(
-		AccountRepository accountRepository, 
-		AddressRepository addressRepository,
-		PaymentInfoRepository paymentInfoRepository
-	) {
-		this.accountRepository = accountRepository;
-		this.addressRepository = addressRepository;
-		this.paymentInfoRepository = paymentInfoRepository;
-	}
 	
 	@Override
-	public void addPaymentInfo(Account account, CreatePaymentInfoDto createPaymentInfoDto) {
+	public PaymentInfoDto addPaymentInfo(Account account, CreatePaymentInfoDto createPaymentInfoDto) {
+		log.info("START: addPaymentInfo service");
+		
 		PaymentInfo paymentInfo = PaymentInfoMapper.toEntity(createPaymentInfoDto, account);
-		paymentInfoRepository.save(paymentInfo);
+		paymentInfo = paymentInfoRepository.save(paymentInfo);
+
+		PaymentInfoDto paymentInfoDto = PaymentInfoMapper.toDTO(paymentInfo);
+
+		log.info("END: addPaymentInfo service");
+		return paymentInfoDto;
 	}
 
 	@Override
-	public Address addAddress(Account account, CreateAddressDto createAddressDto) {
+	public AddressDto addAddress(Account account, CreateAddressDto createAddressDto) {
+		log.info("START: addAddress service");
+		
 		Address address = AddressMapper.toEntity(createAddressDto, account);
 		address = addressRepository.save(address);
-		return address;
+
+		AddressDto addressDto = AddressMapper.toDto(address);
+		
+		log.info("END: addAddress service");
+		return addressDto;
 	}
 
 	@Override
-	public void updateAddress(Account account, UpdateAddressDto updateAddressDto) {
-		Address address = addressRepository.findById(updateAddressDto.getAddressId())
-			.orElseThrow(() -> new NotFoundException("Address not found."));
-
+	public AddressDto updateAddress(Account account, UpdateAddressDto updateAddressDto) {
+		log.info("START: updateAddress service");
+		
+		Address address = 
+			addressRepository
+				.findById(updateAddressDto.getAddressId())
+				.orElseThrow(() -> new NotFoundException("Address not found."));
+		
 		AddressMapper.updateEntity(updateAddressDto, address);
-		addressRepository.save(address);
+		address = addressRepository.save(address);
+
+		AddressDto addressDto = AddressMapper.toDto(address);
+
+		log.info("END: updateAddress service");
+
+		return addressDto;
 	}
 
 	@Override
@@ -78,7 +94,7 @@ public class AccountServiceImpl implements AccountService {
 	}
 
     @Override
-    public Account saveAccount(Account account) {
-        return accountRepository.save(account);
+    public void saveAccount(Account account) {
+        accountRepository.save(account);
     }
 }
