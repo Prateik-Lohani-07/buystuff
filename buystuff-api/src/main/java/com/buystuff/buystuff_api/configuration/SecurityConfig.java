@@ -77,16 +77,16 @@ public class SecurityConfig {
 				.csrf(AbstractHttpConfigurer::disable)
 				.authorizeHttpRequests(auth -> {
 					auth
-							.requestMatchers(
-									"/api/v1/auth/login",
-									"/api/v1/auth/signup",
-									"/api/v1/products/*",
-									"/api/v1/products/*/reviews")
-							.permitAll()
-							.requestMatchers(
-									"/api/v1/products/*/reviews/*")
-							.authenticated()
-							.anyRequest().authenticated();
+						.requestMatchers(
+							"/api/v1/auth/login",
+							"/api/v1/auth/signup",
+							"/api/v1/products",
+							"/api/v1/products/*/reviews"
+						).permitAll()
+						.requestMatchers(
+							"/api/v1/products/*/reviews/*"
+						).authenticated()
+						.anyRequest().authenticated();
 				})
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.oauth2ResourceServer(oauth2 -> oauth2
