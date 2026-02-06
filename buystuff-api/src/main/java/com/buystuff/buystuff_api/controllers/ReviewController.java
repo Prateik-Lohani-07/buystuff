@@ -20,9 +20,11 @@ import com.buystuff.buystuff_api.entities.UserPrincipal;
 import com.buystuff.buystuff_api.services.review.ReviewService;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequestMapping("/api/v1/products/{product_id}/reviews")
+@Slf4j
 @RequiredArgsConstructor
 public class ReviewController {
 	private final ReviewService reviewService;
@@ -34,7 +36,11 @@ public class ReviewController {
 		@RequestBody CreateReviewDto createReviewDto,
 		@AuthenticationPrincipal UserPrincipal userPrincipal
 	) {
+		log.info("START: addReview controller");
+		
 		ReviewDto review = reviewService.addReview(productId, userPrincipal.getAccount(), createReviewDto);
+		
+		log.info("END: addReview controller");
 		return ApiResponse.success("Successfully added review", review);
 	}
 
@@ -46,8 +52,12 @@ public class ReviewController {
 		@RequestBody UpdateReviewDto updateReviewDto,
 		@AuthenticationPrincipal UserPrincipal userPrincipal
 	) {
-		reviewService.editReview(productId, userPrincipal.getAccount(), reviewId, updateReviewDto);
-		return ApiResponse.success("Successfully edited review", null);
+		log.info("START: editReview controller");
+		
+		ReviewDto review = reviewService.editReview(productId, userPrincipal.getAccount(), reviewId, updateReviewDto);
+
+		log.info("END: editReview controller");
+		return ApiResponse.success("Successfully edited review", review);
 	}
 
 	@PreAuthorize("hasRole('CUSTOMER')")
@@ -57,7 +67,11 @@ public class ReviewController {
 		@PathVariable(name = "review_id") UUID reviewId,
 		@AuthenticationPrincipal UserPrincipal userPrincipal
 	) {
+		log.info("START: deleteReview controller");
+		
 		reviewService.deleteReview(productId, userPrincipal.getAccount(), reviewId);
+
+		log.info("END: deleteReview controller");
 		return ApiResponse.success("Successfully deleted review", null);
 	}
 }

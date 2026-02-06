@@ -3,6 +3,7 @@ package com.buystuff.buystuff_api.controllers;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,9 +23,11 @@ import com.buystuff.buystuff_api.dto.product.UpdateProductDto;
 import com.buystuff.buystuff_api.services.product.ProductService;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequestMapping("/api/v1/products")
+@Slf4j
 @RequiredArgsConstructor
 public class ProductController {
 	private final ProductService productService;
@@ -37,17 +40,24 @@ public class ProductController {
 		@RequestParam(name = "price_start", required = false) Double priceStart,
 		@RequestParam(name = "price_end", required = false) Double priceEnd
 	) {
+		log.info("START: getAllProducts controller");
+		
 		ProductFilterDto filters = new ProductFilterDto(limit, skip, categories, priceStart, priceEnd);
 		List<ProductDto> products = productService.getAllProducts(filters);
-
+		
+		log.info("END: getAllProducts controller");
 		return ApiResponse.success("Successfully fetched products", products);
 	}
 
 	@GetMapping("/{product_id}")
-	public ApiResponse<ProductDto> getProduct(
+	public ApiResponse<ProductDto> getProductDetails(
 		@PathVariable UUID productId
 	) {
+		log.info("START: getProductDetails controller");
+		
 		ProductDto product = productService.getProductDetails(productId);
+
+		log.info("END: getProductDetails controller");
 		return ApiResponse.success("Successfully fetched product", product);
 	}
 	
@@ -56,8 +66,12 @@ public class ProductController {
 	public ApiResponse<ProductDto> addProduct(
 		@RequestBody CreateProductDto createProductDto
 	) {
+		log.info("START: addProduct controller");
+		
 		ProductDto product = productService.addProduct(createProductDto);
-		return ApiResponse.success("Successfully added product", product);
+
+		log.info("END: addProduct controller");
+		return ApiResponse.success(HttpStatus.CREATED.value(), "Successfully added product", product);
 	}
 
 	@PreAuthorize("hasRole('ADMIN')")
@@ -66,8 +80,12 @@ public class ProductController {
 		@PathVariable(name = "product_id") UUID productId,
 		@RequestBody UpdateProductDto updateProductDto
 	) {
+		log.info("START: editProduct controller");
+		
 		ProductDto product = productService.editProduct(productId, updateProductDto);
-		return ApiResponse.success("Successfully edited product", product);
+
+		log.info("END: editProduct controller");
+		return ApiResponse.success(HttpStatus.NO_CONTENT.value(), "Successfully edited product", product);
 	}
 
 	@PreAuthorize("hasRole('ADMIN')")
@@ -75,9 +93,11 @@ public class ProductController {
 	public ApiResponse<Void> deleteProduct(
 		@PathVariable(name = "product_id") UUID productId
 	) {
+		log.info("START: deleteProduct controller");
+		
 		productService.deleteProduct(productId);
-		return ApiResponse.success("Successfully deleted product", null);
+		
+		log.info("END: deleteProduct controller");
+		return ApiResponse.success(HttpStatus.NO_CONTENT.value(), "Successfully deleted product", null);
 	}
-	
-	
 }
