@@ -12,14 +12,14 @@ import lombok.Setter;
  */
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor
 public class ProductFilterDto {
-	private int limit;
-	private int skip;
+	private Integer limit;
+	private Integer skip;
 
 	/*
 	 * The categories for which the user filters. It's only raw strings and doesn't map to the actual categories
 	 * stored in the database. Separate checks to be kept for that.
 	 */
 	private List<String> categories;
-	private double priceStart;
-	private double priceEnd;
+	private Double priceStart;
+	private Double priceEnd;
 }

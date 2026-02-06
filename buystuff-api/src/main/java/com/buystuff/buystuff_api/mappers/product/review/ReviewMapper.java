@@ -12,10 +12,14 @@ public abstract class ReviewMapper {
 		ReviewDto dto = new ReviewDto();
 
 		dto.setReviewId(entity.getReviewId());
+
 		dto.setRating(entity.getRating());
 		dto.setTitle(entity.getTitle());
 		dto.setContent(entity.getContent());
 		dto.setVerified(entity.getVerified());
+		dto.setCreatedAt(entity.getCreatedAt());
+		dto.setUpdatedAt(entity.getUpdatedAt());
+
 		dto.setCreatedAt(entity.getCreatedAt());
 		dto.setUpdatedAt(entity.getUpdatedAt());
 

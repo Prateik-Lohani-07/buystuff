@@ -4,10 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 import com.buystuff.buystuff_api.abstract_classes.BaseResponseDto;
-import com.buystuff.buystuff_api.dto.category.CategoryDto;
-import com.buystuff.buystuff_api.dto.review.ReviewDto;
 
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
@@ -40,10 +37,7 @@ public class ProductDto extends BaseResponseDto {
 	@NotBlank
 	@Size(min = 100, max = 800)
 	private String description;
-	
-	@Valid
-	private List<ReviewDto> reviews;
-	
+		
 	@DecimalMin(value = "0.0", inclusive = true)
 	@DecimalMax(value = "5.0", inclusive = true)
 	private Double avgRating;
@@ -53,6 +47,10 @@ public class ProductDto extends BaseResponseDto {
 	
 	@NotNull
 	@Size(min = 1)
-	private List<CategoryDto> categories;
+	private List<String> categories;
+
+	@NotNull
+	@Size(min = 0)
+	private Integer numberOfReviews;
 }
 
