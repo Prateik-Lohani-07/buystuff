@@ -38,7 +38,7 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(AccessDeniedException.class)
 	public ResponseEntity<ApiResponse<Void>> handleUnauthorizedError(AccessDeniedException ex) {
 		return new ResponseEntity<>(
-			ApiResponse.error(HttpStatus.FORBIDDEN.value(), ex.getMessage() + " baboo"),
+			ApiResponse.error(HttpStatus.FORBIDDEN.value(), ex.getMessage()),
 			new HttpHeaders(),
 			HttpStatus.FORBIDDEN
 		);
@@ -47,7 +47,7 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(AuthenticationException.class)
 	public ResponseEntity<ApiResponse<Void>> handleUnauthorizedError(AuthenticationException ex) {
 		return new ResponseEntity<>(
-			ApiResponse.error(HttpStatus.UNAUTHORIZED.value(), ex.getMessage() + " baboo"),
+			ApiResponse.error(HttpStatus.UNAUTHORIZED.value(), ex.getMessage()),
 			new HttpHeaders(),
 			HttpStatus.UNAUTHORIZED
 		);
