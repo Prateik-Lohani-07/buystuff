@@ -36,10 +36,11 @@ public class ProductServiceImpl implements ProductService {
 		
 		int pageSize = filters.getSkip() / filters.getLimit();
 		PageRequest pageRequest = PageRequest.of(pageSize, filters.getLimit());
+		int numCategories = filters.getCategories() == null ? 0 : filters.getCategories().size();
 
 		Page<Product> page = productRepository.findAll(
 			filters.getCategories(),
-			filters.getCategories().size(),
+			numCategories,
 			filters.getPriceStart(),
 			filters.getPriceEnd(),
 			pageRequest
