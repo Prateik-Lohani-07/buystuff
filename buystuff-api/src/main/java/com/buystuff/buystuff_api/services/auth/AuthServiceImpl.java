@@ -11,13 +11,10 @@ import org.springframework.stereotype.Service;
 
 import com.buystuff.buystuff_api.dto.authentication.LoginDto;
 import com.buystuff.buystuff_api.dto.authentication.SignupDto;
-import com.buystuff.buystuff_api.dto.user.CreateUserDto;
 import com.buystuff.buystuff_api.entities.Account;
-import com.buystuff.buystuff_api.entities.User;
 import com.buystuff.buystuff_api.entities.UserPrincipal;
-import com.buystuff.buystuff_api.enums.Role;
 import com.buystuff.buystuff_api.exceptions.BadRequestException;
-import com.buystuff.buystuff_api.mappers.user.UserMapper;
+import com.buystuff.buystuff_api.mappers.account.AccountMapper;
 import com.buystuff.buystuff_api.services.account.AccountService;
 import com.buystuff.buystuff_api.services.jwt.JwtTokenService;
 
@@ -54,25 +51,15 @@ public class AuthServiceImpl implements AuthService {
 	}
 
     @Override
-    @Transactional
     public String registerUser(SignupDto signupDto) {
         log.info("START: registerUser service");
 
-        Account account = new Account();
         String email = signupDto.getEmail(), rawPassword = signupDto.getPassword();
-        CreateUserDto createUserDto = signupDto.getUserInfo();
-        User user = UserMapper.toEntity(createUserDto, account);
-
         String passwordHash = passwordEncoder.encode(rawPassword);
 
-        account.setEmail(email);
-        account.setPasswordHash(passwordHash);
-        account.setUser(user);
-        account.setRole(Role.CUSTOMER);
+		Account account = AccountMapper.toEntity(signupDto, passwordHash);
 
-        account = accountService.saveAccount(account);
-        user.setAccountId(account.getAccountId());
-        user.setAccount(account);
+        accountService.saveAccount(account);
 
         LoginDto loginDto = new LoginDto();
         loginDto.setEmail(email);
