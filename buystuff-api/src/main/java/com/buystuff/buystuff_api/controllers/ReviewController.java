@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.buystuff.buystuff_api.dto.ApiResponse;
-import com.buystuff.buystuff_api.dto.review.CreateReviewDto;
-import com.buystuff.buystuff_api.dto.review.ReviewDto;
-import com.buystuff.buystuff_api.dto.review.UpdateReviewDto;
+import com.buystuff.buystuff_api.dto.product.review.CreateReviewDto;
+import com.buystuff.buystuff_api.dto.product.review.ReviewDto;
+import com.buystuff.buystuff_api.dto.product.review.UpdateReviewDto;
 import com.buystuff.buystuff_api.entities.UserPrincipal;
 import com.buystuff.buystuff_api.services.review.ReviewService;
 
