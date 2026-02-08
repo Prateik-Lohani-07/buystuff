@@ -1,4 +1,4 @@
-package com.buystuff.buystuff_api.dto.payment_info;
+package com.buystuff.buystuff_api.dto.account.payment_info;
 
 import java.util.UUID;
 

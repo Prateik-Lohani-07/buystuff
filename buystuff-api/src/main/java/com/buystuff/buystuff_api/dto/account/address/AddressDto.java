@@ -1,33 +1,37 @@
-package com.buystuff.buystuff_api.dto.address;
+package com.buystuff.buystuff_api.dto.account.address;
 
 import java.util.UUID;
 
+import com.buystuff.buystuff_api.abstract_classes.BaseResponseDto;
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
-public class CreateAddressDto {
-	@NotBlank
+public class AddressDto extends BaseResponseDto {
+	@NotNull
+	private UUID addressId;
+	
+	@NotBlank 
 	private String flatOrBlock;
 	
-	@NotBlank
+	@NotBlank 
 	private String line1;
 	
 	private String line2;
 	
-	@NotBlank
+	@NotBlank 
 	private String city;
 	
-	@NotBlank
+	@NotBlank 
 	private String state;
 	
-	@NotBlank
+	@NotBlank 
 	private String country;
 	
-	@NotBlank
+	@NotBlank 
 	private String pincode;
 	
 	@NotNull

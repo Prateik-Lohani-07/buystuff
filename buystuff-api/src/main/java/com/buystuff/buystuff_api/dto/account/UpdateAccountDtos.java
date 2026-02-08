@@ -1,19 +1,18 @@
-package com.buystuff.buystuff_api.dto.authentication;
+package com.buystuff.buystuff_api.dto.account;
 
-import com.buystuff.buystuff_api.dto.account.user.CreateUserDto;
+import com.buystuff.buystuff_api.dto.account.user.UpdateUserDto;
 
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
-
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter @Setter
-public class SignupDto {
-	@Email
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor
+public class UpdateAccountDtos {
+	@NotBlank
 	private String email;
 
 	@Pattern(
@@ -24,6 +23,5 @@ public class SignupDto {
 	private String password;
 
 	@Valid
-	@NotNull
-	private CreateUserDto userInfo;
+	private UpdateUserDto updateUserDto;
 }

@@ -1,8 +1,8 @@
-package com.buystuff.buystuff_api.dto.payment_info.credit_card;
+package com.buystuff.buystuff_api.dto.account.payment_info.credit_card;
 
 import java.time.LocalDateTime;
 
-import com.buystuff.buystuff_api.dto.payment_info.PaymentInfoDto;
+import com.buystuff.buystuff_api.dto.account.payment_info.PaymentInfoDto;
 import com.buystuff.buystuff_api.enums.PaymentType;
 
 import lombok.Getter;

@@ -1,6 +1,6 @@
-package com.buystuff.buystuff_api.dto.payment_info.upi;
+package com.buystuff.buystuff_api.dto.account.payment_info.upi;
 
-import com.buystuff.buystuff_api.dto.payment_info.CreatePaymentInfoDto;
+import com.buystuff.buystuff_api.dto.account.payment_info.CreatePaymentInfoDto;
 import com.buystuff.buystuff_api.enums.PaymentType;
 
 import lombok.Getter;

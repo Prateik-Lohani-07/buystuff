@@ -1,4 +1,4 @@
-package com.buystuff.buystuff_api.dto.cart_item;
+package com.buystuff.buystuff_api.dto.cart.cart_item;
 
 import java.util.UUID;
 

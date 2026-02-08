@@ -1,4 +1,4 @@
-package com.buystuff.buystuff_api.dto.review;
+package com.buystuff.buystuff_api.dto.product.review;
 
 import java.util.UUID;
 

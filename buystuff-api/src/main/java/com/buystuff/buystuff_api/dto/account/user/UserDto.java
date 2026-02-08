@@ -1,4 +1,4 @@
-package com.buystuff.buystuff_api.dto.user;
+package com.buystuff.buystuff_api.dto.account.user;
 
 import java.time.LocalDate;
 
