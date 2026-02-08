@@ -1,8 +1,8 @@
 package com.buystuff.buystuff_api.mappers.account;
 
 import com.buystuff.buystuff_api.dto.account.AccountDto;
+import com.buystuff.buystuff_api.dto.account.user.CreateUserDto;
 import com.buystuff.buystuff_api.dto.authentication.SignupDto;
-import com.buystuff.buystuff_api.dto.user.CreateUserDto;
 import com.buystuff.buystuff_api.entities.Account;
 import com.buystuff.buystuff_api.entities.User;
 import com.buystuff.buystuff_api.enums.Role;

@@ -1,8 +1,8 @@
 package com.buystuff.buystuff_api.mappers.address;
 
-import com.buystuff.buystuff_api.dto.address.AddressDto;
-import com.buystuff.buystuff_api.dto.address.CreateAddressDto;
-import com.buystuff.buystuff_api.dto.address.UpdateAddressDto;
+import com.buystuff.buystuff_api.dto.account.address.AddressDto;
+import com.buystuff.buystuff_api.dto.account.address.CreateAddressDto;
+import com.buystuff.buystuff_api.dto.account.address.UpdateAddressDto;
 import com.buystuff.buystuff_api.entities.Account;
 import com.buystuff.buystuff_api.entities.Address;
 

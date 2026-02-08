@@ -1,8 +1,8 @@
 package com.buystuff.buystuff_api.mappers.user;
 
-import com.buystuff.buystuff_api.dto.user.CreateUserDto;
-import com.buystuff.buystuff_api.dto.user.UpdateUserDto;
-import com.buystuff.buystuff_api.dto.user.UserDto;
+import com.buystuff.buystuff_api.dto.account.user.CreateUserDto;
+import com.buystuff.buystuff_api.dto.account.user.UpdateUserDto;
+import com.buystuff.buystuff_api.dto.account.user.UserDto;
 import com.buystuff.buystuff_api.entities.Account;
 import com.buystuff.buystuff_api.entities.User;
 

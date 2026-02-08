@@ -1,6 +1,6 @@
 package com.buystuff.buystuff_api.mappers.order.order_item;
 
-import com.buystuff.buystuff_api.dto.order_item.OrderItemDto;
+import com.buystuff.buystuff_api.dto.order.order_item.OrderItemDto;
 import com.buystuff.buystuff_api.entities.OrderItem;
 
 

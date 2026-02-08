@@ -1,7 +1,7 @@
 package com.buystuff.buystuff_api.mappers.payment_info.upi;
 
-import com.buystuff.buystuff_api.dto.payment_info.upi.CreateUPIDto;
-import com.buystuff.buystuff_api.dto.payment_info.upi.UPIDto;
+import com.buystuff.buystuff_api.dto.account.payment_info.upi.CreateUPIDto;
+import com.buystuff.buystuff_api.dto.account.payment_info.upi.UPIDto;
 import com.buystuff.buystuff_api.entities.Account;
 import com.buystuff.buystuff_api.entities.UPIPaymentInfo;
 

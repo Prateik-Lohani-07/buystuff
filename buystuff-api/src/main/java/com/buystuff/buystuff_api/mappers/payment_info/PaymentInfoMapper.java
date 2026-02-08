@@ -2,10 +2,10 @@ package com.buystuff.buystuff_api.mappers.payment_info;
 
 import com.buystuff.buystuff_api.mappers.payment_info.credit_card.CreditCardMapper;
 import com.buystuff.buystuff_api.mappers.payment_info.upi.UPIMapper;
-import com.buystuff.buystuff_api.dto.payment_info.CreatePaymentInfoDto;
-import com.buystuff.buystuff_api.dto.payment_info.PaymentInfoDto;
-import com.buystuff.buystuff_api.dto.payment_info.credit_card.CreateCreditCardDto;
-import com.buystuff.buystuff_api.dto.payment_info.upi.CreateUPIDto;
+import com.buystuff.buystuff_api.dto.account.payment_info.CreatePaymentInfoDto;
+import com.buystuff.buystuff_api.dto.account.payment_info.PaymentInfoDto;
+import com.buystuff.buystuff_api.dto.account.payment_info.credit_card.CreateCreditCardDto;
+import com.buystuff.buystuff_api.dto.account.payment_info.upi.CreateUPIDto;
 import com.buystuff.buystuff_api.entities.Account;
 import com.buystuff.buystuff_api.entities.CreditCardPaymentInfo;
 import com.buystuff.buystuff_api.entities.PaymentInfo;

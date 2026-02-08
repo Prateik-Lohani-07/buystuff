@@ -1,8 +1,8 @@
 package com.buystuff.buystuff_api.mappers.product.review;
 
-import com.buystuff.buystuff_api.dto.review.CreateReviewDto;
-import com.buystuff.buystuff_api.dto.review.ReviewDto;
-import com.buystuff.buystuff_api.dto.review.UpdateReviewDto;
+import com.buystuff.buystuff_api.dto.product.review.CreateReviewDto;
+import com.buystuff.buystuff_api.dto.product.review.ReviewDto;
+import com.buystuff.buystuff_api.dto.product.review.UpdateReviewDto;
 import com.buystuff.buystuff_api.entities.Account;
 import com.buystuff.buystuff_api.entities.Product;
 import com.buystuff.buystuff_api.entities.Review;
