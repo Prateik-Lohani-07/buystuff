@@ -17,7 +17,7 @@ applyTo: '**/*.java, **/*.kt'
 
 ## Dependency Injection
 
-- Use **constructor injection** for all required dependencies.
+- Use **constructor injection** for all required dependencies with the use of `@RequiredArgsConstructor` annotation.
 - Declare injected fields as `private final`.
 - Avoid field injection (`@Autowired` on fields).
 
