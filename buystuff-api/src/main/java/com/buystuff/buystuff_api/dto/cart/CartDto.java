@@ -5,7 +5,7 @@ import java.util.UUID;
 
 import com.buystuff.buystuff_api.abstract_classes.BaseResponseDto;
 import com.buystuff.buystuff_api.dto.cart.cart_item.CartItemDto;
-import com.buystuff.buystuff_api.dto.coupon.CouponDto;
+import com.buystuff.buystuff_api.dto.cart.coupon.CouponDto;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
