@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.Formula;
 import org.hibernate.annotations.NaturalId;
 
 import com.buystuff.buystuff_api.abstract_classes.BaseEntity;
@@ -57,6 +58,9 @@ public class Product extends BaseEntity {
 	
 	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Review> reviews = new ArrayList<>();
+
+	@Formula("(SELECT COUNT(*) FROM reviews r WHERE r.product_id = product_id)")
+	private Integer numberOfReviews;
 	
 	@Column(name = "avg_rating", columnDefinition = "numeric")
 	private Double avgRating;

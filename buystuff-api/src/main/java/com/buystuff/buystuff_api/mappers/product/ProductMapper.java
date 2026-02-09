@@ -28,7 +28,7 @@ public abstract class ProductMapper {
 				.toList()
 		);
 
-		dto.setNumberOfReviews(entity.getReviews().size());
+		dto.setNumberOfReviews(entity.getNumberOfReviews());
 
 		dto.setCreatedAt(entity.getCreatedAt());
 		dto.setUpdatedAt(entity.getUpdatedAt());
