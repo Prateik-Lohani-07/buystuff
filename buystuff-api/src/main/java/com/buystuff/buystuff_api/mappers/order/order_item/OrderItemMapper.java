@@ -13,9 +13,6 @@ public abstract class OrderItemMapper {
 		dto.setQuantity(entity.getQuantity());
 		dto.setProductId(entity.getProduct().getProductId());
 		
-		dto.setCreatedAt(entity.getCreatedAt());
-		dto.setUpdatedAt(entity.getUpdatedAt());
-
 		return dto;
 	}
 }

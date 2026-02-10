@@ -30,7 +30,7 @@ import lombok.Setter;
 	name="order_items",
 	uniqueConstraints = { @UniqueConstraint(columnNames = { "order_id", "product_id" }) }
 )
-public class OrderItem extends BaseEntity {
+public class OrderItem {
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
 	@Column(name = "item_id", columnDefinition = "uuid")
