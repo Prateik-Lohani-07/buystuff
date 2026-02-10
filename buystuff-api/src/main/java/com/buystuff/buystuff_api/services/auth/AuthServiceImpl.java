@@ -45,7 +45,7 @@ public class AuthServiceImpl implements AuthService {
         Authentication authentication = authenticationManager.authenticate(unAuthenticatedObj);
 		UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
 		
-        String jwtToken = jwtTokenService.generateToken(userPrincipal.getAccount());
+        String jwtToken = jwtTokenService.generateToken(userPrincipal);
 
         return jwtToken;
 	}

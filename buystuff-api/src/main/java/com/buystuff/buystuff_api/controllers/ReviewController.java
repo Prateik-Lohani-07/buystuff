@@ -38,7 +38,7 @@ public class ReviewController {
 	) {
 		log.info("START: addReview controller");
 		
-		ReviewDto review = reviewService.addReview(productId, userPrincipal.getAccount(), createReviewDto);
+		ReviewDto review = reviewService.addReview(productId, userPrincipal.getId(), createReviewDto);
 		
 		log.info("END: addReview controller");
 		return ApiResponse.success("Successfully added review", review);
@@ -54,7 +54,7 @@ public class ReviewController {
 	) {
 		log.info("START: editReview controller");
 		
-		ReviewDto review = reviewService.editReview(productId, userPrincipal.getAccount(), reviewId, updateReviewDto);
+		ReviewDto review = reviewService.editReview(productId, userPrincipal.getId(), reviewId, updateReviewDto);
 
 		log.info("END: editReview controller");
 		return ApiResponse.success("Successfully edited review", review);
@@ -69,7 +69,7 @@ public class ReviewController {
 	) {
 		log.info("START: deleteReview controller");
 		
-		reviewService.deleteReview(productId, userPrincipal.getAccount(), reviewId);
+		reviewService.deleteReview(productId, userPrincipal.getId(), reviewId);
 
 		log.info("END: deleteReview controller");
 		return ApiResponse.success("Successfully deleted review", null);

@@ -11,25 +11,22 @@ import com.buystuff.buystuff_api.dto.ApiResponse;
 import com.buystuff.buystuff_api.dto.account.AccountDto;
 import com.buystuff.buystuff_api.dto.authentication.LoginDto;
 import com.buystuff.buystuff_api.dto.authentication.SignupDto;
-import com.buystuff.buystuff_api.entities.Account;
 import com.buystuff.buystuff_api.entities.UserPrincipal;
-import com.buystuff.buystuff_api.mappers.account.AccountMapper;
+import com.buystuff.buystuff_api.services.account.AccountService;
 import com.buystuff.buystuff_api.services.auth.AuthService;
 
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @Slf4j
 @RequestMapping("/api/v1/auth")
+@RequiredArgsConstructor
 public class AuthController {
 
     private final AuthService authService;
-
-    public AuthController(AuthService authService) {
-        this.authService = authService;
-    }
-
+	private final AccountService accountService;
 
     @PostMapping("/login")
     public ApiResponse<String> login(
@@ -63,8 +60,7 @@ public class AuthController {
 	) {
 		log.info("START: getCurrentUser controller");
 		
-		Account account = userPrincipal.getAccount();
-		AccountDto accountDto = AccountMapper.toDto(account);
+		AccountDto accountDto = accountService.getAccountDetails(userPrincipal.getId());
 		
 		log.info("END: getCurrentUser controller");
 		return ApiResponse.success("Successfully fetched account details", accountDto);

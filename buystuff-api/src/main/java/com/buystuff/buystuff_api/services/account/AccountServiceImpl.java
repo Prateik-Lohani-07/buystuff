@@ -4,15 +4,17 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
-import com.buystuff.buystuff_api.dto.address.AddressDto;
-import com.buystuff.buystuff_api.dto.address.CreateAddressDto;
-import com.buystuff.buystuff_api.dto.address.UpdateAddressDto;
-import com.buystuff.buystuff_api.dto.payment_info.CreatePaymentInfoDto;
-import com.buystuff.buystuff_api.dto.payment_info.PaymentInfoDto;
+import com.buystuff.buystuff_api.dto.account.AccountDto;
+import com.buystuff.buystuff_api.dto.account.address.AddressDto;
+import com.buystuff.buystuff_api.dto.account.address.CreateAddressDto;
+import com.buystuff.buystuff_api.dto.account.address.UpdateAddressDto;
+import com.buystuff.buystuff_api.dto.account.payment_info.CreatePaymentInfoDto;
+import com.buystuff.buystuff_api.dto.account.payment_info.PaymentInfoDto;
 import com.buystuff.buystuff_api.entities.Account;
 import com.buystuff.buystuff_api.entities.Address;
 import com.buystuff.buystuff_api.entities.PaymentInfo;
 import com.buystuff.buystuff_api.exceptions.NotFoundException;
+import com.buystuff.buystuff_api.mappers.account.AccountMapper;
 import com.buystuff.buystuff_api.mappers.address.AddressMapper;
 import com.buystuff.buystuff_api.mappers.payment_info.PaymentInfoMapper;
 import com.buystuff.buystuff_api.repositories.AccountRepository;
@@ -84,17 +86,19 @@ public class AccountServiceImpl implements AccountService {
 		return account;
 	}
 
-	@Override
-	public Account getAccountByEmail(String email) {
-		Account account = accountRepository
-			.findByEmail(email)
-			.orElseThrow(() -> new NotFoundException("Account not found."));
-
-        return account;
-	}
-
     @Override
     public void saveAccount(Account account) {
         accountRepository.save(account);
     }
+
+	@Override
+	public AccountDto getAccountDetails(UUID accountId) {
+		log.info("START: getAccountDetails service");
+		
+		Account account = getAccount(accountId);
+		AccountDto accountDto = AccountMapper.toDto(account);
+		
+		log.info("END: getAccountDetails service");
+		return accountDto;
+	}
 }

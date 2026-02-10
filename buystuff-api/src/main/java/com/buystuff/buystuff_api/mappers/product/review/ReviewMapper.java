@@ -1,5 +1,7 @@
 package com.buystuff.buystuff_api.mappers.product.review;
 
+import java.util.UUID;
+
 import com.buystuff.buystuff_api.dto.product.review.CreateReviewDto;
 import com.buystuff.buystuff_api.dto.product.review.ReviewDto;
 import com.buystuff.buystuff_api.dto.product.review.UpdateReviewDto;
@@ -8,7 +10,7 @@ import com.buystuff.buystuff_api.entities.Product;
 import com.buystuff.buystuff_api.entities.Review;
 
 public abstract class ReviewMapper {
-	public static ReviewDto toDto(Review entity) {
+	public static ReviewDto toDto(Review entity, UUID accountId) {
 		ReviewDto dto = new ReviewDto();
 
 		dto.setReviewId(entity.getReviewId());
@@ -17,8 +19,7 @@ public abstract class ReviewMapper {
 		dto.setTitle(entity.getTitle());
 		dto.setContent(entity.getContent());
 		dto.setVerified(entity.getVerified());
-		dto.setCreatedAt(entity.getCreatedAt());
-		dto.setUpdatedAt(entity.getUpdatedAt());
+		dto.setAccountId(accountId);
 
 		dto.setCreatedAt(entity.getCreatedAt());
 		dto.setUpdatedAt(entity.getUpdatedAt());

@@ -12,6 +12,7 @@ import com.buystuff.buystuff_api.abstract_classes.BaseEntity;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -29,17 +30,12 @@ import lombok.Setter;
 @Table(name = "carts")
 public class Cart extends BaseEntity {
 	@Id
-	@Column(name = "account_id", columnDefinition = "uuid")
+	@Column(name = "account_id")
 	private UUID accountId;
 
-	@OneToOne(optional = false)
+	@OneToOne(fetch = FetchType.LAZY)
 	@MapsId
-	@JoinColumn(
-		name = "account_id", 
-		referencedColumnName = "account_id",
-		insertable = false,
-		updatable = false
-	)
+	@JoinColumn(name = "account_id")
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Account account;
 

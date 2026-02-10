@@ -14,7 +14,7 @@ import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
 import org.springframework.stereotype.Service;
 
-import com.buystuff.buystuff_api.entities.Account;
+import com.buystuff.buystuff_api.entities.UserPrincipal;
 import com.buystuff.buystuff_api.enums.Role;
 
 import lombok.RequiredArgsConstructor;
@@ -26,7 +26,7 @@ public class JwtTokenService {
     private final JwtEncoder encoder;
     private final JwtDecoder decoder;
 
-    public String generateToken(Account account) {
+    public String generateToken(UserPrincipal userPrincipal) {
         Instant now = Instant.now(); 
         Instant expiresAt = now.plus(1, ChronoUnit.DAYS);
 
@@ -34,9 +34,9 @@ public class JwtTokenService {
                 .issuer("self")
                 .issuedAt(now)
                 .expiresAt(expiresAt)
-                .subject(account.getAccountId().toString())
-				.claim("email", account.getEmail())
-				.claim("role", account.getRole().toString())
+                .subject(userPrincipal.getId().toString())
+				.claim("email", userPrincipal.getEmail())
+				.claim("role", userPrincipal.getRole().toString())
                 .build();
 
         var encoderParameters = JwtEncoderParameters.from(

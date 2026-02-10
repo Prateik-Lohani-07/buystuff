@@ -18,21 +18,13 @@ import lombok.Setter;
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor
 @Table(name = "users")
 public class User extends BaseEntity {
-	// PK being account ID since userId won't add any meaning to the tuple 
-	// a "user" is just some information about the account
-	// "account" is a proper domain entity though, representing a real life person
 	@Id
-	@Column(name = "account_id", columnDefinition = "uuid")
+	@Column(name = "account_id")
 	private UUID accountId;
 
-	@OneToOne(optional = false)
-    @MapsId
-	@JoinColumn(
-		name = "account_id",
-		referencedColumnName = "account_id",
-		insertable = false,
-		updatable = false
-	)
+	@OneToOne(fetch = FetchType.LAZY)
+	@MapsId
+	@JoinColumn(name = "account_id")
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Account account;
 

@@ -29,4 +29,7 @@ public class ReviewDto extends BaseResponseDto {
 	
 	@NotNull
 	private Boolean verified;
+
+	@NotNull
+	private UUID accountId;
 }

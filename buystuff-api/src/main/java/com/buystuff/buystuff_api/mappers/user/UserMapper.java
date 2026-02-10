@@ -10,7 +10,6 @@ public abstract class UserMapper {
 	public static User toEntity(CreateUserDto dto, Account account) {
 		User entity = new User();
 
-		entity.setAccountId(account.getAccountId());
 		entity.setAccount(account);
 		
 		entity.setFirstName(dto.getFirstName());
