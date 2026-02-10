@@ -4,6 +4,7 @@ import com.buystuff.buystuff_api.dto.account.AccountDto;
 import com.buystuff.buystuff_api.dto.account.user.CreateUserDto;
 import com.buystuff.buystuff_api.dto.authentication.SignupDto;
 import com.buystuff.buystuff_api.entities.Account;
+import com.buystuff.buystuff_api.entities.Cart;
 import com.buystuff.buystuff_api.entities.User;
 import com.buystuff.buystuff_api.enums.Role;
 import com.buystuff.buystuff_api.mappers.user.UserMapper;
@@ -15,11 +16,15 @@ public abstract class AccountMapper {
         CreateUserDto createUserDto = dto.getUserInfo();
         
 		User user = UserMapper.toEntity(createUserDto, account);
+		
+		Cart cart = new Cart();
+		cart.setAccount(account);
 
         account.setEmail(email);
         account.setPasswordHash(passwordHash);
         account.setUser(user);
         account.setRole(Role.CUSTOMER);
+		account.setCart(cart);
 
 		return account;
 	}

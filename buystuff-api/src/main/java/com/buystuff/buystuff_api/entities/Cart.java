@@ -15,6 +15,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
@@ -32,6 +33,7 @@ public class Cart extends BaseEntity {
 	private UUID accountId;
 
 	@OneToOne(optional = false)
+	@MapsId
 	@JoinColumn(
 		name = "account_id", 
 		referencedColumnName = "account_id",
@@ -48,37 +50,6 @@ public class Cart extends BaseEntity {
 	
 	@OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<CartItem> items = new ArrayList<>();
-
-	public CartItem addToCart(Product product) {
-		if (product == null) {
-			throw new IllegalArgumentException("Quantity must be positive!");
-		}
-
-		CartItem cartItem = items.stream()
-			.filter(item -> item.getProduct().equals(product))
-			.findFirst()
-			.orElse(null);
-
-		if (cartItem != null) {
-			cartItem.increaseQty();
-			return cartItem;
-		}
-
-		cartItem = new CartItem();
-		cartItem.setCart(this);
-		cartItem.setProduct(product);
-		cartItem.setQuantity(1);
-		cartItem.setPrice(product.getNetPrice());
-
-		items.add(cartItem);
-
-		return cartItem;
-	}
-
-	public void clear() {
-		items.clear();
-		coupon = null;
-	}
 
 	public double calculateTotalCost() {
 		double itemsCost = items.stream()
