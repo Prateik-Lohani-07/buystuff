@@ -7,7 +7,6 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.type.SqlTypes;
 
-import com.buystuff.buystuff_api.abstract_classes.BaseEntity;
 import com.buystuff.buystuff_api.snapshots.ProductSnapshot;
 
 import jakarta.persistence.Column;
