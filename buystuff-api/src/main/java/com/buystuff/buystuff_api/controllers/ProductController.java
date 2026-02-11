@@ -85,7 +85,10 @@ public class ProductController {
 		ProductDto product = productService.editProduct(productId, updateProductDto);
 
 		log.info("END: editProduct controller");
-		return ApiResponse.success(HttpStatus.NO_CONTENT.value(), "Successfully edited product", product);
+		return ApiResponse.success(
+			"Successfully edited product", 
+			product
+		);
 	}
 
 	@PreAuthorize("hasRole('ADMIN')")
@@ -98,6 +101,10 @@ public class ProductController {
 		productService.deleteProduct(productId);
 		
 		log.info("END: deleteProduct controller");
-		return ApiResponse.success(HttpStatus.NO_CONTENT.value(), "Successfully deleted product", null);
+		return ApiResponse.success(
+			HttpStatus.NO_CONTENT.value(), 
+			"Successfully deleted product", 
+			null
+		);
 	}
 }
