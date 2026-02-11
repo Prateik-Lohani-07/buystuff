@@ -30,7 +30,7 @@ public class Coupon extends BaseEntity {
 	private UUID couponId;
 
 	@NaturalId
-	@Column(name = "coupon_code", columnDefinition = "varchar", unique = true)
+	@Column(name = "coupon_code", columnDefinition = "varchar")
 	private String couponCode;
 
 	@Column(name = "name", columnDefinition = "varchar")
