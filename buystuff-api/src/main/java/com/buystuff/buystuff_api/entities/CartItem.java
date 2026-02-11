@@ -5,8 +5,6 @@ import java.util.UUID;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import com.buystuff.buystuff_api.abstract_classes.BaseEntity;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -23,7 +21,7 @@ import lombok.Setter;
 @Entity
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor
 @Table(name = "cart_items")
-public class CartItem extends BaseEntity {
+public class CartItem {
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
 	@Column(name = "item_id", columnDefinition = "uuid")
