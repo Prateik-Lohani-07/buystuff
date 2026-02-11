@@ -4,7 +4,7 @@ A comprehensive e-commerce app built with Spring Boot 3.5.8 and Java 17. This ap
 
 ## Project Overview (API)
 
-Buystuff API is a production-ready backend service designed to support a full-featured e-commerce platform. The application implements industry-standard practices including layered architecture, JWT-based authentication, role-based access control, and comprehensive data validation.
+Buystuff API is an backend service (in-development) designed to support a full-featured e-commerce platform. The application implements industry-standard practices including layered architecture, JWT-based authentication, role-based access control, and comprehensive data validation.
 
 ## Key Features
 
