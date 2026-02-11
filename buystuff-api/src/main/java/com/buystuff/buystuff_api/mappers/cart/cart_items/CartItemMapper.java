@@ -2,7 +2,9 @@ package com.buystuff.buystuff_api.mappers.cart.cart_items;
 
 import com.buystuff.buystuff_api.dto.cart.cart_item.CartItemDto;
 import com.buystuff.buystuff_api.dto.cart.cart_item.UpsertCartItemDto;
+import com.buystuff.buystuff_api.entities.Cart;
 import com.buystuff.buystuff_api.entities.CartItem;
+import com.buystuff.buystuff_api.entities.Product;
 
 public abstract class CartItemMapper {
 	public static CartItemDto toDto(CartItem entity) {
@@ -16,7 +18,14 @@ public abstract class CartItemMapper {
 		return dto;
 	}
 
-	public static void updateEntity(UpsertCartItemDto dto, CartItem entity) {
-		// entity
+	public static CartItem toEntity(UpsertCartItemDto dto, Cart cart, Product product) {
+		CartItem entity = new CartItem();
+
+		entity.setPrice(product.getPrice());
+		entity.setQuantity(dto.quantity());
+		entity.setCart(cart);
+		entity.setProduct(product);
+
+		return entity;
 	}
 }

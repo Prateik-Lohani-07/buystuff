@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.buystuff.buystuff_api.dto.ApiResponse;
 import com.buystuff.buystuff_api.dto.cart.CartDto;
 import com.buystuff.buystuff_api.dto.cart.UpdateCartDto;
+import com.buystuff.buystuff_api.dto.cart.cart_item.UpdateCartItemDto;
 import com.buystuff.buystuff_api.dto.cart.cart_item.UpsertCartItemDto;
 import com.buystuff.buystuff_api.entities.UserPrincipal;
 import com.buystuff.buystuff_api.services.cart.CartService;
@@ -24,7 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @Slf4j
-@RequestMapping("/api/v1/me/account/cart")
+@RequestMapping("/api/v1/me/cart")
 @RequiredArgsConstructor
 public class CartController {
 	private final CartService cartService;
@@ -34,11 +36,11 @@ public class CartController {
 		@AuthenticationPrincipal UserPrincipal userPrincipal,
 		@RequestBody List<UpsertCartItemDto> items
 	) {
-		log.info("START: addAllToCart controllers");
+		log.info("START: addAllToCart controller");
 		
 		CartDto cartDto = cartService.addAllToCart(userPrincipal.getId(), items);
 		
-		log.info("END: addAllToCart controllers");
+		log.info("END: addAllToCart controller");
 		return ApiResponse.success(
 			HttpStatus.CREATED.value(), 
 			"Successfully added item to cart", 
@@ -50,13 +52,13 @@ public class CartController {
 	public ApiResponse<CartDto> changeCartItem(
 		@AuthenticationPrincipal UserPrincipal userPrincipal,
 		@PathVariable(name = "item_id") UUID itemId,
-		@RequestBody UpsertCartItemDto item
+		@RequestBody UpdateCartItemDto item
 	) {
-		log.info("START: changeCartItem controllers");
+		log.info("START: changeCartItem controller");
 		
 		CartDto cartDto = cartService.changeCartItem(userPrincipal.getId(), itemId, item);
 		
-		log.info("END: changeCartItem controllers");
+		log.info("END: changeCartItem controller");
 		return ApiResponse.success(
 			HttpStatus.CREATED.value(), 
 			"Successfully updated cart item", 
@@ -69,13 +71,29 @@ public class CartController {
 		@AuthenticationPrincipal UserPrincipal userPrincipal,
 		@RequestBody UpdateCartDto updateCartDto
 	) {
-		log.info("START: updateCart controllers");
+		log.info("START: updateCart controller");
+		
 		CartDto cartDto = cartService.updateCart(userPrincipal.getId(), updateCartDto);
 		
-		log.info("END: updateCart controllers");
+		log.info("END: updateCart controller");
 		return ApiResponse.success(
 			"Successfully updated cart", 
 			cartDto
+		);
+	}
+
+	@DeleteMapping
+	public ApiResponse<Void> clearCart(
+		@AuthenticationPrincipal UserPrincipal userPrincipal
+	) {
+		log.info("START: clearCart controller");
+
+		cartService.clearCart(userPrincipal.getId());
+
+		log.info("END: clearCart controller");
+		return ApiResponse.success(
+			"Successfully cleared cart", 
+			null
 		);
 	}
 }

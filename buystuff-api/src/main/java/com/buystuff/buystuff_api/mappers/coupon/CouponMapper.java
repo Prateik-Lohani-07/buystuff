@@ -1,6 +1,6 @@
 package com.buystuff.buystuff_api.mappers.coupon;
 
-import com.buystuff.buystuff_api.dto.coupon.CouponDto;
+import com.buystuff.buystuff_api.dto.cart.coupon.CouponDto;
 import com.buystuff.buystuff_api.entities.Coupon;
 
 public abstract class CouponMapper {
