@@ -1,7 +1,6 @@
 package com.buystuff.buystuff_api.entities;
 
 import java.time.LocalDate;
-import java.util.UUID;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
@@ -19,12 +18,11 @@ import lombok.Setter;
 @Table(name = "users")
 public class User extends BaseEntity {
 	@Id
-	@Column(name = "account_id")
-	private UUID accountId;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "user_id")
+	private Long userId;
 
-	@OneToOne(fetch = FetchType.LAZY)
-	@MapsId
-	@JoinColumn(name = "account_id")
+	@OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Account account;
 

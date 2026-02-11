@@ -1,6 +1,7 @@
 package com.buystuff.buystuff_api.mappers.cart.cart_items;
 
 import com.buystuff.buystuff_api.dto.cart.cart_item.CartItemDto;
+import com.buystuff.buystuff_api.dto.cart.cart_item.UpsertCartItemDto;
 import com.buystuff.buystuff_api.entities.CartItem;
 
 public abstract class CartItemMapper {
@@ -13,5 +14,9 @@ public abstract class CartItemMapper {
 		dto.setProductCode(entity.getProduct().getProductCode());
 
 		return dto;
+	}
+
+	public static void updateEntity(UpsertCartItemDto dto, CartItem entity) {
+		// entity
 	}
 }

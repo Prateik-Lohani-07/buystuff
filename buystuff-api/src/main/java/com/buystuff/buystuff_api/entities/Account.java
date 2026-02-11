@@ -18,9 +18,9 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
-import jakarta.persistence.PrimaryKeyJoinColumn;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -51,8 +51,8 @@ public class Account extends BaseEntity {
 	@OneToMany(mappedBy = "account")
 	private List<Order> orders = new ArrayList<>();
 
-	@OneToOne(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-	@PrimaryKeyJoinColumn
+	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+	@JoinColumn(name = "cart_id", referencedColumnName = "cart_id")
 	private Cart cart;
 	
 	@OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -61,8 +61,8 @@ public class Account extends BaseEntity {
 	@OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<PaymentInfo> paymentInfoList = new ArrayList<>();
 
-	@OneToOne(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-	@PrimaryKeyJoinColumn
+	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_id", referencedColumnName = "user_id")
 	private User user;
 
 	@OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
