@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.buystuff.buystuff_api.dto.ApiResponse;
@@ -32,6 +33,7 @@ import lombok.extern.slf4j.Slf4j;
 public class ProductController {
 	private final ProductService productService;
 
+	@ResponseStatus(HttpStatus.OK)
 	@GetMapping
 	public ApiResponse<List<ProductDto>> getAllProducts(
 		@RequestParam(defaultValue = "10") int limit,
@@ -49,6 +51,7 @@ public class ProductController {
 		return ApiResponse.success("Successfully fetched products", products);
 	}
 
+	@ResponseStatus(HttpStatus.OK)
 	@GetMapping("/{product_id}")
 	public ApiResponse<ProductDto> getProductDetails(
 		@PathVariable UUID productId
@@ -61,6 +64,7 @@ public class ProductController {
 		return ApiResponse.success("Successfully fetched product", product);
 	}
 	
+	@ResponseStatus(HttpStatus.CREATED)
 	@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping
 	public ApiResponse<ProductDto> addProduct(
@@ -74,6 +78,7 @@ public class ProductController {
 		return ApiResponse.success(HttpStatus.CREATED.value(), "Successfully added product", product);
 	}
 
+	@ResponseStatus(HttpStatus.OK)
 	@PreAuthorize("hasRole('ADMIN')")
 	@PatchMapping("/{product_id}")
 	public ApiResponse<ProductDto> editProduct(
@@ -91,6 +96,7 @@ public class ProductController {
 		);
 	}
 
+	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@PreAuthorize("hasRole('ADMIN')")
 	@DeleteMapping("/{product_id}")
 	public ApiResponse<Void> deleteProduct(

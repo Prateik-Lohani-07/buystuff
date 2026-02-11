@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.buystuff.buystuff_api.dto.ApiResponse;
@@ -31,6 +32,7 @@ import lombok.extern.slf4j.Slf4j;
 public class CartController {
 	private final CartService cartService;
 
+	@ResponseStatus(HttpStatus.CREATED)
 	@PostMapping("/items")
 	public ApiResponse<CartDto> addAllToCart(
 		@AuthenticationPrincipal UserPrincipal userPrincipal,
@@ -48,6 +50,7 @@ public class CartController {
 		);
 	}
 
+	@ResponseStatus(HttpStatus.OK)
 	@PatchMapping("/items/{item_id}")
 	public ApiResponse<CartDto> changeCartItem(
 		@AuthenticationPrincipal UserPrincipal userPrincipal,
@@ -66,6 +69,7 @@ public class CartController {
 		);
 	}
 
+	@ResponseStatus(HttpStatus.OK)
 	@PatchMapping
 	public ApiResponse<CartDto> updateCart(
 		@AuthenticationPrincipal UserPrincipal userPrincipal,
@@ -82,6 +86,7 @@ public class CartController {
 		);
 	}
 
+	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@DeleteMapping
 	public ApiResponse<Void> clearCart(
 		@AuthenticationPrincipal UserPrincipal userPrincipal
@@ -92,6 +97,7 @@ public class CartController {
 
 		log.info("END: clearCart controller");
 		return ApiResponse.success(
+			HttpStatus.NO_CONTENT.value(),
 			"Successfully cleared cart", 
 			null
 		);

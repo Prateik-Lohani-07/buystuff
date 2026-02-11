@@ -1,10 +1,12 @@
 package com.buystuff.buystuff_api.controllers;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.buystuff.buystuff_api.dto.ApiResponse;
@@ -28,6 +30,7 @@ public class AuthController {
     private final AuthService authService;
 	private final AccountService accountService;
 
+	@ResponseStatus(HttpStatus.OK)
     @PostMapping("/login")
     public ApiResponse<String> login(
 		@Valid @RequestBody 
@@ -41,6 +44,7 @@ public class AuthController {
 		return ApiResponse.success("Login successful", jwtToken);
     }
 
+	@ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/signup")
     public ApiResponse<String> signup(
 		@Valid @RequestBody 
@@ -54,6 +58,7 @@ public class AuthController {
 		return ApiResponse.success("Signup successful", jwtToken);
     }
 
+	@ResponseStatus(HttpStatus.OK)
     @GetMapping("/me")
     public ApiResponse<AccountDto> getCurrentUser(
 		@AuthenticationPrincipal UserPrincipal userPrincipal
