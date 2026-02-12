@@ -51,12 +51,16 @@ public class ProductServiceImpl implements ProductService {
 
 		if (sortBy != null) {
 			if (!validSortBy(sortBy)) throw new BadRequestException("Invalid sort by field");
+			
 			if (sortBy.equals("price")) sortBy = "netPrice";
+			if (sortBy.equals("reviews")) sortBy = "numberOfReviews";
 
-			if (sortOrder != null && sortOrder.equals(SortOrder.ASC)) 
-				sortOptions = Sort.by(sortBy).ascending();
+			sortOptions = Sort.by(sortBy);
+
+			if (sortOrder == null || sortOrder.equals(SortOrder.ASC)) 
+				sortOptions = sortOptions.ascending();
 			else 
-				sortOptions = Sort.by(sortBy).descending();	
+				sortOptions = sortOptions.descending();	
 		}
 		else sortOptions = Sort.by("productId").ascending();
 		
@@ -80,9 +84,7 @@ public class ProductServiceImpl implements ProductService {
 			return List.of();
 		}
 
-		System.out.println(idPage.getContent());
-
-		List<Product> products = productRepository.findAllByIds(idPage.getContent());
+		List<Product> products = productRepository.findAllByIds(idPage.getContent(), sortOptions);
 		List<ProductDto> productDto = 
 			products
 				.stream()

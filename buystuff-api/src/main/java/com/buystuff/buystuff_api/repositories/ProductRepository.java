@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -46,6 +47,7 @@ public interface ProductRepository extends JpaRepository<Product, UUID> {
 		WHERE p.productId IN :product_ids
 	""")
 	List<Product> findAllByIds(
-		@Param("product_ids") List<UUID> productIds
+		@Param("product_ids") List<UUID> productIds,
+		Sort sortOptions
 	);
 }
