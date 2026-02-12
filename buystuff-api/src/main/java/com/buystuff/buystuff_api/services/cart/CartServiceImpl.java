@@ -25,6 +25,7 @@ import com.buystuff.buystuff_api.exceptions.UnProcessableException;
 import com.buystuff.buystuff_api.mappers.cart.CartMapper;
 import com.buystuff.buystuff_api.mappers.cart.cart_items.CartItemMapper;
 import com.buystuff.buystuff_api.repositories.CartItemRepository;
+import com.buystuff.buystuff_api.repositories.CartRepository;
 import com.buystuff.buystuff_api.repositories.ProductRepository;
 import com.buystuff.buystuff_api.services.account.AccountService;
 import com.buystuff.buystuff_api.services.coupon.CouponService;
@@ -37,6 +38,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequiredArgsConstructor
 public class CartServiceImpl implements CartService {
+	private final CartRepository cartRepository;
 	private final CartItemRepository cartItemRepository;
 	private final ProductRepository productRepository;
 	
@@ -46,6 +48,18 @@ public class CartServiceImpl implements CartService {
 	private static enum QuantitySetMode {
 		INCREMENT,
 		SET
+	}
+
+	@Override
+	public CartDto viewCart(UUID accountId) {
+		log.info("START: viewCart service");
+
+		Account account = accountService.getAccount(accountId);
+		Cart cart = account.getCart();
+		CartDto cartDto = CartMapper.toDto(cart, accountId);
+
+		log.info("END: viewCart service");
+		return cartDto;
 	}
 
 	/**
@@ -97,6 +111,9 @@ public class CartServiceImpl implements CartService {
 		Cart cart = account.getCart();
 
 		bulkUpsertCart(cart, QuantitySetMode.INCREMENT, upsertItems);
+		cart = cartRepository.save(cart);
+		cartRepository.flush();
+		
 		CartDto cartDto = CartMapper.toDto(cart, accountId);
 
 		log.info("END: addAllToCart service");
@@ -109,6 +126,7 @@ public class CartServiceImpl implements CartService {
 	 * is idempotent.
 	 */
 	@Override
+	@Transactional
 	public CartDto updateCart(UUID accountId, UpdateCartDto updateCartDto) {
 		log.info("START: updateCart service");
 
@@ -150,40 +168,39 @@ public class CartServiceImpl implements CartService {
 		QuantitySetMode mode, 
 		List<UpsertCartItemDto> upsertItems
 	) {
-		Set<UUID> productIds = 
+		Set<String> productCodes = 
 			upsertItems.stream()
-				.map(UpsertCartItemDto::productId)
+				.map(UpsertCartItemDto::productCode)
 				.collect(Collectors.toSet());
 
-		if (upsertItems.size() != productIds.size()) {
+		// checking for duplicate ids
+		if (upsertItems.size() != productCodes.size()) {
 			throw new BadRequestException("One or more duplicate product IDs specified");
 		}
 
-		List<Product> products = productRepository.findAllById(productIds);
-
-		if (products.size() != productIds.size()) {
+		List<Product> products = productRepository.findAllByProductCodeIn(productCodes);
+		if (products.size() != productCodes.size()) {
 			throw new BadRequestException("One or more products specified do not exist");
 		}
 
-		List<CartItem> existingItems = cartItemRepository.findByCartAndProduct_ProductIdIn(cart, productIds);
-
-		Map<UUID, Product> productMap = 
+		List<CartItem> existingItems = cartItemRepository.findByCartAndProduct_ProductCodeIn(cart, productCodes);
+		Map<String, Product> productMap = 
 			products.stream()
 				.collect(Collectors.toMap(
-					product -> product.getProductId(),
+					product -> product.getProductCode(),
 					Function.identity()
 				));
 
-		Map<UUID, CartItem> existingCartItemsMap = 
+		Map<String, CartItem> existingCartItemsMap = 
 			existingItems.stream()
 				.collect(Collectors.toMap(
-					cartItem -> cartItem.getProduct().getProductId(), 
+					cartItem -> cartItem.getProduct().getProductCode(), 
 					Function.identity()
 				));
 
 		for (var dto: upsertItems) {
-			Product product = productMap.get(dto.productId());
-			CartItem existingItem = existingCartItemsMap.get(dto.productId());
+			Product product = productMap.get(dto.productCode());
+			CartItem existingItem = existingCartItemsMap.get(dto.productCode());
 
 			int baseQty = Optional.ofNullable(existingItem)
 					.map(item -> item.getQuantity())
@@ -194,8 +211,7 @@ public class CartServiceImpl implements CartService {
 			}
 
 			if (existingItem != null) {
-				int newQuantity = existingItem.getQuantity() + dto.quantity();
-				existingItem.setQuantity(newQuantity);
+				existingItem.setQuantity(newQty);
 			}
 			else {
 				CartItem newItem = CartItemMapper.toEntity(dto, cart, product);
@@ -203,5 +219,4 @@ public class CartServiceImpl implements CartService {
 			}
 		}
 	}
-	
 }

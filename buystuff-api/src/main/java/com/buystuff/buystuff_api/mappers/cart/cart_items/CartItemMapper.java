@@ -10,6 +10,7 @@ public abstract class CartItemMapper {
 	public static CartItemDto toDto(CartItem entity) {
 		CartItemDto dto = new CartItemDto();
 
+		System.out.println(entity.getItemId());
 		dto.setItemId(entity.getItemId());
 		dto.setPrice(entity.getPrice());
 		dto.setQuantity(entity.getQuantity());

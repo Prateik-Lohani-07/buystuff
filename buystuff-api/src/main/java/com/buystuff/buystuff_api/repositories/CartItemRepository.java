@@ -2,14 +2,13 @@ package com.buystuff.buystuff_api.repositories;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.buystuff.buystuff_api.entities.Cart;
 import com.buystuff.buystuff_api.entities.CartItem;
 
-public interface CartItemRepository extends JpaRepository<CartItem, UUID> {
-	List<CartItem> findByCartAndProduct_ProductIdIn(Cart cart, Collection<UUID> productIds);
+public interface CartItemRepository extends JpaRepository<CartItem, Long> {
+	List<CartItem> findByCartAndProduct_ProductCodeIn(Cart cart, Collection<String> productCodes);
 	void deleteByCart(Cart cart);
 }

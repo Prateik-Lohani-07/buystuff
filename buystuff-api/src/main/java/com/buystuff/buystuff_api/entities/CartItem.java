@@ -1,7 +1,5 @@
 package com.buystuff.buystuff_api.entities;
 
-import java.util.UUID;
-
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -23,9 +21,9 @@ import lombok.Setter;
 @Table(name = "cart_items")
 public class CartItem {
 	@Id
-	@GeneratedValue(strategy = GenerationType.UUID)
-	@Column(name = "item_id", columnDefinition = "uuid")
-	private UUID itemId;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "item_id")
+	private Long itemId;
 
 	@Column(name = "price", columnDefinition = "numeric")
 	private double price;

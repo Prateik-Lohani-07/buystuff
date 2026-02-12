@@ -6,6 +6,7 @@ import java.util.UUID;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,6 +32,22 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class CartController {
 	private final CartService cartService;
+
+	@ResponseStatus(HttpStatus.OK)
+	@GetMapping
+	public ApiResponse<CartDto> viewCart(
+		@AuthenticationPrincipal UserPrincipal userPrincipal
+	) {
+		log.info("START: viewCart controller");
+		
+		CartDto cartDto = cartService.viewCart(userPrincipal.getId());
+		
+		log.info("END: viewCart controller");
+		return ApiResponse.success(
+			"Successfully fetched cart", 
+			cartDto
+		);
+	}
 
 	@ResponseStatus(HttpStatus.CREATED)
 	@PostMapping("/items")
@@ -70,7 +87,7 @@ public class CartController {
 	}
 
 	@ResponseStatus(HttpStatus.OK)
-	@PatchMapping
+	@PatchMapping	
 	public ApiResponse<CartDto> updateCart(
 		@AuthenticationPrincipal UserPrincipal userPrincipal,
 		@RequestBody UpdateCartDto updateCartDto

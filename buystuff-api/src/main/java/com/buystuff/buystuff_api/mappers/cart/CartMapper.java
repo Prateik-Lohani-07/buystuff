@@ -12,7 +12,10 @@ public abstract class CartMapper {
 		CartDto dto = new CartDto();
 
 		dto.setAccountId(accountId);
-		dto.setCoupon(CouponMapper.toDto(entity.getCoupon()));
+		
+		if (entity.getCoupon() != null) 
+			dto.setCoupon(CouponMapper.toDto(entity.getCoupon()));
+			
 		dto.setItems(
 			entity.getItems()
 				.stream()
