@@ -10,6 +10,6 @@ import com.buystuff.buystuff_api.entities.Cart;
 import com.buystuff.buystuff_api.entities.CartItem;
 
 public interface CartItemRepository extends JpaRepository<CartItem, UUID> {
-	List<CartItem> findByCartAndProduct_IdIn(Cart cart, Collection<UUID> productIds);
+	List<CartItem> findByCartAndProduct_ProductIdIn(Cart cart, Collection<UUID> productIds);
 	void deleteByCart(Cart cart);
 }

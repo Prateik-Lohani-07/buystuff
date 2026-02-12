@@ -165,7 +165,7 @@ public class CartServiceImpl implements CartService {
 			throw new BadRequestException("One or more products specified do not exist");
 		}
 
-		List<CartItem> existingItems = cartItemRepository.findByCartAndProduct_IdIn(cart, productIds);
+		List<CartItem> existingItems = cartItemRepository.findByCartAndProduct_ProductIdIn(cart, productIds);
 
 		Map<UUID, Product> productMap = 
 			products.stream()
@@ -178,8 +178,8 @@ public class CartServiceImpl implements CartService {
 			existingItems.stream()
 				.collect(Collectors.toMap(
 					cartItem -> cartItem.getProduct().getProductId(), 
-					Function.identity())
-				);
+					Function.identity()
+				));
 
 		for (var dto: upsertItems) {
 			Product product = productMap.get(dto.productId());
