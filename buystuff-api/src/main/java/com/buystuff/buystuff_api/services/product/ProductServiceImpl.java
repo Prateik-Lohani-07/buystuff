@@ -84,7 +84,7 @@ public class ProductServiceImpl implements ProductService {
 			return List.of();
 		}
 
-		List<Product> products = productRepository.findAllByIds(idPage.getContent(), sortOptions);
+		List<Product> products = productRepository.findAllProductsWithCategories(idPage.getContent(), sortOptions);
 		List<ProductDto> productDto = 
 			products
 				.stream()

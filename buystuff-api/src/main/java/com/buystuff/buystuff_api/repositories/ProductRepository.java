@@ -1,6 +1,7 @@
 package com.buystuff.buystuff_api.repositories;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import org.springframework.data.domain.Page;
@@ -46,8 +47,10 @@ public interface ProductRepository extends JpaRepository<Product, UUID> {
 		JOIN FETCH p.categories c
 		WHERE p.productId IN :product_ids
 	""")
-	List<Product> findAllByIds(
+	List<Product> findAllProductsWithCategories(
 		@Param("product_ids") List<UUID> productIds,
 		Sort sortOptions
 	);
+
+	List<Product> findAllByProductCodeIn(Set<String> productCodes);
 }
