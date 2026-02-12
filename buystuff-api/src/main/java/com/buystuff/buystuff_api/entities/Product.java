@@ -59,15 +59,18 @@ public class Product extends BaseEntity {
 	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Review> reviews = new ArrayList<>();
 
-	@Formula("(SELECT COUNT(*) FROM reviews r WHERE r.product_id = product_id)")
-	private Integer numberOfReviews;
-	
 	@Column(name = "avg_rating", columnDefinition = "numeric")
 	private Double avgRating;
 	
 	@ColumnDefault("'true'")
 	@Column(name = "is_active", columnDefinition = "boolean")
 	private Boolean isActive;
+
+	@Formula("(SELECT COUNT(*) FROM reviews r WHERE r.product_id = product_id)")
+	private Integer numberOfReviews;
+
+	@Formula("price - discount")
+	private Double netPrice;
 
 	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
 	@JoinTable(
@@ -76,8 +79,4 @@ public class Product extends BaseEntity {
 		inverseJoinColumns = @JoinColumn(name = "category_code")
 	)
 	private List<Category> categories = new ArrayList<>();
-
-	public Double getNetPrice() {
-		return price - discount;
-	}
 }

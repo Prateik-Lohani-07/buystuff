@@ -21,21 +21,31 @@ public interface ProductRepository extends JpaRepository<Product, UUID> {
 	 * performance overhead would be negligible.
 	 */
 	@Query(value = """
-		SELECT DISTINCT p 
+		SELECT p.productId
 		FROM Product p
 		JOIN p.categories c
 		WHERE p.isActive = true
 			AND (:categories IS NULL OR c.categoryCode IN :categories)
-			AND (:price_start IS NULL OR (p.price - p.discount) >= :price_start)
-			AND (:price_end IS NULL OR (p.price - p.discount) <= :price_end)
-		GROUP BY p
+			AND (:price_start IS NULL OR p.netPrice >= :price_start)
+			AND (:price_end IS NULL OR p.netPrice <= :price_end)
+		GROUP BY p.productId
 		HAVING (:categories IS NULL OR COUNT(DISTINCT c.categoryCode) = :category_count)
 	""")
-	Page<Product> findAll(
+	Page<UUID> findAllIds(
 		@Param("categories") List<String> categories,
 		@Param("category_count") Integer categoryCount,
 		@Param("price_start") Double priceStart,
 		@Param("price_end") Double priceEnd,
 		Pageable pageable
+	);
+
+	@Query(value = """
+		SELECT DISTINCT p
+		FROM Product p
+		JOIN FETCH p.categories c
+		WHERE p.productId IN :product_ids
+	""")
+	List<Product> findAllByIds(
+		@Param("product_ids") List<UUID> productIds
 	);
 }

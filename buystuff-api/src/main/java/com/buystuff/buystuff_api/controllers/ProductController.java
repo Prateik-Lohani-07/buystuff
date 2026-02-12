@@ -21,6 +21,7 @@ import com.buystuff.buystuff_api.dto.product.CreateProductDto;
 import com.buystuff.buystuff_api.dto.product.ProductDto;
 import com.buystuff.buystuff_api.dto.product.ProductFilterDto;
 import com.buystuff.buystuff_api.dto.product.UpdateProductDto;
+import com.buystuff.buystuff_api.enums.SortOrder;
 import com.buystuff.buystuff_api.services.product.ProductService;
 
 import lombok.RequiredArgsConstructor;
@@ -36,15 +37,17 @@ public class ProductController {
 	@ResponseStatus(HttpStatus.OK)
 	@GetMapping
 	public ApiResponse<List<ProductDto>> getAllProducts(
-		@RequestParam(defaultValue = "10") int limit,
-		@RequestParam(defaultValue = "0") int skip,
-		@RequestParam(required = false) List<String> categories,
+		@RequestParam(defaultValue = "10") int size,
+		@RequestParam(defaultValue = "0") int page,
+		@RequestParam(name = "sort_by", required = false) String sortBy,
+		@RequestParam(name = "sort_order", required = false) SortOrder sortOrder,
+		@RequestParam(name = "category", required = false) List<String> categories,
 		@RequestParam(name = "price_start", required = false) Double priceStart,
 		@RequestParam(name = "price_end", required = false) Double priceEnd
 	) {
 		log.info("START: getAllProducts controller");
 		
-		ProductFilterDto filters = new ProductFilterDto(limit, skip, categories, priceStart, priceEnd);
+		ProductFilterDto filters = new ProductFilterDto(size, page, sortBy, sortOrder, categories, priceStart, priceEnd);
 		List<ProductDto> products = productService.getAllProducts(filters);
 		
 		log.info("END: getAllProducts controller");

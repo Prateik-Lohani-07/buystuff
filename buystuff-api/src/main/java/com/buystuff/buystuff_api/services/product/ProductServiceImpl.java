@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.buystuff.buystuff_api.dto.product.CreateProductDto;
@@ -13,6 +14,8 @@ import com.buystuff.buystuff_api.dto.product.ProductFilterDto;
 import com.buystuff.buystuff_api.dto.product.UpdateProductDto;
 import com.buystuff.buystuff_api.entities.Category;
 import com.buystuff.buystuff_api.entities.Product;
+import com.buystuff.buystuff_api.enums.SortOrder;
+import com.buystuff.buystuff_api.exceptions.BadRequestException;
 import com.buystuff.buystuff_api.exceptions.NotFoundException;
 import com.buystuff.buystuff_api.mappers.product.ProductMapper;
 import com.buystuff.buystuff_api.repositories.ProductRepository;
@@ -29,24 +32,57 @@ public class ProductServiceImpl implements ProductService {
 
 	private final ProductRepository productRepository;
 	private final CategoryService categoryService;
+	private static final List<String> sortByFields = List.of("price", "reviews");
 
 	@Override
 	public List<ProductDto> getAllProducts(ProductFilterDto filters) {
 		log.info("START: getAllProducts service");
-		
-		int pageSize = filters.getSkip() / filters.getLimit();
-		PageRequest pageRequest = PageRequest.of(pageSize, filters.getLimit());
-		int numCategories = filters.getCategories() == null ? 0 : filters.getCategories().size();
 
-		Page<Product> page = productRepository.findAll(
-			filters.getCategories(),
+		int page = filters.page();
+		int pageSize = filters.size();
+
+		if (pageSize < 0) {
+			throw new BadRequestException("Limit must be greater than 0");
+		}
+
+		Sort sortOptions;
+		String sortBy = filters.sortBy();
+		SortOrder sortOrder = filters.sortOrder();
+
+		if (sortBy != null) {
+			if (!validSortBy(sortBy)) throw new BadRequestException("Invalid sort by field");
+			if (sortBy.equals("price")) sortBy = "netPrice";
+
+			if (sortOrder != null && sortOrder.equals(SortOrder.ASC)) 
+				sortOptions = Sort.by(sortBy).ascending();
+			else 
+				sortOptions = Sort.by(sortBy).descending();	
+		}
+		else sortOptions = Sort.by("productId").ascending();
+		
+		PageRequest pageRequest = PageRequest.of(
+			page, 
+			pageSize,
+			sortOptions
+		);
+		int numCategories = filters.categories() == null ? 0 : filters.categories().size();
+
+		Page<UUID> idPage = productRepository.findAllIds(
+			filters.categories(), 
 			numCategories,
-			filters.getPriceStart(),
-			filters.getPriceEnd(),
+			filters.priceStart(), 
+			filters.priceEnd(), 
 			pageRequest
 		);
-			
-		List<Product> products = page.getContent();
+
+		if (idPage.isEmpty()) {
+			log.info("END: getAllProducts service");
+			return List.of();
+		}
+
+		System.out.println(idPage.getContent());
+
+		List<Product> products = productRepository.findAllByIds(idPage.getContent());
 		List<ProductDto> productDto = 
 			products
 				.stream()
@@ -127,5 +163,9 @@ public class ProductServiceImpl implements ProductService {
 		
 		log.info("START: getProduct service");
 		return product;		
+	}
+
+	private boolean validSortBy(String fieldName) {
+		return sortByFields.contains(fieldName);
 	}
 }
