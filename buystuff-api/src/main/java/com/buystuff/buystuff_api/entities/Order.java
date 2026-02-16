@@ -21,6 +21,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
@@ -32,7 +33,7 @@ import lombok.Setter;
 
 @Entity
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor
-@Table(name = "orders")
+@Table(name = "orders", indexes = { @Index(columnList = "created_at") })
 public class Order extends BaseEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
