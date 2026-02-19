@@ -2,7 +2,7 @@ CREATE OR REPLACE FUNCTION update_revenue()
 RETURNS TRIGGER AS $$
 BEGIN
 	-- only update it status transitions to 'DELIVERED'
-	IF OLD.status <> 'DELIVERED' AND NEW.status = 'DELIVERED' 
+	IF OLD.status <> 'ACCEPTED' AND NEW.status = 'ACCEPTED' 
 	THEN
 		INSERT INTO sales_info(product_id, quantity_sold, revenue, created_at, updated_at)
 		SELECT
