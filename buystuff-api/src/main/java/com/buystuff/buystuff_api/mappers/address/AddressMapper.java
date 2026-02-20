@@ -5,6 +5,7 @@ import com.buystuff.buystuff_api.dto.account.address.CreateAddressDto;
 import com.buystuff.buystuff_api.dto.account.address.UpdateAddressDto;
 import com.buystuff.buystuff_api.entities.Account;
 import com.buystuff.buystuff_api.entities.Address;
+import com.buystuff.buystuff_api.snapshots.AddressSnapshot;
 
 public abstract class AddressMapper {
 	public static Address toEntity(CreateAddressDto dto, Account account) {
@@ -64,4 +65,18 @@ public abstract class AddressMapper {
 
 		return dto;
 	}
+
+	public static AddressSnapshot toSnapshot(Address address) {
+		AddressSnapshot addressSnapshot = new AddressSnapshot();
+
+		addressSnapshot.setFlatOrBlock(address.getFlatOrBlock());
+		addressSnapshot.setLine1(address.getLine1());
+		addressSnapshot.setLine2(address.getLine2());
+		addressSnapshot.setCity(address.getCity());
+		addressSnapshot.setState(address.getState());
+		addressSnapshot.setCountry(address.getCountry());
+		addressSnapshot.setPincode(address.getPincode());
+
+		return addressSnapshot;
+	} 
 }
