@@ -2,6 +2,7 @@ package com.buystuff.buystuff_api.mappers.payment_info;
 
 import com.buystuff.buystuff_api.mappers.payment_info.credit_card.CreditCardMapper;
 import com.buystuff.buystuff_api.mappers.payment_info.upi.UPIMapper;
+import com.buystuff.buystuff_api.snapshots.PaymentInfoSnapshot;
 import com.buystuff.buystuff_api.dto.account.payment_info.CreatePaymentInfoDto;
 import com.buystuff.buystuff_api.dto.account.payment_info.PaymentInfoDto;
 import com.buystuff.buystuff_api.dto.account.payment_info.credit_card.CreateCreditCardDto;
@@ -27,12 +28,22 @@ public abstract class PaymentInfoMapper {
 		}
 	}
 
-	public static PaymentInfoDto toDTO(PaymentInfo entity) {
+	public static PaymentInfoDto toDto(PaymentInfo entity) {
 		if (entity instanceof CreditCardPaymentInfo ccEntity)
-			return CreditCardMapper.toDTO(ccEntity);
+			return CreditCardMapper.toDto(ccEntity);
 		
 		else if (entity instanceof UPIPaymentInfo upiEntity)
-			return UPIMapper.toDTO(upiEntity);
+			return UPIMapper.toDto(upiEntity);
+
+		else throw new IllegalArgumentException("Unsupported payment type in entity");
+	}
+
+	public static PaymentInfoSnapshot toSnapshot(PaymentInfo entity) {
+		if (entity instanceof CreditCardPaymentInfo ccEntity)
+			return CreditCardMapper.toSnapshot(ccEntity);
+		
+		else if (entity instanceof UPIPaymentInfo upiEntity)
+			return UPIMapper.toSnapshot(upiEntity);
 
 		else throw new IllegalArgumentException("Unsupported payment type in entity");
 	}

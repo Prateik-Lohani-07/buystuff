@@ -4,6 +4,7 @@ import com.buystuff.buystuff_api.dto.account.payment_info.upi.CreateUPIDto;
 import com.buystuff.buystuff_api.dto.account.payment_info.upi.UPIDto;
 import com.buystuff.buystuff_api.entities.Account;
 import com.buystuff.buystuff_api.entities.UPIPaymentInfo;
+import com.buystuff.buystuff_api.snapshots.UPIPaymentInfoSnapshot;
 
 public abstract class UPIMapper {
 	public static UPIPaymentInfo toEntity(CreateUPIDto dto, Account account) {
@@ -15,7 +16,7 @@ public abstract class UPIMapper {
 		return entity;
 	}
 
-	public static UPIDto toDTO(UPIPaymentInfo entity) {
+	public static UPIDto toDto(UPIPaymentInfo entity) {
 		UPIDto dto = new UPIDto();
 
 		dto.setPaymentInfoId(entity.getPaymentInfoId());
@@ -28,5 +29,16 @@ public abstract class UPIMapper {
 		dto.setUpdatedAt(entity.getUpdatedAt());
 
 		return dto;
+	}
+
+	public static UPIPaymentInfoSnapshot toSnapshot(UPIPaymentInfo entity) {
+		UPIPaymentInfoSnapshot snapshot = new UPIPaymentInfoSnapshot();
+
+		snapshot.setPaymentInfoId(entity.getPaymentInfoId());
+		snapshot.setAccountId(entity.getAccount().getAccountId());
+		
+		snapshot.setUpiId(entity.getUpiId());
+
+		return snapshot;
 	}
 }
