@@ -33,22 +33,38 @@ public class AccountServiceImpl implements AccountService {
 	private final PaymentInfoRepository paymentInfoRepository;
 	
 	@Override
-	public PaymentInfoDto addPaymentInfo(Account account, CreatePaymentInfoDto createPaymentInfoDto) {
+	public PaymentInfoDto addPaymentInfo(UUID accountId, CreatePaymentInfoDto createPaymentInfoDto) {
 		log.info("START: addPaymentInfo service");
 		
+		Account account = getAccount(accountId);
 		PaymentInfo paymentInfo = PaymentInfoMapper.toEntity(createPaymentInfoDto, account);
 		paymentInfo = paymentInfoRepository.save(paymentInfo);
 
-		PaymentInfoDto paymentInfoDto = PaymentInfoMapper.toDTO(paymentInfo);
+		PaymentInfoDto paymentInfoDto = PaymentInfoMapper.toDto(paymentInfo);
 
 		log.info("END: addPaymentInfo service");
 		return paymentInfoDto;
 	}
 
 	@Override
-	public AddressDto addAddress(Account account, CreateAddressDto createAddressDto) {
+	public PaymentInfo getPaymentInfo(UUID paymentInfoId) {
+		log.info("START: getPaymentInfo service");
+
+		PaymentInfo paymentInfo = paymentInfoRepository
+			.findById(paymentInfoId)
+			.orElseThrow(() -> new NotFoundException(
+				String.format("PaymentInfo for ID %s not found", paymentInfoId.toString())
+			));
+		
+		log.info("END: getPaymentInfo service");
+		return paymentInfo;
+	}
+
+	@Override
+	public AddressDto addAddress(UUID accountId, CreateAddressDto createAddressDto) {
 		log.info("START: addAddress service");
 		
+		Account account = getAccount(accountId);
 		Address address = AddressMapper.toEntity(createAddressDto, account);
 		address = addressRepository.save(address);
 
@@ -59,12 +75,12 @@ public class AccountServiceImpl implements AccountService {
 	}
 
 	@Override
-	public AddressDto updateAddress(Account account, UpdateAddressDto updateAddressDto) {
+	public AddressDto updateAddress(UUID accountId, UUID addressId, UpdateAddressDto updateAddressDto) {
 		log.info("START: updateAddress service");
 		
 		Address address = 
 			addressRepository
-				.findById(updateAddressDto.getAddressId())
+				.findByAddressIdAndAccount_AccountId(addressId, accountId)
 				.orElseThrow(() -> new NotFoundException("Address not found."));
 		
 		AddressMapper.updateEntity(updateAddressDto, address);
@@ -73,8 +89,20 @@ public class AccountServiceImpl implements AccountService {
 		AddressDto addressDto = AddressMapper.toDto(address);
 
 		log.info("END: updateAddress service");
-
 		return addressDto;
+	}
+
+	@Override
+	public Address getAddress(UUID addressId) {
+		log.info("START: getAddress service");
+		
+		Address address = 
+			addressRepository
+				.findById(addressId)
+				.orElseThrow(() -> new NotFoundException("Address not found."));
+		
+		log.info("END: getAddress service");
+		return address;
 	}
 
 	@Override
