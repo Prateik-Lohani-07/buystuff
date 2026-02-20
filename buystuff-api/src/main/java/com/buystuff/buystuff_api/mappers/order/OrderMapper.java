@@ -15,7 +15,7 @@ import com.buystuff.buystuff_api.mappers.address.AddressMapper;
 import com.buystuff.buystuff_api.mappers.payment_info.PaymentInfoMapper;
 
 public abstract class OrderMapper {
-	public static OrderDto toDTO(Order entity) {
+	public static OrderDto toDto(Order entity) {
 		OrderDto dto = new OrderDto();
 
 		dto.setOrderId(entity.getOrderId());
@@ -23,7 +23,7 @@ public abstract class OrderMapper {
 		dto.setItems(
 			entity.getItems()
 				.stream()
-				.map(OrderItemMapper::toDTO)
+				.map(OrderItemMapper::toDto)
 				.toList()
 		);
 		
