@@ -22,7 +22,7 @@ public abstract class CartItemMapper {
 	public static CartItem toEntity(UpsertCartItemDto dto, Cart cart, Product product) {
 		CartItem entity = new CartItem();
 
-		entity.setPrice(product.getPrice());
+		entity.setPrice(product.getNetPrice());
 		entity.setQuantity(dto.quantity());
 		entity.setCart(cart);
 		entity.setProduct(product);
