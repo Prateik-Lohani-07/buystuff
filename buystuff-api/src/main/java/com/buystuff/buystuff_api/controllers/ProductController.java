@@ -3,6 +3,7 @@ package com.buystuff.buystuff_api.controllers;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,9 +22,9 @@ import com.buystuff.buystuff_api.dto.product.CreateProductDto;
 import com.buystuff.buystuff_api.dto.product.ProductDto;
 import com.buystuff.buystuff_api.dto.product.ProductFilterDto;
 import com.buystuff.buystuff_api.dto.product.UpdateProductDto;
-import com.buystuff.buystuff_api.enums.SortOrder;
 import com.buystuff.buystuff_api.services.product.ProductService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -40,7 +41,7 @@ public class ProductController {
 		@RequestParam(defaultValue = "10") int size,
 		@RequestParam(defaultValue = "0") int page,
 		@RequestParam(name = "sort_by", required = false) String sortBy,
-		@RequestParam(name = "sort_order", required = false) SortOrder sortOrder,
+		@RequestParam(name = "sort_order", required = false) Sort.Direction sortOrder,
 		@RequestParam(name = "category", required = false) List<String> categories,
 		@RequestParam(name = "price_start", required = false) Double priceStart,
 		@RequestParam(name = "price_end", required = false) Double priceEnd
@@ -71,7 +72,7 @@ public class ProductController {
 	@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping
 	public ApiResponse<ProductDto> addProduct(
-		@RequestBody CreateProductDto createProductDto
+		@Valid @RequestBody CreateProductDto createProductDto
 	) {
 		log.info("START: addProduct controller");
 		
@@ -86,7 +87,7 @@ public class ProductController {
 	@PatchMapping("/{product_id}")
 	public ApiResponse<ProductDto> editProduct(
 		@PathVariable(name = "product_id") UUID productId,
-		@RequestBody UpdateProductDto updateProductDto
+		@Valid @RequestBody UpdateProductDto updateProductDto
 	) {
 		log.info("START: editProduct controller");
 		

@@ -14,7 +14,6 @@ import com.buystuff.buystuff_api.dto.product.ProductFilterDto;
 import com.buystuff.buystuff_api.dto.product.UpdateProductDto;
 import com.buystuff.buystuff_api.entities.Category;
 import com.buystuff.buystuff_api.entities.Product;
-import com.buystuff.buystuff_api.enums.SortOrder;
 import com.buystuff.buystuff_api.exceptions.BadRequestException;
 import com.buystuff.buystuff_api.exceptions.NotFoundException;
 import com.buystuff.buystuff_api.mappers.product.ProductMapper;
@@ -32,7 +31,7 @@ public class ProductServiceImpl implements ProductService {
 
 	private final ProductRepository productRepository;
 	private final CategoryService categoryService;
-	private static final List<String> sortByFields = List.of("price", "reviews");
+	private final List<String> sortByFields = List.of("price", "reviews");
 
 	@Override
 	public List<ProductDto> getAllProducts(ProductFilterDto filters) {
@@ -47,7 +46,7 @@ public class ProductServiceImpl implements ProductService {
 
 		Sort sortOptions;
 		String sortBy = filters.sortBy();
-		SortOrder sortOrder = filters.sortOrder();
+		Sort.Direction sortOrder = filters.sortOrder();
 
 		if (sortBy != null) {
 			if (!validSortBy(sortBy)) throw new BadRequestException("Invalid sort by field");
@@ -57,7 +56,7 @@ public class ProductServiceImpl implements ProductService {
 
 			sortOptions = Sort.by(sortBy);
 
-			if (sortOrder == null || sortOrder.equals(SortOrder.ASC)) 
+			if (sortOrder == null || sortOrder.equals(Sort.Direction.ASC)) 
 				sortOptions = sortOptions.ascending();
 			else 
 				sortOptions = sortOptions.descending();	
