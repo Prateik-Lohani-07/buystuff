@@ -5,6 +5,10 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 public record UpsertCartItemDto (
-	@NotBlank String productCode,
-	@NotNull @Min(value = 1) Integer quantity
+	@NotBlank(message = "product code must not be blank or null") 
+	String productCode,
+
+	@NotNull(message = "quantity must not be null") 
+	@Min(value = 1, message = "quantity must be >= 1") 
+	Integer quantity
 ) {}
