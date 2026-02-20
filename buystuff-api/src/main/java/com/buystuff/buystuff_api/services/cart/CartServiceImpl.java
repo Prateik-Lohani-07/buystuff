@@ -68,7 +68,7 @@ public class CartServiceImpl implements CartService {
 	 */
 	@Override
 	@Transactional
-	public CartDto changeCartItem(UUID accountId, UUID itemId, UpdateCartItemDto updateCartItemDto) {
+	public CartDto changeCartItem(UUID accountId, Long itemId, UpdateCartItemDto updateCartItemDto) {
 		log.info("START: changeCartItem service");
 
 		Account account = accountService.getAccount(accountId);
@@ -76,7 +76,7 @@ public class CartServiceImpl implements CartService {
 		
 		CartItem item = cart.getItems()
 			.stream()
-			.filter(i -> i.getItemId().equals(itemId))
+			.filter(i -> Long.compare(itemId, i.getItemId()) == 0)
 			.findFirst()
 			.orElseThrow(() -> new NotFoundException(String.format("Item with id %s not found.", itemId.toString())));
 

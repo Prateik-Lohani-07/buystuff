@@ -11,7 +11,7 @@ import com.buystuff.buystuff_api.dto.cart.cart_item.UpsertCartItemDto;
 public interface CartService {
 	CartDto viewCart(UUID accountId);
 	CartDto addAllToCart(UUID accountId, List<UpsertCartItemDto> upsertItems);
-	CartDto changeCartItem(UUID accountId, UUID itemId, UpdateCartItemDto updateCartItemDto);
+	CartDto changeCartItem(UUID accountId, Long itemId, UpdateCartItemDto updateCartItemDto);
 	CartDto updateCart(UUID accountId, UpdateCartDto updateCartDto);
 	void clearCart(UUID accountId);
 }

@@ -1,7 +1,6 @@
 package com.buystuff.buystuff_api.controllers;
 
 import java.util.List;
-import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -23,6 +22,7 @@ import com.buystuff.buystuff_api.dto.cart.cart_item.UpsertCartItemDto;
 import com.buystuff.buystuff_api.entities.UserPrincipal;
 import com.buystuff.buystuff_api.services.cart.CartService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -53,7 +53,7 @@ public class CartController {
 	@PostMapping("/items")
 	public ApiResponse<CartDto> addAllToCart(
 		@AuthenticationPrincipal UserPrincipal userPrincipal,
-		@RequestBody List<UpsertCartItemDto> items
+		@Valid @RequestBody List<UpsertCartItemDto> items
 	) {
 		log.info("START: addAllToCart controller");
 		
@@ -71,8 +71,8 @@ public class CartController {
 	@PatchMapping("/items/{item_id}")
 	public ApiResponse<CartDto> changeCartItem(
 		@AuthenticationPrincipal UserPrincipal userPrincipal,
-		@PathVariable(name = "item_id") UUID itemId,
-		@RequestBody UpdateCartItemDto item
+		@PathVariable(name = "item_id") Long itemId,
+		@Valid @RequestBody UpdateCartItemDto item
 	) {
 		log.info("START: changeCartItem controller");
 		
@@ -87,10 +87,10 @@ public class CartController {
 	}
 
 	@ResponseStatus(HttpStatus.OK)
-	@PatchMapping	
+	@PatchMapping
 	public ApiResponse<CartDto> updateCart(
 		@AuthenticationPrincipal UserPrincipal userPrincipal,
-		@RequestBody UpdateCartDto updateCartDto
+		@Valid @RequestBody UpdateCartDto updateCartDto
 	) {
 		log.info("START: updateCart controller");
 		
