@@ -51,6 +51,7 @@ public class AuthServiceImpl implements AuthService {
 	}
 
     @Override
+	@Transactional
     public String registerUser(SignupDto signupDto) {
         log.info("START: registerUser service");
 
