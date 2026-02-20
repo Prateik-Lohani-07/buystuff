@@ -21,6 +21,7 @@ import com.buystuff.buystuff_api.dto.product.review.UpdateReviewDto;
 import com.buystuff.buystuff_api.entities.UserPrincipal;
 import com.buystuff.buystuff_api.services.review.ReviewService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -36,7 +37,7 @@ public class ReviewController {
 	@PostMapping("/")
 	public ApiResponse<ReviewDto> addReview(
 		@PathVariable(name = "product_id") UUID productId,
-		@RequestBody CreateReviewDto createReviewDto,
+		@Valid @RequestBody CreateReviewDto createReviewDto,
 		@AuthenticationPrincipal UserPrincipal userPrincipal
 	) {
 		log.info("START: addReview controller");
@@ -57,7 +58,7 @@ public class ReviewController {
 	public ApiResponse<ReviewDto> editReview(
 		@PathVariable(name = "product_id") UUID productId,
 		@PathVariable(name = "review_id") UUID reviewId,
-		@RequestBody UpdateReviewDto updateReviewDto,
+		@Valid @RequestBody UpdateReviewDto updateReviewDto,
 		@AuthenticationPrincipal UserPrincipal userPrincipal
 	) {
 		log.info("START: editReview controller");
