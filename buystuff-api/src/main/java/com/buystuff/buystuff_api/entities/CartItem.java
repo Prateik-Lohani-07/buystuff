@@ -26,7 +26,7 @@ public class CartItem {
 	private Long itemId;
 
 	@Column(name = "price", columnDefinition = "numeric")
-	private double price;
+	private Double price;
 
 	@Column(name = "quantity", columnDefinition = "integer")
 	private Integer quantity;
