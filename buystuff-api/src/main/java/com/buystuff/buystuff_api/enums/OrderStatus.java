@@ -35,7 +35,7 @@ public enum OrderStatus {
 		)
 	);
 
-	public OrderStatus next(OrderAction action) {
+	public OrderStatus next(OrderAction action) throws IllegalArgumentException {
 		if (!TRANSITION_MAP.containsKey(this)) {
 			throw new IllegalArgumentException(
 				String.format("No state transitions available on status: %s", this.toString())
