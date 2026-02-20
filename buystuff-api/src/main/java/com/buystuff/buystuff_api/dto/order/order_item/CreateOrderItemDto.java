@@ -9,6 +9,9 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * This DTO is for internal use only
+ */
 @Getter @Setter
 public class CreateOrderItemDto {
 	@Valid

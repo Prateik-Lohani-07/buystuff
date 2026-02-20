@@ -9,7 +9,6 @@ import lombok.Setter;
 
 @Getter @Setter
 public abstract class CreatePaymentInfoDto {
-	private UUID accountId;
 	private PaymentType paymentType;
 
 	public CreatePaymentInfoDto(PaymentType paymentType) {
