@@ -43,9 +43,6 @@ public class OrderItem {
 	@Column(name = "product_snapshot", columnDefinition = "jsonb")
 	private ProductSnapshot productSnapshot;
 	
-	@Column(name = "price", columnDefinition = "numeric")
-	private Double price;
-	
 	@Column(name = "quantity", columnDefinition = "integer")
 	private Integer quantity;
 
@@ -55,6 +52,7 @@ public class OrderItem {
 	private Order order;
 
 	public Double getTotalCost() {
-		return price * quantity;
+		Double netPrice = productSnapshot.getPrice() - productSnapshot.getDiscount();
+		return netPrice * quantity;
 	}
 }
