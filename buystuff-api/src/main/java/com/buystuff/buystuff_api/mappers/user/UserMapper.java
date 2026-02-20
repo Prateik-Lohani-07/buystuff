@@ -21,7 +21,7 @@ public abstract class UserMapper {
 		return entity;
 	}
 
-	public static void toEntity(UpdateUserDto dto, User entity) {
+	public static void updateEntity(UpdateUserDto dto, User entity) {
 		if (dto.getFirstName() != null)
 			entity.setFirstName(dto.getFirstName());
 		
