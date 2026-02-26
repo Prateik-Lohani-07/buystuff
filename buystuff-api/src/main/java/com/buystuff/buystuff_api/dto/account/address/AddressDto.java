@@ -32,8 +32,5 @@ public class AddressDto extends BaseResponseDto {
 	private String country;
 	
 	@NotBlank 
-	private String pincode;
-	
-	@NotNull
-	private UUID accountId;
+	private String pincode;	
 }
