@@ -58,7 +58,6 @@ public abstract class AddressMapper {
 		dto.setState(entity.getState());
 		dto.setCountry(entity.getCountry());
 		dto.setPincode(entity.getPincode());
-		dto.setAccountId(entity.getAccount().getAccountId());
 
 		dto.setCreatedAt(entity.getCreatedAt());
 		dto.setUpdatedAt(entity.getUpdatedAt());
