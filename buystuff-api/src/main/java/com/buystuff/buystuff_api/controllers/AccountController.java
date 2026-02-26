@@ -1,7 +1,11 @@
 package com.buystuff.buystuff_api.controllers;
 
+import java.util.UUID;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,7 +23,6 @@ import com.buystuff.buystuff_api.services.account.AccountService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
 
 @RestController
 @Slf4j
@@ -42,6 +45,24 @@ public class AccountController {
 		return ApiResponse.success(
 			HttpStatus.CREATED.value(),
 			"Successfully added address",
+			addressDto
+		);
+	}
+
+	@GetMapping("/addresses/{address_id}")
+	@ResponseStatus(HttpStatus.OK)
+	public ApiResponse<AddressDto> getAddress(
+		@AuthenticationPrincipal UserPrincipal userPrincipal,
+		@PathVariable(name = "address_id") UUID addressId
+	) {
+		log.info("START: getAddress controller");
+
+		AddressDto addressDto = accountService.getAddressDetails(userPrincipal.getId(), addressId);
+
+		log.info("END: getAddress controller");
+		return ApiResponse.success(
+			HttpStatus.OK.value(),
+			"Successfully fetched address",
 			addressDto
 		);
 	}
