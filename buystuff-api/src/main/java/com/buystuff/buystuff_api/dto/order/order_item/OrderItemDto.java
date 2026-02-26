@@ -8,6 +8,7 @@ import com.buystuff.buystuff_api.snapshots.ProductSnapshot;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,6 +20,9 @@ public class OrderItemDto extends BaseResponseDto {
 
 	@NotNull
 	private UUID productId;
+
+	@NotBlank
+	private String productName;
 
 	@NotNull
 	@DecimalMin(value = "0.0")
