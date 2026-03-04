@@ -28,10 +28,9 @@ public class CreateProductDto {
 	private Integer stock;
 	
 	@NotBlank
-	@Size(min = 100, max = 800)
+	@Size(min = 10, max = 800)
 	private String description;
 		
-	@NotBlank
 	@NotEmpty
 	private List<String> categories;
 }
