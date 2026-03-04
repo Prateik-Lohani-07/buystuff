@@ -7,6 +7,7 @@ import com.buystuff.buystuff_api.dto.product.ProductDto;
 import com.buystuff.buystuff_api.dto.product.UpdateProductDto;
 import com.buystuff.buystuff_api.entities.Category;
 import com.buystuff.buystuff_api.entities.Product;
+import com.buystuff.buystuff_api.snapshots.ProductSnapshot;
 
 public abstract class ProductMapper {
 	public static ProductDto toDto(Product entity) {
@@ -83,4 +84,13 @@ public abstract class ProductMapper {
 		return entity;
 	}
 
+	public static ProductSnapshot toSnapshot(Product product) {
+		ProductSnapshot productSnapshot = new ProductSnapshot();
+
+		productSnapshot.setDiscount(product.getDiscount());
+		productSnapshot.setPrice(product.getPrice());
+		productSnapshot.setProductCode(product.getProductCode());
+
+		return productSnapshot;
+	}
 }

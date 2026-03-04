@@ -44,15 +44,19 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	@Transactional
 	public OrderDto createOrder(UUID accountId, UUID addressId, UUID paymentInfoId) {
+		log.info("START: createOrder service");
+
 		Account account = accountService.getAccount(accountId);
 		Cart cart = account.getCart();
-		Address address = accountService.getAddress(addressId);
+		Address address = accountService.getAddress(accountId, addressId);
 		PaymentInfo paymentInfo = accountService.getPaymentInfo(paymentInfoId);
 		
 		Order order = OrderMapper.toEntity(account, address, paymentInfo, cart);
 		order = orderRepository.save(order);
+
 		OrderDto orderDto = OrderMapper.toDto(order);
 
+		log.info("START: createOrder service");
 		return orderDto;
 	}
 
@@ -75,7 +79,6 @@ public class OrderServiceImpl implements OrderService {
 
 		if (sortBy != null) {
 			if (!validSortBy(sortBy)) throw new BadRequestException("Invalid sort by field");
-			
 			if (sortBy.equals("updated_at")) sortBy = "updatedAt";
 
 			sortOptions = Sort.by(sortBy);
@@ -125,7 +128,6 @@ public class OrderServiceImpl implements OrderService {
 	@Transactional
 	public void updateOrderStatus(UUID accountId, Role role, UUID orderId, OrderAction action) {
 		log.info("START: updateOrderStatus service");
-
 
 		Order order =		
 			orderRepository

@@ -4,6 +4,7 @@ import com.buystuff.buystuff_api.dto.account.payment_info.upi.CreateUPIDto;
 import com.buystuff.buystuff_api.dto.account.payment_info.upi.UPIDto;
 import com.buystuff.buystuff_api.entities.Account;
 import com.buystuff.buystuff_api.entities.UPIPaymentInfo;
+import com.buystuff.buystuff_api.enums.PaymentType;
 import com.buystuff.buystuff_api.snapshots.UPIPaymentInfoSnapshot;
 
 public abstract class UPIMapper {
@@ -35,6 +36,7 @@ public abstract class UPIMapper {
 		UPIPaymentInfoSnapshot snapshot = new UPIPaymentInfoSnapshot();
 
 		snapshot.setPaymentInfoId(entity.getPaymentInfoId());
+		snapshot.setPaymentType(PaymentType.UPI);
 		snapshot.setAccountId(entity.getAccount().getAccountId());
 		
 		snapshot.setUpiId(entity.getUpiId());

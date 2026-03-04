@@ -32,6 +32,7 @@ public abstract class OrderMapper {
 		dto.setDiscount(entity.getDiscount());
 		dto.setStatus(entity.getStatus());
 		dto.setPaymentInfoSnapshot(entity.getPaymentInfoSnapshot());
+		dto.setShippingAddressSnapshot(entity.getShippingAddressSnapshot());
 		
 		dto.setCreatedAt(entity.getCreatedAt());
 		dto.setUpdatedAt(entity.getUpdatedAt());
@@ -57,7 +58,7 @@ public abstract class OrderMapper {
 		order.setItems(
 			cart.getItems()
 				.stream()
-				.map(OrderItemMapper::toEntity)
+				.map(cartItem -> OrderItemMapper.toEntity(cartItem, order))
 				.toList()
 		);
 		order.setStatus(OrderStatus.PENDING_PAYMENT);

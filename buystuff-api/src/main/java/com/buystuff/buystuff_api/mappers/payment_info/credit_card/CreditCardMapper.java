@@ -4,6 +4,7 @@ import com.buystuff.buystuff_api.dto.account.payment_info.credit_card.CreateCred
 import com.buystuff.buystuff_api.dto.account.payment_info.credit_card.CreditCardDto;
 import com.buystuff.buystuff_api.entities.Account;
 import com.buystuff.buystuff_api.entities.CreditCardPaymentInfo;
+import com.buystuff.buystuff_api.enums.PaymentType;
 import com.buystuff.buystuff_api.snapshots.CreditCardPaymentInfoSnapshot;
 
 public abstract class CreditCardMapper {
@@ -39,6 +40,7 @@ public abstract class CreditCardMapper {
 		CreditCardPaymentInfoSnapshot snapshot = new CreditCardPaymentInfoSnapshot();
 
 		snapshot.setPaymentInfoId(entity.getPaymentInfoId());
+		snapshot.setPaymentType(PaymentType.CREDIT_CARD);
 		snapshot.setAccountId(entity.getAccount().getAccountId());
 		
 		snapshot.setCardNumberLast4Digits(entity.getCardNumberLast4Digits());

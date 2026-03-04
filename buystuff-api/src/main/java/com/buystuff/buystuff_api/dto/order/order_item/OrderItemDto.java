@@ -2,7 +2,6 @@ package com.buystuff.buystuff_api.dto.order.order_item;
 
 import java.util.UUID;
 
-import com.buystuff.buystuff_api.abstract_classes.BaseResponseDto;
 import com.buystuff.buystuff_api.snapshots.ProductSnapshot;
 
 import jakarta.validation.Valid;
@@ -14,7 +13,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
-public class OrderItemDto extends BaseResponseDto {
+public class OrderItemDto {
 	@Valid
 	private ProductSnapshot productSnapshot;
 
