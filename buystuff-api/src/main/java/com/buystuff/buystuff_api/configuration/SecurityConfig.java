@@ -12,6 +12,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -74,6 +75,7 @@ public class SecurityConfig {
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		return http
 				.csrf(AbstractHttpConfigurer::disable)
+				.cors(Customizer.withDefaults())
 				.authorizeHttpRequests(auth -> {
 					auth
 						.requestMatchers(
@@ -81,7 +83,9 @@ public class SecurityConfig {
 							"/api/v1/auth/signup",
 							"/api/v1/products",
 							"/api/v1/categories",
-							"/api/v1/products/*/reviews"
+							"/api/v1/products/*/reviews",
+							"/api/v1/orders/payments/verification",
+							"/api/v1/orders/payments/verification/*"
 						).permitAll()
 						.requestMatchers(
 							"/api/v1/products/*/reviews/*"
