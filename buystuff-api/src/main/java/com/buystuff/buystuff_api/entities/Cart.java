@@ -46,7 +46,7 @@ public class Cart extends BaseEntity {
 	@OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<CartItem> items = new ArrayList<>();
 
-	public double calculateTotalCost() {
+	public double getNetTotalCost() {
 		double itemsCost = items.stream()
 			.mapToDouble(CartItem::getTotalCost)
 			.sum();

@@ -38,7 +38,8 @@ public class OrderServiceImpl implements OrderService {
 	private final OrderRepository orderRepository;
 
 	private final Set<OrderAction> FULFILLMENT_MANAGER_ACTIONS =  Set.of(OrderAction.SHIP, OrderAction.DELIVER);
-	private final Set<OrderAction> CUSTOMER_ACTIONS = Set.of(OrderAction.PAY, OrderAction.CANCEL, OrderAction.RETURN);
+	private final Set<OrderAction> CUSTOMER_ACTIONS = Set.of(OrderAction.CANCEL, OrderAction.RETURN);
+	private final Set<OrderAction> SYSTEM_ACTIONS = Set.of(OrderAction.PAY);
 	private final List<String> sortByFields = List.of("updated_at");
 
 	@Override
@@ -108,19 +109,17 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public OrderDto getOrder(UUID accountId, UUID orderId) {
-		log.info("START: getOrder service");
+	public OrderDto getOrderDetails(UUID accountId, UUID orderId) {
+		log.info("START: getOrderDetails service");
 
 		Order order = 
-			orderRepository.findByOrderIdAndAccount_AccountId(orderId, accountId)
+			orderRepository
+				.findByOrderIdAndAccount_AccountId(orderId, accountId)
 				.orElseThrow(() -> new NotFoundException("Order doesn't exist"));
 
-		if (order == null) {
-			throw new ForbiddenException("Cannot access order");
-		}
 		OrderDto orderDto = OrderMapper.toDto(order);
 
-		log.info("END: getOrder service");
+		log.info("END: getOrderDetails service");
 		return orderDto;
 	}
 
@@ -145,18 +144,54 @@ public class OrderServiceImpl implements OrderService {
 		log.info("END: updateOrderStatus service");
 	}
 
+	@Override
+	@Transactional
+	public void changeOrderStatusToPaid(Role role, UUID orderId, OrderAction action) {
+		log.info("START: changeOrderStatusToPaid service");
+
+		Order order =		
+			orderRepository
+				.findById(orderId)
+				.orElseThrow(() -> new NotFoundException("Order doesn't exist"));
+
+		if (!actionAllowed(order, null, role, action)) {
+			throw new ForbiddenException(String.format("Cannot invoke action: %s", action.toString()));
+		}
+
+		OrderStatus newStatus = order.getStatus().next(action);
+		OrderMapper.updateEntity(order, newStatus, null);
+		orderRepository.save(order);
+
+		log.info("END: changeOrderStatusToPaid service");
+	}
+
 	private boolean actionAllowed(Order order, UUID accountId, Role role, OrderAction action) {
 		boolean isAllowedIfFulfillmentManager = role.equals(Role.FULFILLMENT_MANAGER) && FULFILLMENT_MANAGER_ACTIONS.contains(action);
 		
 		boolean isActionAllowedIfCustomer = role.equals(Role.CUSTOMER) && CUSTOMER_ACTIONS.contains(action);
-		boolean orderUpdateAllowedIfCustomer = order.getAccount().getAccountId().equals(accountId);
+		boolean orderUpdateAllowedIfCustomer = accountId != null && order.getAccount().getAccountId().equals(accountId);
 		boolean isAllowedIfCustomer = isActionAllowedIfCustomer && orderUpdateAllowedIfCustomer;
+
+		boolean isAllowedIfSystem = role.equals(Role.SYSTEM) && SYSTEM_ACTIONS.contains(action);
 		
-		boolean isAllowed = isAllowedIfFulfillmentManager || isAllowedIfCustomer;
+		boolean isAllowed = isAllowedIfFulfillmentManager || isAllowedIfCustomer || isAllowedIfSystem;
 		return isAllowed;
 	}
 
 	private boolean validSortBy(String fieldName) {
 		return sortByFields.contains(fieldName);
+	}
+
+	@Override
+	public Order getOrder(UUID accountId, UUID orderId) {
+		log.info("START: getOrder service");
+
+		Order order = 
+			orderRepository
+				.findByOrderIdAndAccount_AccountId(orderId, accountId)
+				.orElseThrow(() -> new NotFoundException("Order doesn't exist"));
+
+		log.info("END: getOrder service");
+		return order;
 	}
 }

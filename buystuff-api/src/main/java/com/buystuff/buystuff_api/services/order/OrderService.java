@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import com.buystuff.buystuff_api.dto.order.OrderDto;
 import com.buystuff.buystuff_api.dto.order.OrderFilterDto;
+import com.buystuff.buystuff_api.entities.Order;
 import com.buystuff.buystuff_api.enums.OrderAction;
 import com.buystuff.buystuff_api.enums.Role;
 
@@ -21,6 +22,8 @@ public interface OrderService {
 	 */
 	List<OrderDto> viewOrderHistory(UUID accountId, OrderFilterDto filters);
 
-	OrderDto getOrder(UUID accountId, UUID orderId);
+	OrderDto getOrderDetails(UUID accountId, UUID orderId);
+	Order getOrder(UUID accountId, UUID orderId);
 	void updateOrderStatus(UUID accountId, Role role, UUID orderId, OrderAction action);
+	void changeOrderStatusToPaid(Role role, UUID orderId, OrderAction action);
 }

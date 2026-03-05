@@ -41,7 +41,7 @@ public class Order extends BaseEntity {
 	private UUID orderId;
 
 	@Column(name = "discount", columnDefinition = "numeric")
-	private Double discount;
+	private Double discount = 0.0;
 	
 	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<OrderItem> items = new ArrayList<>();
@@ -65,7 +65,7 @@ public class Order extends BaseEntity {
 	@JoinColumn(name = "account_id")
 	private Account account;
 
-	public Double calculateTotalCost() {
+	public Double getNetTotalCost() {
 		Double itemsCost = items.stream()
 			.mapToDouble(OrderItem::getTotalCost)
 			.sum();
