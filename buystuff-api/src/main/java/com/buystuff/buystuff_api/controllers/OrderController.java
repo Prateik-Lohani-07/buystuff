@@ -63,7 +63,7 @@ public class OrderController {
 	) {
 		log.info("START: getOrder controller");
 		
-		OrderDto orderDto = orderService.getOrder(userPrincipal.getId(), orderId);
+		OrderDto orderDto = orderService.getOrderDetails(userPrincipal.getId(), orderId);
 		
 		log.info("END: getOrder controller");
 		return ApiResponse.success(
