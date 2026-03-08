@@ -37,7 +37,7 @@ public class Coupon extends BaseEntity {
 	private String name;
 
 	@Column(name = "discount_value", columnDefinition = "numeric")
-	private Double discountValue;
+	private Double discountValue = 0.0;
 
 	@Enumerated(EnumType.STRING)
 	@Column(name = "discount_type", length=20, nullable=false)	
