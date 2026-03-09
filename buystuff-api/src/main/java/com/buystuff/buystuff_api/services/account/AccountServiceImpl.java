@@ -61,6 +61,21 @@ public class AccountServiceImpl implements AccountService {
 	}
 
 	@Override
+	public List<AddressDto> getAllAddresses(UUID accountId) {
+		log.info("START: getAllAddresses service");
+
+		Account account = getAccount(accountId);
+		List<Address> addresses = addressRepository.findByAccount(account);
+		List<AddressDto> addressDtos =
+			addresses.stream()
+				.map(AddressMapper::toDto)
+				.toList();
+
+		log.info("END: getAllAddresses service");
+		return addressDtos;
+	}
+
+	@Override
 	public AddressDto addAddress(UUID accountId, CreateAddressDto createAddressDto) {
 		log.info("START: addAddress service");
 		

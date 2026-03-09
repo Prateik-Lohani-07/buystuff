@@ -1,5 +1,6 @@
 package com.buystuff.buystuff_api.controllers;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
@@ -63,6 +64,23 @@ public class AccountController {
 		return ApiResponse.success(
 			HttpStatus.OK.value(),
 			"Successfully fetched address",
+			addressDto
+		);
+	}
+
+	@GetMapping("/addresses")
+	@ResponseStatus(HttpStatus.OK)
+	public ApiResponse<List<AddressDto>> getAddress(
+		@AuthenticationPrincipal UserPrincipal userPrincipal
+	) {
+		log.info("START: getAddress controller");
+
+		List<AddressDto> addressDto = accountService.getAllAddresses(userPrincipal.getId());
+
+		log.info("END: getAddress controller");
+		return ApiResponse.success(
+			HttpStatus.OK.value(),
+			"Successfully fetched all addresses",
 			addressDto
 		);
 	}
