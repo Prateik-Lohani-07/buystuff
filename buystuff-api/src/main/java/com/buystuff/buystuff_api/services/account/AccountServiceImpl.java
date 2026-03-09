@@ -1,5 +1,6 @@
 package com.buystuff.buystuff_api.services.account;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
@@ -108,15 +109,27 @@ public class AccountServiceImpl implements AccountService {
 	}
 
 	@Override
-	public Address getAddress(UUID addressId) {
-		log.info("START: getAddress service");
+	public AddressDto getAddressDetails(UUID accountId, UUID addressId) {
+		log.info("START: getAddressDetails service");
 		
 		Address address = 
 			addressRepository
-				.findById(addressId)
+				.findByAddressIdAndAccount_AccountId(addressId, accountId)
 				.orElseThrow(() -> new NotFoundException("Address not found."));
 		
-		log.info("END: getAddress service");
+		AddressDto addressDto = AddressMapper.toDto(address);
+		
+		log.info("END: getAddressDetails service");
+		return addressDto;
+	}
+
+	@Override
+	public Address getAddress(UUID accountId, UUID addressId) {		
+		Address address = 
+			addressRepository
+				.findByAddressIdAndAccount_AccountId(addressId, accountId)
+				.orElseThrow(() -> new NotFoundException("Address not found."));
+		
 		return address;
 	}
 
