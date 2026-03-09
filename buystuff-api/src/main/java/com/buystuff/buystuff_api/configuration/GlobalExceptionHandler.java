@@ -25,7 +25,7 @@ public class GlobalExceptionHandler {
 			.map(FieldError::getDefaultMessage)
 			.toList();
 
-		String errorMap = String.join(", ", errors);
+		String errorMap = errors.get(0);
 		HttpStatus status = HttpStatus.BAD_REQUEST;
 
 		return new ResponseEntity<>(
