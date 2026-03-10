@@ -128,5 +128,15 @@ public class CouponServiceImpl implements CouponService {
 	private boolean validSortBy(String fieldName) {
 		return sortByFields.contains(fieldName);
 	}
+
+    @Override
+    public void deleteCoupon(UUID couponId) {
+		log.info("START: deleteCoupon service");
+		
+		Coupon coupon = getCoupon(couponId);
+		couponRepository.delete(coupon);
+		
+		log.info("START: deleteCoupon service");
+    }
 	
 }

@@ -91,4 +91,20 @@ public class CouponController {
 		);
 	}
 	
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	@PatchMapping("/{coupon_id}")
+	@PreAuthorize("hasRole('ADMIN')")
+	public ApiResponse<Void> deleteCoupon(
+		@PathVariable(name = "coupon_id") UUID couponId
+	) {
+		log.info("START: deleteCoupon controller");
+
+		couponService.deleteCoupon(couponId);
+
+		log.info("END: deleteCoupon controller");
+		return ApiResponse.success(
+			"Successfully edited coupon",
+			null
+		);
+	}
 }

@@ -12,7 +12,9 @@ import com.buystuff.buystuff_api.entities.Coupon;
 public interface CouponService {
 	Coupon getCoupon(UUID couponId);
 	Coupon getCouponByCouponCode(String couponCode);
+
 	List<CouponDto> getAllCoupons(CouponFilterDto filters);
 	CouponDto addCoupon(CreateCouponDto createCouponDto);
 	CouponDto editCoupon(UUID couponId, UpdateCouponDto updateCouponDto);
+	void deleteCoupon(UUID couponId);
 }
