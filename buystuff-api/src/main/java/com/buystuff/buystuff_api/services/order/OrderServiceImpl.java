@@ -40,7 +40,7 @@ public class OrderServiceImpl implements OrderService {
 	private final Set<OrderAction> FULFILLMENT_MANAGER_ACTIONS =  Set.of(OrderAction.SHIP, OrderAction.DELIVER);
 	private final Set<OrderAction> CUSTOMER_ACTIONS = Set.of(OrderAction.CANCEL, OrderAction.RETURN);
 	private final Set<OrderAction> SYSTEM_ACTIONS = Set.of(OrderAction.PAY);
-	private final List<String> sortByFields = List.of("updated_at");
+	private final List<String> sortByFields = List.of("created_at");
 
 	@Override
 	@Transactional
@@ -80,7 +80,7 @@ public class OrderServiceImpl implements OrderService {
 
 		if (sortBy != null) {
 			if (!validSortBy(sortBy)) throw new BadRequestException("Invalid sort by field");
-			if (sortBy.equals("updated_at")) sortBy = "updatedAt";
+			if (sortBy.equals("created_at")) sortBy = "createdAt";
 
 			sortOptions = Sort.by(sortBy);
 
@@ -89,7 +89,7 @@ public class OrderServiceImpl implements OrderService {
 			else 
 				sortOptions = sortOptions.descending();	
 		}
-		else sortOptions = Sort.by("updatedAt").descending();
+		else sortOptions = Sort.by("createdAt").descending();
 		
 		PageRequest pageRequest = PageRequest.of(
 			page, 
