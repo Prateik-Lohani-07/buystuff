@@ -28,6 +28,7 @@ public abstract class ProductMapper {
 				.map(c -> c.getCategoryCode())
 				.toList()
 		);
+		dto.setImages(entity.getImages());
 
 		dto.setNumberOfReviews(entity.getNumberOfReviews());
 

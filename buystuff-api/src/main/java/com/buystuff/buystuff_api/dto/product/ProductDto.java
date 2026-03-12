@@ -24,6 +24,8 @@ public class ProductDto extends BaseResponseDto {
 	
 	@NotBlank
 	private String productCode;
+
+	private String[] images;
 	
 	@PositiveOrZero
 	private Double price;

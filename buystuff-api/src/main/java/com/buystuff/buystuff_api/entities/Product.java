@@ -48,6 +48,9 @@ public class Product extends BaseEntity {
 	@ColumnDefault("0")
 	@Column(name = "discount", columnDefinition = "numeric")
 	private Double discount;
+
+	@Column(name = "images", columnDefinition = "varchar")
+	private String[] images;
 	
 	@ColumnDefault("0")
 	@Column(name = "stock", columnDefinition = "integer", nullable = false)
