@@ -11,7 +11,9 @@ import org.hibernate.annotations.NaturalId;
 import com.buystuff.buystuff_api.abstract_classes.BaseEntity;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -49,12 +51,13 @@ public class Product extends BaseEntity {
 	@Column(name = "discount", columnDefinition = "numeric")
 	private Double discount;
 
+	@ElementCollection
+	@CollectionTable(name = "images", joinColumns = @JoinColumn(name = "product_id"))
 	@Column(name = "images", columnDefinition = "varchar")
-	private String[] images;
+	private List<String> images;
 	
-	@ColumnDefault("0")
 	@Column(name = "stock", columnDefinition = "integer", nullable = false)
-	private Integer stock;
+	private Integer stock = 0;
 	
 	@Column(name = "description", columnDefinition = "varchar")
 	private String description;
